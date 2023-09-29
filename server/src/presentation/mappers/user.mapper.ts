@@ -4,7 +4,7 @@ import { UserDto } from '../dtos/user.dto';
 
 @Injectable()
 export class UserMapper {
-  toDto(user: User): UserDto {
+  static toDto(user: User): UserDto {
     const { password, ...userDto } = user;
     return userDto;
   }

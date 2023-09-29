@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto';
+import { UserType } from '../enums/user-type.enum';
 
 export class User {
   id: string;
@@ -6,6 +7,7 @@ export class User {
     public name: string,
     public email: string,
     public password: string,
+    public type: UserType,
   ) {
     this.id = randomUUID();
   }

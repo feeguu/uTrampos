@@ -1,8 +1,14 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { TypeOrmUserRepository } from './repositories/typeorm-user.repository';
+import { TypeOrmCandidateRepository } from './repositories/typeorm-candidate.repository';
+import { TypeOrmCompanyRepository } from './repositories/typeorm-company.repository';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmUser } from './entities/typeorm-user.entity';
+import { TypeOrmCandidate } from './entities/typeorm-candidate.entity';
+import { TypeOrmCompany } from './entities/typeorm-company.entity';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -15,13 +21,22 @@ import { ConfigService } from '@nestjs/config';
           username: configService.get<string>('DB_USERNAME'),
           password: configService.get<string>('DB_PASSWORD'),
           autoLoadEntities: true,
+          synchronize: configService.get<boolean>('DB_SYNCRONIZE'),
         } as TypeOrmModuleOptions;
       },
-      imports: [ConfigService],
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([TypeOrmUserRepository]),
+    TypeOrmModule.forFeature([TypeOrmUser, TypeOrmCandidate, TypeOrmCompany]),
   ],
-  providers: [TypeOrmUserRepository],
+  providers: [
+    TypeOrmUserRepository,
+    TypeOrmCandidateRepository,
+    TypeOrmCompanyRepository,
+  ],
+  exports: [
+    TypeOrmUserRepository,
+    TypeOrmCandidateRepository,
+    TypeOrmCompanyRepository,
+  ],
 })
 export class TypeOrmDatabaseModule {}
