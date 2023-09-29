@@ -3,12 +3,15 @@ import { AppModule } from '@/modules/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
+
+  const configService = app.get(ConfigService);
 
   const config = new DocumentBuilder()
     .setTitle('uTrampos API')
@@ -17,6 +20,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(configService.get<number>('PORT'));
 }
 bootstrap();
