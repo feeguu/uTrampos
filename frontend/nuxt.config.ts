@@ -9,4 +9,7 @@ export default defineNuxtConfig({
 			autoprefixer: {},
 		},
 	},
+	build: {
+		transpile: ["vue-remix-icons"],
+	},
 })
