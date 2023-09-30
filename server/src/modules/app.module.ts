@@ -18,7 +18,7 @@ import { JwtGuard } from '@/main/auth/guards/jwt.guard';
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.number().required(),
         DB_USERNAME: Joi.string().required(),
-        DB_PASSWORD: Joi.string().required(),
+        DB_PASSWORD: Joi.string(),
         DB_DATABASE: Joi.string().required(),
         DB_TYPE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),

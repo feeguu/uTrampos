@@ -10,6 +10,9 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.module';
+import { RegisterCandidateUseCase } from '@/main/auth/use-cases/register-candidate-use-case.service';
+import { CandidateRepository } from '@/domain/abstracts/repositories/candidate.repository';
+import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-use-case.service';
 
 @Module({
   controllers: [AuthController],
@@ -54,6 +57,8 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
       useFactory: (authService: AuthService) => new LoginUseCase(authService),
       inject: [AuthService],
     },
+    RegisterCandidateUseCase,
+    RegisterCompanyUseCase
   ],
 })
 export class AuthModule {}
