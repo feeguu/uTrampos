@@ -20,6 +20,7 @@ export class TypeOrmCompany {
   description: string;
 
   @Column({
+    type: 'enum',
     enum: CompanySize,
   })
   companySize: CompanySize;
