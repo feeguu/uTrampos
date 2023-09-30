@@ -41,6 +41,9 @@ export class AuthService {
       registerDto.zipCode,
       registerDto.type,
     );
+
+    await this.userRepository.create(user);
+
     const payload = { email: user.email, sub: user.id };
     return new AuthResponseDto(this.jwtService.sign(payload));
   }
