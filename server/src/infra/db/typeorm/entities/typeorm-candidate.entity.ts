@@ -15,6 +15,9 @@ export class TypeOrmCandidate {
   @Column()
   cpf: string;
 
+  @Column()
+  birthDate: Date;
+
   @OneToOne(() => TypeOrmUser)
   @JoinColumn()
   user: TypeOrmUser;

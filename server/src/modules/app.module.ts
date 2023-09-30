@@ -1,9 +1,12 @@
 import { AppController } from '@/presentation/controllers/app.controller';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule } from './auth.module';
 import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.module';
+import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from '@/main/auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -20,15 +23,32 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
         DB_TYPE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
-        SYNCRONIZE: Joi.boolean().default(false),
+        SYNCHRONIZE: Joi.boolean().default(false),
       }),
       validationOptions: {
         abortEarly: true,
       },
     }),
+    JwtModule.registerAsync({
+      global: true,
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRES_IN'),
+          issuer: 'utrampos',
+        },
+      }),
+      inject: [ConfigService],
+    }),
     TypeOrmDatabaseModule,
     AuthModule,
   ],
   controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+  ],
 })
 export class AppModule {}

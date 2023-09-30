@@ -1,6 +1,13 @@
 import { UserType } from '@/domain/enums/user-type.enum';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsPhoneNumber,
+  IsPostalCode,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterDto {
   @IsEmail()
@@ -14,6 +21,14 @@ export class RegisterDto {
 
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  @IsPhoneNumber('BR')
+  phone: string;
+
+  @IsNotEmpty()
+  @IsPostalCode('BR')
+  zipCode: string;
 
   @IsNotEmpty()
   @IsEnum(UserType)

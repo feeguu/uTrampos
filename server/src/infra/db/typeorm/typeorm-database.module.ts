@@ -21,7 +21,7 @@ import { TypeOrmCompany } from './entities/typeorm-company.entity';
           username: configService.get<string>('DB_USERNAME'),
           password: configService.get<string>('DB_PASSWORD'),
           autoLoadEntities: true,
-          synchronize: configService.get<boolean>('DB_SYNCRONIZE'),
+          synchronize: configService.get<boolean>('DB_SYNCHRONIZE'),
         } as TypeOrmModuleOptions;
       },
       inject: [ConfigService],

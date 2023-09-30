@@ -15,6 +15,12 @@ export class TypeOrmUser {
   @Column()
   password: string;
 
+  @Column()
+  phone: string;
+
+  @Column()
+  zipCode: string;
+
   @Column({
     type: 'enum',
     enum: UserType,

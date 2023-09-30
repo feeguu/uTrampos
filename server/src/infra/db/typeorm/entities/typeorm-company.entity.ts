@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TypeOrmUser } from './typeorm-user.entity';
+import { CompanySize } from '@/domain/enums/company-size.enum';
 
 @Entity()
 export class TypeOrmCompany {
@@ -14,6 +15,14 @@ export class TypeOrmCompany {
 
   @Column()
   cnpj: string;
+
+  @Column()
+  description: string;
+
+  @Column({
+    enum: CompanySize,
+  })
+  companySize: CompanySize;
 
   @OneToOne(() => TypeOrmUser)
   @JoinColumn()

@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { TypeOrmUser } from '../entities/typeorm-user.entity';
 
 @Injectable()
-export class TypeOrmUserRepository<T = User> implements UserRepository<T> {
+export class TypeOrmUserRepository implements UserRepository {
   constructor(
     @InjectRepository(TypeOrmUser)
     private readonly userRepo: Repository<User>,
@@ -23,7 +23,7 @@ export class TypeOrmUserRepository<T = User> implements UserRepository<T> {
   }
 
   async findByEmail(email: string) {
-    return this.userRepo.findOneBy({ email }) as T | null;
+    return this.userRepo.findOneBy({ email });
   }
 
   async findAll(): Promise<User[]> {

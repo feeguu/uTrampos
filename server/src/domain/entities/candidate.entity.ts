@@ -4,16 +4,12 @@ import { UserType } from '../enums/user-type.enum';
 
 export class Candidate {
   public id: string;
-  public user: User;
   public type: UserType = UserType.Candidate;
   constructor(
-    public name: string,
-    public email: string,
-    public password: string,
+    public user: User,
     public cpf: string,
-    public phone: string,
+    public birthDate: string,
   ) {
     this.id = randomUUID();
-    this.user = new User(name, email, password, this.type);
   }
 }

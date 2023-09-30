@@ -1,10 +1,9 @@
 export class UserDto {
-  id: string;
-  name: string;
-  email: string;
-  constructor(id: string, name: string, email: string) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-  }
+  constructor(
+    public id: string,
+    public name: string,
+    public email: string,
+    public phone: string,
+    public zipCode: string,
+  ) {}
 }
