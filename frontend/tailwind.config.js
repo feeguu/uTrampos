@@ -7,8 +7,9 @@ export default {
 		extend: {
 			fontFamily: {
 				lexend: ["Lexend", ...defaultTheme.fontFamily.sans],
+				sans: ["Open Sans", ...defaultTheme.fontFamily.sans],
 			},
 		},
 	},
-	plugins: [],
+	plugins: [require("@tailwindcss/forms")],
 }
