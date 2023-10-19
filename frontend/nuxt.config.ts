@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	devtools: { enabled: true },
+	devtools: { enabled: false },
 	srcDir: "src/",
 	css: ["~/assets/css/main.css"],
 	postcss: {
@@ -11,5 +11,8 @@ export default defineNuxtConfig({
 	},
 	build: {
 		transpile: ["vue-remix-icons"],
+	},
+	typescript: {
+		typeCheck: false,
 	},
 })

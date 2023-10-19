@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { RiFacebookFill, RiGoogleFill } from "vue-remix-icons"
 
+definePageMeta({
+	layout: false,
+})
+
 const register = reactive({
 	email: "",
 	password: "",
 	name: "NameTest",
 	phone: "11923451234",
 	zipCode: "08081-530",
-	type: "candidate"
+	type: "candidate",
 })
 
 async function registerUser() {
@@ -15,9 +19,9 @@ async function registerUser() {
 		const res: any = await $fetch("http://localhost:3001/auth/register", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(register)
+			body: JSON.stringify(register),
 		})
 
 		const token = useCookie("utrampos.token")
@@ -28,7 +32,6 @@ async function registerUser() {
 		console.error(error)
 	}
 }
-
 </script>
 
 <template>
