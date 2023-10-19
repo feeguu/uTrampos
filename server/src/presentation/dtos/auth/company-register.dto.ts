@@ -5,8 +5,8 @@ import { IsEnum, IsNotEmpty, IsNumberString, Length } from 'class-validator';
 export class CompanyRegisterDto {
   // fields: cnpj, description, companySize
   @IsNotEmpty()
-  @Length(14, 14)
   @Transform(({ value }) => value.replace(/\D/g, ''))
+  @Length(14, 14)
   @IsNumberString()
   cnpj: string;
 

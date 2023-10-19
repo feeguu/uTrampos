@@ -24,10 +24,12 @@ export class RegisterDto {
 
   @IsNotEmpty()
   @IsPhoneNumber('BR')
+  @Transform(({ value }) => value.replace(/\D/g, ''))
   phone: string;
 
   @IsNotEmpty()
   @IsPostalCode('BR')
+  @Transform(({ value }) => value.replace(/\D/g, ''))
   zipCode: string;
 
   @IsNotEmpty()

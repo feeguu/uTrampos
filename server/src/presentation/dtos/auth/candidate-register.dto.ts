@@ -1,9 +1,15 @@
 import { Transform } from 'class-transformer';
-import { IsDateString, IsNotEmpty, IsNumberString } from 'class-validator';
+import {
+  IsDateString,
+  IsNotEmpty,
+  IsNumberString,
+  Length,
+} from 'class-validator';
 
 export class CandidateRegisterDto {
   @IsNotEmpty()
   @Transform(({ value }) => value.replace(/\D/g, ''))
+  @Length(11, 11)
   @IsNumberString()
   cpf: string;
 
