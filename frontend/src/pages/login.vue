@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { RiFacebookFill, RiGoogleFill } from "vue-remix-icons"
 
+definePageMeta({
+	layout: false,
+})
+
 const login = reactive({
 	email: "",
-	password: ""
+	password: "",
 })
 
 async function loginUser() {
@@ -11,9 +15,9 @@ async function loginUser() {
 		const res: any = await $fetch("http://localhost:3001/auth/login", {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(login)
+			body: JSON.stringify(login),
 		})
 
 		console.log(res)
@@ -22,7 +26,6 @@ async function loginUser() {
 		token.value = res.token
 
 		navigateTo("/")
-
 	} catch (error) {
 		console.error(error)
 	}
