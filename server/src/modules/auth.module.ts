@@ -13,6 +13,7 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
 import { RegisterCandidateUseCase } from '@/main/auth/use-cases/register-candidate-use-case.service';
 import { CandidateRepository } from '@/domain/abstracts/repositories/candidate.repository';
 import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-use-case.service';
+import { CommonValidator } from '@/main/validator/common.validator';
 
 @Module({
   controllers: [AuthController],
@@ -32,18 +33,21 @@ import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-u
         candidateRepository: TypeOrmCandidateRepository,
         companyRepository: TypeOrmCompanyRepository,
         jwtService: JwtService,
+        commonValidator: CommonValidator,
       ) =>
         new AuthService(
           userRepository,
           candidateRepository,
           companyRepository,
           jwtService,
+          commonValidator,
         ),
       inject: [
         TypeOrmUserRepository,
         TypeOrmCandidateRepository,
         TypeOrmCompanyRepository,
         JwtService,
+        CommonValidator,
       ],
     },
     {
@@ -58,7 +62,7 @@ import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-u
       inject: [AuthService],
     },
     RegisterCandidateUseCase,
-    RegisterCompanyUseCase
+    RegisterCompanyUseCase,
   ],
 })
 export class AuthModule {}
