@@ -4,8 +4,8 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsPhoneNumber,
-  IsPostalCode,
+  IsNumberString,
+  Length,
   MinLength,
 } from 'class-validator';
 
@@ -23,12 +23,14 @@ export class RegisterDto {
   name: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber('BR')
+  @IsNumberString()
+  @Length(11, 11)
   @Transform(({ value }) => value.replace(/\D/g, ''))
   phone: string;
 
   @IsNotEmpty()
-  @IsPostalCode('BR')
+  @IsNumberString()
+  @Length(8, 8)
   @Transform(({ value }) => value.replace(/\D/g, ''))
   zipCode: string;
 
