@@ -18,6 +18,7 @@ import { CommonValidator } from '@/main/validator/common.validator';
 @Module({
   controllers: [AuthController],
   providers: [
+    CommonValidator,
     {
       provide: JwtStrategy,
       useFactory: (
