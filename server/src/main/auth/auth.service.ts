@@ -9,10 +9,14 @@ import { CandidateRegisterDto } from '@/presentation/dtos/auth/candidate-registe
 import { CompanyRegisterDto } from '@/presentation/dtos/auth/company-register.dto';
 import { LoginDto } from '@/presentation/dtos/auth/login.dto';
 import { RegisterDto } from '@/presentation/dtos/auth/register.dto';
-import { UserMapper } from '@/presentation/mappers/user.mapper';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
+import { CommonValidator } from '../validator/common.validator';
 
 @Injectable()
 export class AuthService {
@@ -21,14 +25,16 @@ export class AuthService {
     private readonly candidateRepository: CandidateRepository,
     private readonly companyRepository: CompanyRepository,
     private readonly jwtService: JwtService,
+    private readonly commonValidator: CommonValidator,
   ) {}
 
   async registerUser(registerDto: RegisterDto) {
     const sameEmailUser = await this.userRepository.findByEmail(
       registerDto.email,
     );
+
     if (sameEmailUser) {
-      throw new Error('Email already in use');
+      throw new BadRequestException('Email already in use');
     }
 
     const hashedPassword = await hash(registerDto.password, 10);
@@ -54,8 +60,39 @@ export class AuthService {
   ) {
     const user = await this.userRepository.find(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new BadRequestException('User not found');
     }
+    if (user.type !== 'company') {
+      throw new BadRequestException('User must be a company');
+    }
+
+    if (!this.commonValidator.validateCNPJ(companyRegisterDto.cnpj)) {
+      throw new BadRequestException('Invalid CNPJ');
+    }
+
+    const userHasCompany = await this.companyRepository.findByUserId(userId);
+    if (userHasCompany) {
+      throw new BadRequestException(
+        'User already already registered as a company',
+      );
+    }
+
+    const userHasCandidate =
+      await this.candidateRepository.findByUserId(userId);
+    if (userHasCandidate) {
+      throw new BadRequestException(
+        'User already already registered as a candidate',
+      );
+    }
+
+    const sameCnpjCompany = await this.companyRepository.findByCnpj(
+      companyRegisterDto.cnpj,
+    );
+
+    if (sameCnpjCompany) {
+      throw new BadRequestException('CNPJ already in use');
+    }
+
     const newCompany = new Company(
       user,
       companyRegisterDto.cnpj,
@@ -73,8 +110,39 @@ export class AuthService {
   ) {
     const user = await this.userRepository.find(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new BadRequestException('User not found');
     }
+
+    if (user.type !== 'candidate') {
+      throw new BadRequestException('User must be a candidate');
+    }
+
+    if (!this.commonValidator.validateCPF(candidateRegisterDto.cpf)) {
+      throw new BadRequestException('Invalid CPF');
+    }
+
+    const userHasCompany = await this.companyRepository.findByUserId(userId);
+    if (userHasCompany) {
+      throw new BadRequestException(
+        'User already already registered as a company',
+      );
+    }
+
+    const userHasCandidate =
+      await this.candidateRepository.findByUserId(userId);
+    if (userHasCandidate) {
+      throw new BadRequestException(
+        'User already already registered as a candidate',
+      );
+    }
+
+    const sameCpfCandidate = await this.candidateRepository.findByCpf(
+      candidateRegisterDto.cpf,
+    );
+    if (sameCpfCandidate) {
+      throw new BadRequestException('CPF already in use');
+    }
+
     const newCandidate = new Candidate(
       user,
       candidateRegisterDto.cpf,
@@ -83,14 +151,6 @@ export class AuthService {
 
     const candidate = await this.candidateRepository.create(newCandidate);
     return candidate;
-  }
-
-  async validateUser(email: string, password: string) {
-    const user = await this.userRepository.findByEmail(email);
-    if (!user || !(await compare(password, user.password))) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    return UserMapper.toDto(user);
   }
 
   async login(loginDto: LoginDto) {
