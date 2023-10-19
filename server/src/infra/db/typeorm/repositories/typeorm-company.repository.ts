@@ -50,4 +50,12 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
     await this.companyRepo.update({ id }, entity);
     return Object.assign(company, entity);
   }
+
+  async findByUserId(userId: string): Promise<Company | null> {
+    const company = await this.companyRepo.findOne({
+      where: { user: { id: userId } },
+    });
+    if (!company) return null;
+    return company;
+  }
 }

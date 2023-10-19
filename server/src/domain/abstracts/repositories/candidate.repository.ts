@@ -6,4 +6,5 @@ import { Repository } from './generic.repository';
 export abstract class CandidateRepository extends Repository<Candidate> {
   abstract findByEmail(email: string): Promise<Candidate | null>;
   abstract findByCpf(cpf: string): Promise<Candidate | null>;
+  abstract findByUserId(userId: string): Promise<Candidate | null>;
 }

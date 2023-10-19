@@ -50,4 +50,12 @@ export class TypeOrmCandidateRepository implements CandidateRepository {
     if (!candidate) return null;
     return candidate;
   }
+
+  async findByUserId(userId: string): Promise<Candidate> {
+    const candidate = await this.candidateRepo.findOne({
+      where: { user: { id: userId } },
+    });
+    if (!candidate) return null;
+    return candidate;
+  }
 }

@@ -42,4 +42,8 @@ export class InMemoryCandidateRepository implements CandidateRepository {
   async findByCpf(cpf: string): Promise<Candidate> {
     return this.candidates.find((candidate) => candidate.cpf === cpf) || null;
   }
+
+  async findByUserId(userId: string): Promise<Candidate> {
+    return this.candidates.find((candidate) => candidate.user.id === userId);
+  }
 }
