@@ -9,8 +9,8 @@ import { CompanyRegisterDto } from '../dtos/auth/company-register.dto';
 import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-use-case.service';
 import { RegisterCandidateUseCase } from '@/main/auth/use-cases/register-candidate-use-case.service';
 import { CandidateRegisterDto } from '../dtos/auth/candidate-register.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Public()
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -20,15 +20,19 @@ export class AuthController {
     private readonly registerCandidateUseCase: RegisterCandidateUseCase,
   ) {}
 
+  @Public()
   @Post('login')
   async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.loginUseCase.execute(loginDto);
   }
+
+  @Public()
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     return this.registerUseCase.execute(registerDto);
   }
 
+  @ApiBearerAuth()
   @Post('/register/company')
   async registerCompany(
     @Request() req,
@@ -37,6 +41,7 @@ export class AuthController {
     return this.registerCompanyUseCase.execute(req.user.id, registerDto);
   }
 
+  @ApiBearerAuth()
   @Post('/register/candidate')
   async registerCandidate(
     @Request() req,

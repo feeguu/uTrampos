@@ -62,8 +62,18 @@ import { CommonValidator } from '@/main/validator/common.validator';
       useFactory: (authService: AuthService) => new LoginUseCase(authService),
       inject: [AuthService],
     },
-    RegisterCandidateUseCase,
-    RegisterCompanyUseCase,
+    {
+      provide: RegisterCandidateUseCase,
+      useFactory: (authService: AuthService) =>
+        new RegisterCandidateUseCase(authService),
+      inject: [AuthService],
+    },
+    {
+      provide: RegisterCompanyUseCase,
+      useFactory: (authService: AuthService) =>
+        new RegisterCompanyUseCase(authService),
+      inject: [AuthService],
+    },
   ],
 })
 export class AuthModule {}

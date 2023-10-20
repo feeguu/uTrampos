@@ -17,6 +17,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { CommonValidator } from '../validator/common.validator';
+import { UserMapper } from '@/presentation/mappers/user.mapper';
+import { CompanyMapper } from '@/presentation/mappers/company.mapper';
+import { CompanyDto } from '@/presentation/dtos/company.dto';
+import { CandidateMapper } from '@/presentation/mappers/candidate.mapper';
 
 @Injectable()
 export class AuthService {
@@ -57,7 +61,7 @@ export class AuthService {
   async registerCompany(
     userId: string,
     companyRegisterDto: CompanyRegisterDto,
-  ) {
+  ): Promise<CompanyDto> {
     const user = await this.userRepository.find(userId);
     if (!user) {
       throw new BadRequestException('User not found');
@@ -101,7 +105,7 @@ export class AuthService {
     );
 
     const company = await this.companyRepository.create(newCompany);
-    return company;
+    return CompanyMapper.toDto(company);
   }
 
   async registerCandidate(
@@ -150,7 +154,7 @@ export class AuthService {
     );
 
     const candidate = await this.candidateRepository.create(newCandidate);
-    return candidate;
+    return CandidateMapper.toDto(candidate);
   }
 
   async login(loginDto: LoginDto) {
