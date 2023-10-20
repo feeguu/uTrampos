@@ -8,7 +8,7 @@ import {
 import { TypeOrmUser } from './typeorm-user.entity';
 import { TypeOrmResume } from './resume/typeorm-resume.entity';
 
-@Entity()
+@Entity('candidate')
 export class TypeOrmCandidate {
   @PrimaryGeneratedColumn('uuid')
   id: string;

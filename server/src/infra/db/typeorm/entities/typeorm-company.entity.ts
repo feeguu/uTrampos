@@ -8,7 +8,7 @@ import {
 import { TypeOrmUser } from './typeorm-user.entity';
 import { CompanySize } from '@/domain/enums/company-size.enum';
 
-@Entity()
+@Entity('company')
 export class TypeOrmCompany {
   @PrimaryGeneratedColumn('uuid')
   id: string;
