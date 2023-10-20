@@ -5,6 +5,8 @@ definePageMeta({
 	layout: false,
 })
 
+const { registerUser } = useAuth()
+
 const register = reactive({
 	email: "",
 	password: "",
@@ -13,39 +15,28 @@ const register = reactive({
 	zipCode: "08081-530",
 	type: "candidate",
 })
-
-async function registerUser() {
-	try {
-		const res: any = await $fetch("http://localhost:3001/auth/register", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(register),
-		})
-
-		const token = useCookie("utrampos.token")
-		token.value = res.token
-
-		navigateTo("/")
-	} catch (error) {
-		console.error(error)
-	}
-}
 </script>
 
 <template>
 	<div class="bg-neutral-100 px-6 w-full min-h-screen flex flex-col justify-center items-center">
 		<Logo class="mb-12" />
-		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="registerUser">
-			<div class="flex flex-col gap-y-2">
-				<p class="text-slate-900 font-semibold">Sou um:</p>
+		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="registerUser(register)">
+			<div class="flex flex-col gap-y-2 text-slate-900">
+				<p class="font-semibold">Sou um:</p>
 				<label
-					><input type="radio" name="account-type" checked /><span class="ml-2"
-						>Candidato</span
+					><input
+						type="radio"
+						name="account-type"
+						class="text-sky-500 focus:ring-sky-500"
+						checked
+					/><span class="ml-2">Candidato</span></label
+				>
+				<label
+					><input type="radio" name="account-type" class="text-sky-500 focus:ring-sky-500" /><span
+						class="ml-2"
+						>Empresa</span
 					></label
 				>
-				<label><input type="radio" name="account-type" /><span class="ml-2">Empresa</span></label>
 			</div>
 			<div class="flex gap-x-4">
 				<Button>
