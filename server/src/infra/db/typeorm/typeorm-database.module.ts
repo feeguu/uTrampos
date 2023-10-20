@@ -12,6 +12,10 @@ import { TypeOrmAcademicProject } from './entities/resume/typeorm-academic-proje
 import { TypeOrmProfessionalExperience } from './entities/resume/typeorm-professional-experience.entity';
 import { TypeOrmSkill } from './entities/resume/typeorm-skill.entity';
 import { TypeOrmSocialNetwork } from './entities/resume/typeorm-social-network.entity';
+import { TypeOrmResumeRepository } from './repositories/resume/typeorm-resume.repository';
+import { TypeOrmSkillRepository } from './repositories/resume/typeorm-skill.repository';
+import { TypeOrmLanguageRepository } from './repositories/resume/typeorm-language.repository';
+import { TypeOrmLanguage } from './entities/resume/typeorm-language.entity';
 
 @Global()
 @Module({
@@ -40,17 +44,24 @@ import { TypeOrmSocialNetwork } from './entities/resume/typeorm-social-network.e
       TypeOrmProfessionalExperience,
       TypeOrmSkill,
       TypeOrmSocialNetwork,
+      TypeOrmLanguage,
     ]),
   ],
   providers: [
     TypeOrmUserRepository,
     TypeOrmCandidateRepository,
     TypeOrmCompanyRepository,
+    TypeOrmResumeRepository,
+    TypeOrmSkillRepository,
+    TypeOrmLanguageRepository,
   ],
   exports: [
     TypeOrmUserRepository,
     TypeOrmCandidateRepository,
     TypeOrmCompanyRepository,
+    TypeOrmResumeRepository,
+    TypeOrmSkillRepository,
+    TypeOrmLanguageRepository,
   ],
 })
 export class TypeOrmDatabaseModule {}

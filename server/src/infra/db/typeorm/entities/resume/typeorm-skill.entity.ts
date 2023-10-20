@@ -1,6 +1,5 @@
-import { Resume } from '@/domain/entities/resume/resume.entity';
 import { ExperienceTime } from '@/domain/enums/experience-time.enum';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TypeOrmResume } from './typeorm-resume.entity';
 
 @Entity('skill')
@@ -18,6 +17,6 @@ export class TypeOrmSkill {
   })
   experienceTime: ExperienceTime;
 
-  @ManyToMany(() => TypeOrmResume, (resume) => resume.skills)
-  resumes: TypeOrmResume[];
+  @ManyToOne(() => TypeOrmResume, (resume) => resume.skills)
+  resume: TypeOrmResume;
 }

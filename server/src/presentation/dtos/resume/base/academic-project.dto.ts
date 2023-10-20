@@ -1,7 +1,4 @@
-import { randomUUID } from 'crypto';
-import { Resume } from './resume.entity';
-
-export class AcademicProject {
+export class AcademicProjectDto {
   public id: string;
   public title: string;
   public description: string;
@@ -9,13 +6,8 @@ export class AcademicProject {
   public startDate: string;
   public endDate: string;
 
-  constructor(academicProjectData: {
-    title: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-  }) {
-    this.id = randomUUID();
+  constructor(academicProjectData: AcademicProjectDto) {
+    this.id = academicProjectData.id;
     this.title = academicProjectData.title;
     this.description = academicProjectData.description;
     this.startDate = academicProjectData.startDate;

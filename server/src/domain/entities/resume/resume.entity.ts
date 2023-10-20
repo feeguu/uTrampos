@@ -4,6 +4,7 @@ import { SocialNetwork } from './social-network.entity';
 import { AcademicProject } from './academic-project.entity';
 import { Candidate } from '../candidate.entity';
 import { Language } from './language.entity';
+import { randomUUID } from 'crypto';
 
 export class Resume {
   public id: string;
@@ -28,8 +29,8 @@ export class Resume {
     academicProjects: AcademicProject[];
     languages: Language[];
   }) {
-    this.id = crypto.randomUUID();
-    this.candidate = this.candidate;
+    this.id = randomUUID();
+    this.candidate = resumeData.candidate;
     this.description = resumeData.description;
     this.objective = resumeData.objective;
     this.additionalInformation = resumeData.additionalInformation;

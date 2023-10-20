@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { TypeOrmUser } from './typeorm-user.entity';
 import { TypeOrmResume } from './resume/typeorm-resume.entity';
+import { UserType } from '@/domain/enums/user-type.enum';
 
 @Entity('candidate')
 export class TypeOrmCandidate {
@@ -17,13 +18,16 @@ export class TypeOrmCandidate {
   cpf: string;
 
   @Column()
-  birthDate: Date;
+  birthDate: string;
+
+  @Column({ type: 'enum', enum: UserType })
+  type: UserType;
 
   @OneToOne(() => TypeOrmUser)
   @JoinColumn()
   user: TypeOrmUser;
 
-  @OneToOne(() => TypeOrmResume)
+  @OneToOne(() => TypeOrmResume, { cascade: true })
   @JoinColumn()
   resume: TypeOrmResume;
 }

@@ -3,8 +3,5 @@ import { Repository } from '../generic.repository';
 import { ExperienceTime } from '@/domain/enums/experience-time.enum';
 
 export abstract class SkillRepository extends Repository<Skill> {
-  public abstract findByNameAndExperience(
-    name: string,
-    experienceTime: ExperienceTime,
-  ): Promise<Skill>;
+  abstract findByUserId(userId: string): Promise<Skill[]>;
 }
