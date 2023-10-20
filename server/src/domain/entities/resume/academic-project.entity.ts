@@ -6,8 +6,8 @@ export class AcademicProject {
   public title: string;
   public description: string;
   // ISO 8601
-  public start: string;
-  public end: string;
+  public startDate: string;
+  public endDate: string;
 
   constructor(academicProjectData: {
     resume: Resume;
@@ -20,7 +20,7 @@ export class AcademicProject {
     this.resume = academicProjectData.resume;
     this.title = academicProjectData.title;
     this.description = academicProjectData.description;
-    this.start = academicProjectData.start;
-    this.end = academicProjectData.end;
+    this.startDate = academicProjectData.start;
+    this.endDate = academicProjectData.end;
   }
 }
