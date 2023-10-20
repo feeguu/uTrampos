@@ -9,7 +9,7 @@ import { ResumeDto } from '../dtos/resume/base/resume.dto';
 import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.service';
 
 @ApiBearerAuth()
-@Controller('resume')
+@Controller('resumes')
 @Roles(UserType.Candidate)
 export class ResumeController {
   constructor(
