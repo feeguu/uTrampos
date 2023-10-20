@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TypeOrmUser } from './typeorm-user.entity';
+import { TypeOrmResume } from './resume/typeorm-resume.entity';
 
 @Entity()
 export class TypeOrmCandidate {
@@ -21,4 +22,8 @@ export class TypeOrmCandidate {
   @OneToOne(() => TypeOrmUser)
   @JoinColumn()
   user: TypeOrmUser;
+
+  @OneToOne(() => TypeOrmResume)
+  @JoinColumn()
+  resume: TypeOrmResume;
 }

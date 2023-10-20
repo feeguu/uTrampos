@@ -7,6 +7,11 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmUser } from './entities/typeorm-user.entity';
 import { TypeOrmCandidate } from './entities/typeorm-candidate.entity';
 import { TypeOrmCompany } from './entities/typeorm-company.entity';
+import { TypeOrmResume } from './entities/resume/typeorm-resume.entity';
+import { TypeOrmAcademicProject } from './entities/resume/typeorm-academic-project.entity';
+import { TypeOrmProfessionalExperience } from './entities/resume/typeorm-professional-experience.entity';
+import { TypeOrmSkill } from './entities/resume/typeorm-skill.entity';
+import { TypeOrmSocialNetwork } from './entities/resume/typeorm-social-network.entity';
 
 @Global()
 @Module({
@@ -26,7 +31,16 @@ import { TypeOrmCompany } from './entities/typeorm-company.entity';
       },
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([TypeOrmUser, TypeOrmCandidate, TypeOrmCompany]),
+    TypeOrmModule.forFeature([
+      TypeOrmUser,
+      TypeOrmCandidate,
+      TypeOrmCompany,
+      TypeOrmResume,
+      TypeOrmAcademicProject,
+      TypeOrmProfessionalExperience,
+      TypeOrmSkill,
+      TypeOrmSocialNetwork,
+    ]),
   ],
   providers: [
     TypeOrmUserRepository,

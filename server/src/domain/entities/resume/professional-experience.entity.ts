@@ -1,22 +1,22 @@
 import { Resume } from './resume.entity';
 
 export class ProfessionalExperience {
-  public id: String;
+  public id: string;
   public resume: Resume;
-  public company: String;
-  public position: String;
-  public description: String;
+  public company: string;
+  public position: string;
+  public description: string;
   // ISO 8601
-  public startDate: String;
-  public endDate: String | null;
+  public startDate: string;
+  public endDate: string | null;
 
   constructor(professionalExperienceData: {
     resume: Resume;
-    company: String;
-    position: String;
-    description: String;
-    startDate: String;
-    endDate: String | null;
+    company: string;
+    position: string;
+    description: string;
+    startDate: string;
+    endDate: string | null;
   }) {
     this.id = crypto.randomUUID();
     this.resume = professionalExperienceData.resume;

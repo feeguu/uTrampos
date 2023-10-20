@@ -1,20 +1,20 @@
 import { Resume } from './resume.entity';
 
 export class AcademicProject {
-  public id: String;
+  public id: string;
   public resume: Resume;
   public title: string;
   public description: string;
   // ISO 8601
-  public start: String;
-  public end: String;
+  public start: string;
+  public end: string;
 
   constructor(academicProjectData: {
     resume: Resume;
     title: string;
     description: string;
-    start: String;
-    end: String;
+    start: string;
+    end: string;
   }) {
     this.id = crypto.randomUUID();
     this.resume = academicProjectData.resume;
