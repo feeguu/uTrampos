@@ -29,7 +29,7 @@ const GUARDS = [JwtGuard, RolesGuard];
         DB_TYPE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
-        SYNCHRONIZE: Joi.boolean().default(false),
+        DB_SYNCHRONIZE: Joi.boolean().default(false),
       }),
       validationOptions: {
         abortEarly: true,
