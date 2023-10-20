@@ -66,8 +66,8 @@ const keywords = ["HTML", "CSS", "JavaScript", "TypeScript"]
 				<JobKeyword v-for="keyword in keywords" class="!text-base">{{ keyword }}</JobKeyword>
 			</div>
 		</section>
-		<section>
-			<h1 class="text-lg text-slate-900 font-medium font-lexend mb-2">Descrição</h1>
+		<section class="flex flex-col gap-y-3">
+			<h1 class="text-lg text-slate-900 font-medium font-lexend">Descrição</h1>
 			<p class="whitespace-pre-wrap">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis placerat odio,
 				vitae tincidunt purus euismod ac. Phasellus sed purus aliquet, bibendum nibh nec, fringilla
@@ -75,8 +75,8 @@ const keywords = ["HTML", "CSS", "JavaScript", "TypeScript"]
 				bibendum sem gravida facilisis non in felis.
 			</p>
 		</section>
-		<section>
-			<h1 class="text-lg text-slate-900 font-medium font-lexend mb-2">Descrição</h1>
+		<section class="flex flex-col gap-y-3">
+			<h1 class="text-lg text-slate-900 font-medium font-lexend">Descrição</h1>
 			<p class="whitespace-pre-wrap">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis placerat odio,
 				vitae tincidunt purus euismod ac. Phasellus sed purus aliquet, bibendum nibh nec, fringilla
@@ -84,8 +84,8 @@ const keywords = ["HTML", "CSS", "JavaScript", "TypeScript"]
 				bibendum sem gravida facilisis non in felis.
 			</p>
 		</section>
-		<section>
-			<h1 class="text-lg text-slate-900 font-medium font-lexend mb-2">Descrição</h1>
+		<section class="flex flex-col gap-y-3">
+			<h1 class="text-lg text-slate-900 font-medium font-lexend">Descrição</h1>
 			<p class="whitespace-pre-wrap">
 				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum venenatis placerat odio,
 				vitae tincidunt purus euismod ac. Phasellus sed purus aliquet, bibendum nibh nec, fringilla
