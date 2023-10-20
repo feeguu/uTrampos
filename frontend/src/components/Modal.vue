@@ -24,7 +24,7 @@ defineProps<ModalProps>()
 				currículo com atenção antes de prosseguir.
 			</p>
 			<div class="flex w-full flex-col gap-y-2">
-				<LinkButton href="/profile/curriculum">Revisar Currículo</LinkButton>
+				<LinkButton href="/candidate/profile">Revisar Currículo</LinkButton>
 				<Button>Continuar</Button>
 			</div>
 		</div>
