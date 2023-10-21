@@ -48,7 +48,9 @@ export class TypeOrmJobRepository implements JobRepository {
   }
 
   async findAll(): Promise<Job[]> {
-    return await this.jobRepository.find();
+    return await this.jobRepository.find({
+      relations: TypeOrmJobRepository.RELATIONS
+    });
   }
 
   async update(id: string, job: Partial<Job>): Promise<Job> {
