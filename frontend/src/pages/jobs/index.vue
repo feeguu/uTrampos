@@ -7,8 +7,8 @@ import { RiFilter3Fill } from "vue-remix-icons"
 			class="bg-white p-6 gap-y-4 gap-x-3 flex flex-col shadow rounded max-w-6xl mx-auto md:flex-row md:items-end"
 		>
 			<h1 class="sr-only">Buscar vagas</h1>
-			<Input label-text="Palavras-chave" class="md:flex-[2]" />
-			<Input label-text="Local" class="md:flex-[2]" />
+			<Input label-text="Palavras-chave" container-class="md:flex-[2]" />
+			<Input label-text="Local" container-class="md:flex-[2]" />
 			<Button class="md:flex-1">Pesquisar</Button>
 		</form>
 		<main class="flex flex-col px-4 pb-6 mt-5 max-w-6xl mx-auto md:px-0">

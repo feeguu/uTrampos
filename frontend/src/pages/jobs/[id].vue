@@ -37,9 +37,7 @@ const keywords = ["HTML", "CSS", "JavaScript", "TypeScript"]
 						<h1 class="text-2xl text-slate-900 font-medium font-lexend leading-normal">
 							Desenvolvedor Front-end Jr.
 						</h1>
-						<h2
-							class="text-neutral-500 font-medium font-lexend text-lg leading-normal md:text-xl"
-						>
+						<h2 class="text-neutral-500 font-lexend text-lg leading-normal md:text-xl">
 							Microsoft
 						</h2>
 					</div>
@@ -99,5 +97,19 @@ const keywords = ["HTML", "CSS", "JavaScript", "TypeScript"]
 			<Button @click="showConfirmationModal = true" class="md:w-auto px-12">Candidatar-se</Button>
 		</div>
 	</footer>
-	<Modal :show="showConfirmationModal" />
+	<ModalContainer :show="showConfirmationModal" @close="showConfirmationModal = false">
+		<span
+			class="font-lexend text-sky-500 text-3xl font-black leading-[3rem] text-center h-12 w-12 bg-sky-500 bg-opacity-20 rounded-full"
+			>!</span
+		>
+		<p class="text-xl text-slate-900 font-semibold">Deseja Continuar?</p>
+		<p class="text-neutral-500">
+			Você está prestes a confirmar sua candidatura para a vaga de emprego. Por favor, revise seu
+			currículo com atenção antes de prosseguir.
+		</p>
+		<div class="flex w-full flex-col gap-y-2">
+			<LinkButton href="/candidate/profile">Revisar Currículo</LinkButton>
+			<Button>Continuar</Button>
+		</div>
+	</ModalContainer>
 </template>
