@@ -17,7 +17,7 @@ const local = "São Paulo, SP"
 					<h1 class="text-2xl text-slate-900 font-medium font-lexend leading-normal">
 						{{ name }}
 					</h1>
-					<h2 class="text-neutral-500 font-medium font-lexend text-lg leading-normal md:text-xl">
+					<h2 class="text-neutral-500 font-lexend text-lg leading-normal md:text-xl">
 						{{ objective }}
 					</h2>
 				</div>
