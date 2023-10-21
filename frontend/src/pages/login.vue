@@ -36,8 +36,8 @@ async function loginUser() {
 	<div class="bg-neutral-100 px-6 w-full min-h-screen flex flex-col justify-center items-center">
 		<Logo class="mb-12" />
 		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="loginUser">
-			<Input label-text="E-mail" v-model="login.email" />
-			<Input label-text="Senha" v-model="login.password" />
+			<Input label-text="E-mail" type="email" v-model="login.email" />
+			<Input label-text="Senha" type="password" v-model="login.password" />
 			<Button type="submit">Entrar</Button>
 			<Separator>ou continue com</Separator>
 			<div class="flex gap-x-4">
