@@ -1,7 +1,7 @@
 import { UserType } from '@/domain/enums/user-type.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('user')
 export class TypeOrmUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;

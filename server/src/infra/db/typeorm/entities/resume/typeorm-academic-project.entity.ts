@@ -16,8 +16,8 @@ export class TypeOrmAcademicProject {
   description: string;
 
   @Column()
-  start: string;
+  startDate: string;
 
   @Column()
-  end: string;
+  endDate: string;
 }

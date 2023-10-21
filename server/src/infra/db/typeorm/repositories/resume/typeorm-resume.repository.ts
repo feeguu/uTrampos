@@ -3,13 +3,23 @@ import { Resume } from '@/domain/entities/resume/resume.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmResume } from '../../entities/resume/typeorm-resume.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsRelations, Repository } from 'typeorm';
 
 @Injectable()
 export class TypeOrmResumeRepository implements ResumeRepository {
+  static readonly ALL_RELATIONS: FindOptionsRelations<TypeOrmResume> = {
+    candidate: {
+      user: true,
+    },
+    languages: true,
+    professionalExperiences: true,
+    academicProjects: true,
+    socialNetworks: true,
+    skills: true,
+  };
   constructor(
     @InjectRepository(TypeOrmResume)
-    private readonly resumeRepo: Repository<Resume>,
+    private readonly resumeRepo: Repository<TypeOrmResume>,
   ) {}
   async create(entity: Resume): Promise<Resume> {
     const newResume = this.resumeRepo.create(entity);
@@ -17,16 +27,24 @@ export class TypeOrmResumeRepository implements ResumeRepository {
     return newResume;
   }
   async find(id: string): Promise<Resume> {
-    return await this.resumeRepo.findOne({ where: { id } });
+    return await this.resumeRepo.findOne({
+      where: { id },
+      relations: TypeOrmResumeRepository.ALL_RELATIONS,
+    });
   }
   async findAll(): Promise<Resume[]> {
-    return await this.resumeRepo.find();
+    return await this.resumeRepo.find({
+      relations: TypeOrmResumeRepository.ALL_RELATIONS,
+    });
   }
   async delete(id: string): Promise<void> {
     await this.resumeRepo.delete(id);
   }
   async update(id: string, entity: Partial<Resume>): Promise<Resume | null> {
-    const resume = await this.resumeRepo.findOne({ where: { id } });
+    const resume = await this.resumeRepo.findOne({
+      where: { id },
+      relations: TypeOrmResumeRepository.ALL_RELATIONS,
+    });
     if (!resume) return null;
     await this.resumeRepo.update(id, entity);
     return Object.assign(resume, entity);
@@ -34,6 +52,7 @@ export class TypeOrmResumeRepository implements ResumeRepository {
   async getByUserId(userId: string): Promise<Resume> {
     return await this.resumeRepo.findOne({
       where: { candidate: { user: { id: userId } } },
+      relations: TypeOrmResumeRepository.ALL_RELATIONS,
     });
   }
 }

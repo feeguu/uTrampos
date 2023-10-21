@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   OneToMany,
   OneToOne,
@@ -12,13 +13,16 @@ import { TypeOrmSkill } from './typeorm-skill.entity';
 import { TypeOrmSocialNetwork } from './typeorm-social-network.entity';
 import { TypeOrmAcademicProject } from './typeorm-academic-project.entity';
 import { TypeOrmCandidate } from '../typeorm-candidate.entity';
+import { TypeOrmLanguage } from './typeorm-language.entity';
 
 @Entity('resume')
 export class TypeOrmResume {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => TypeOrmCandidate, (candidate) => candidate.resume)
+  @OneToOne(() => TypeOrmCandidate, (candidate) => candidate.resume, {
+    cascade: false,
+  })
   candidate: TypeOrmCandidate;
 
   @Column()
@@ -27,14 +31,20 @@ export class TypeOrmResume {
   @Column()
   objective: string;
 
+  @Column()
+  additionalInformation: string;
+
   @OneToMany(
     () => TypeOrmProfessionalExperience,
     (professionalExperience) => professionalExperience.resume,
   )
   professionalExperiences: TypeOrmProfessionalExperience[];
 
-  @ManyToMany(() => TypeOrmSkill, (skill) => skill.resumes)
+  @OneToMany(() => TypeOrmSkill, (skill) => skill.resume)
   skills: TypeOrmSkill[];
+
+  @OneToMany(() => TypeOrmLanguage, (language) => language.resume)
+  languages: TypeOrmLanguage[];
 
   @OneToMany(
     () => TypeOrmSocialNetwork,

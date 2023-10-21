@@ -1,5 +1,5 @@
 import { AppController } from '@/presentation/controllers/app.controller';
-import { Module } from '@nestjs/common';
+import { CanActivate, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { AuthModule } from './auth.module';
@@ -7,6 +7,13 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@/main/auth/guards/jwt.guard';
+import { Resume } from '@/domain/entities/resume/resume.entity';
+import { ResumeModule } from './resume.module';
+import { AppGuard } from '@/main/auth/guards/app.guard';
+import { RolesGuard } from '@/main/auth/guards/roles.guard';
+import { JobModule } from './job.module';
+
+const GUARDS = [JwtGuard, RolesGuard];
 
 @Module({
   imports: [
@@ -23,7 +30,7 @@ import { JwtGuard } from '@/main/auth/guards/jwt.guard';
         DB_TYPE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRES_IN: Joi.string().required(),
-        SYNCHRONIZE: Joi.boolean().default(false),
+        DB_SYNCHRONIZE: Joi.boolean().default(false),
       }),
       validationOptions: {
         abortEarly: true,
@@ -42,13 +49,17 @@ import { JwtGuard } from '@/main/auth/guards/jwt.guard';
     }),
     TypeOrmDatabaseModule,
     AuthModule,
+    ResumeModule,
+    JobModule,
   ],
   controllers: [AppController],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtGuard,
+      useFactory: (...guards: CanActivate[]) => new AppGuard(guards),
+      inject: GUARDS,
     },
+    ...GUARDS,
   ],
 })
 export class AppModule {}

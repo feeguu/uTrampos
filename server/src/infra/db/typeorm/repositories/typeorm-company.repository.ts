@@ -1,13 +1,16 @@
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCompany } from '../entities/typeorm-company.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsRelations, Repository } from 'typeorm';
 import { Company } from '@/domain/entities/company.entity';
 
 export class TypeOrmCompanyRepository implements CompanyRepository {
+  static readonly RELATIONS: FindOptionsRelations<TypeOrmCompany> = {
+    user: true,
+  };
   constructor(
     @InjectRepository(TypeOrmCompany)
-    private readonly companyRepo: Repository<Company>,
+    private readonly companyRepo: Repository<TypeOrmCompany>,
   ) {}
 
   async create(entity: Company): Promise<Company> {
@@ -17,7 +20,10 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   }
 
   async find(id: string): Promise<Company | null> {
-    const company = await this.companyRepo.findOneBy({ id });
+    const company = await this.companyRepo.findOne({
+      where: { id },
+      relations: TypeOrmCompanyRepository.RELATIONS,
+    });
     if (!company) return null;
     return company;
   }
@@ -25,13 +31,17 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   async findByEmail(email: string): Promise<Company | null> {
     const company = await this.companyRepo.findOne({
       where: { user: { email } },
+      relations: TypeOrmCompanyRepository.RELATIONS,
     });
     if (!company) return null;
     return company;
   }
 
   async findByCnpj(cnpj: string): Promise<Company | null> {
-    const company = await this.companyRepo.findOneBy({ cnpj });
+    const company = await this.companyRepo.findOne({
+      where: { cnpj },
+      relations: TypeOrmCompanyRepository.RELATIONS,
+    });
     if (!company) return null;
     return company;
   }
@@ -45,7 +55,10 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   }
 
   async update(id: string, entity: Partial<Company>): Promise<Company | null> {
-    const company = await this.companyRepo.findOneBy({ id });
+    const company = await this.companyRepo.findOne({
+      where: { id },
+      relations: TypeOrmCompanyRepository.RELATIONS,
+    });
     if (!company) return null;
     await this.companyRepo.update({ id }, entity);
     return Object.assign(company, entity);
@@ -54,6 +67,7 @@ export class TypeOrmCompanyRepository implements CompanyRepository {
   async findByUserId(userId: string): Promise<Company | null> {
     const company = await this.companyRepo.findOne({
       where: { user: { id: userId } },
+      relations: TypeOrmCompanyRepository.RELATIONS,
     });
     if (!company) return null;
     return company;

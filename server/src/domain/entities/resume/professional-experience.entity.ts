@@ -1,8 +1,8 @@
+import { randomUUID } from 'crypto';
 import { Resume } from './resume.entity';
 
 export class ProfessionalExperience {
   public id: string;
-  public resume: Resume;
   public company: string;
   public position: string;
   public description: string;
@@ -11,15 +11,13 @@ export class ProfessionalExperience {
   public endDate: string | null;
 
   constructor(professionalExperienceData: {
-    resume: Resume;
     company: string;
     position: string;
     description: string;
     startDate: string;
     endDate: string | null;
   }) {
-    this.id = crypto.randomUUID();
-    this.resume = professionalExperienceData.resume;
+    this.id = randomUUID();
     this.company = professionalExperienceData.company;
     this.position = professionalExperienceData.position;
     this.description = professionalExperienceData.description;

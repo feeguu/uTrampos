@@ -1,26 +1,24 @@
+import { randomUUID } from 'crypto';
 import { Resume } from './resume.entity';
 
 export class AcademicProject {
   public id: string;
-  public resume: Resume;
   public title: string;
   public description: string;
   // ISO 8601
-  public start: string;
-  public end: string;
+  public startDate: string;
+  public endDate: string;
 
   constructor(academicProjectData: {
-    resume: Resume;
     title: string;
     description: string;
-    start: string;
-    end: string;
+    startDate: string;
+    endDate: string;
   }) {
-    this.id = crypto.randomUUID();
-    this.resume = academicProjectData.resume;
+    this.id = randomUUID();
     this.title = academicProjectData.title;
     this.description = academicProjectData.description;
-    this.start = academicProjectData.start;
-    this.end = academicProjectData.end;
+    this.startDate = academicProjectData.startDate;
+    this.endDate = academicProjectData.endDate;
   }
 }
