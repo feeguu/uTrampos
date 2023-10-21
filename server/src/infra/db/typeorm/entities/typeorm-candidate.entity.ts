@@ -2,12 +2,14 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TypeOrmUser } from './typeorm-user.entity';
 import { TypeOrmResume } from './resume/typeorm-resume.entity';
 import { UserType } from '@/domain/enums/user-type.enum';
+import { TypeOrmApply } from './job/typeorm-apply.entity';
 
 @Entity('candidate')
 export class TypeOrmCandidate {
@@ -22,6 +24,9 @@ export class TypeOrmCandidate {
 
   @Column({ type: 'enum', enum: UserType })
   type: UserType;
+
+  @OneToMany(() => TypeOrmApply, (apply) => apply.candidate)
+  applies: TypeOrmApply[];
 
   @OneToOne(() => TypeOrmUser)
   @JoinColumn()

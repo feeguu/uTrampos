@@ -11,6 +11,7 @@ import { Resume } from '@/domain/entities/resume/resume.entity';
 import { ResumeModule } from './resume.module';
 import { AppGuard } from '@/main/auth/guards/app.guard';
 import { RolesGuard } from '@/main/auth/guards/roles.guard';
+import { JobModule } from './job.module';
 
 const GUARDS = [JwtGuard, RolesGuard];
 
@@ -49,6 +50,7 @@ const GUARDS = [JwtGuard, RolesGuard];
     TypeOrmDatabaseModule,
     AuthModule,
     ResumeModule,
+    JobModule,
   ],
   controllers: [AppController],
   providers: [

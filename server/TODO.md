@@ -1,2 +1,2 @@
-- [ ] Cadastro de currículo
-- [ ] Cadastro de vagas
+- [x] Cadastro de currículo
+- [x] Cadastro de vagas
