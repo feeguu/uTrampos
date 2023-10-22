@@ -1,6 +1,5 @@
 import { ContractType } from '@/domain/enums/contract-type.enum';
 import { SectionDto } from './section.dto';
-import { KeywordDto } from './keyword.dto';
 
 export class JobDto {
   public id: string;
@@ -10,7 +9,7 @@ export class JobDto {
   public salary: number;
   public contractType: ContractType;
   public sections: SectionDto[];
-  public keywords: KeywordDto[];
+  public keywords: string[];
   constructor(job: JobDto) {
     this.id = job.id;
     this.title = job.title;

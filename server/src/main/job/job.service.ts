@@ -1,7 +1,6 @@
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
 import { JobRepository } from '@/domain/abstracts/repositories/job/job.repository';
 import { Job } from '@/domain/entities/job/job.entity';
-import { Keyword } from '@/domain/entities/job/keyword.entity';
 import { Section } from '@/domain/entities/job/section.entity';
 import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
@@ -22,7 +21,7 @@ export class JobService {
       company,
       applies: [],
       sections: [],
-      keywords: [],
+      keywords: createJobDto.keywords,
       title: createJobDto.title,
       address: createJobDto.address,
       description: createJobDto.description,
@@ -37,18 +36,13 @@ export class JobService {
       });
     });
 
-    const keywords = createJobDto.keywords.map((keyword) => {
-      return new Keyword({ name: keyword.name });
-    });
-
     job.sections = sections;
-    job.keywords = keywords;
 
     const createdJob = await this.jobRepository.create(job);
     return JobMapper.toDto(createdJob);
   }
 
   async getJobs() {
-    return await this.jobRepository.findAll()
+    return await this.jobRepository.findAll();
   }
 }

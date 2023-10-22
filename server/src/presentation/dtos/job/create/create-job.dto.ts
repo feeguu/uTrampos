@@ -1,7 +1,6 @@
 import { Company } from '@/domain/entities/company.entity';
 import { ContractType } from '@/domain/enums/contract-type.enum';
 import { CreateSectionDto } from './create-section.dto';
-import { CreateKeywordDto } from './create-keyword.dto';
 import {
   IsArray,
   IsEnum,
@@ -31,5 +30,5 @@ export class CreateJobDto {
   public sections: CreateSectionDto[];
 
   @IsArray()
-  public keywords: CreateKeywordDto[];
+  public keywords: string[];
 }

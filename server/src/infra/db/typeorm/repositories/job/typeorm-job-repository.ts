@@ -19,7 +19,6 @@ import { ContractType } from '@/domain/enums/contract-type.enum';
 
 export class TypeOrmJobRepository implements JobRepository {
   static readonly RELATIONS: FindOptionsRelations<TypeOrmJob> = {
-    keywords: true,
     sections: true,
     company: {
       user: true,
@@ -49,7 +48,7 @@ export class TypeOrmJobRepository implements JobRepository {
 
   async findAll(): Promise<Job[]> {
     return await this.jobRepository.find({
-      relations: TypeOrmJobRepository.RELATIONS
+      relations: TypeOrmJobRepository.RELATIONS,
     });
   }
 

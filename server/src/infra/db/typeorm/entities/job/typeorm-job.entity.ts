@@ -7,7 +7,6 @@ import {
 } from 'typeorm';
 import { TypeOrmCompany } from '../typeorm-company.entity';
 import { TypeOrmSection } from './typeorm-section.entity';
-import { TypeOrmKeyword } from './typeorm-keyword.entity';
 import { TypeOrmApply } from './typeorm-apply.entity';
 import { ContractType } from '@/domain/enums/contract-type.enum';
 
@@ -34,11 +33,11 @@ export class TypeOrmJob {
   @Column({ unique: true })
   slug: string;
 
+  @Column('varchar', { array: true })
+  keywords: string[];
+
   @OneToMany(() => TypeOrmSection, (section) => section.job, { cascade: true })
   sections: TypeOrmSection[];
-
-  @OneToMany(() => TypeOrmKeyword, (keyword) => keyword.job, { cascade: true })
-  keywords: TypeOrmKeyword[];
 
   @OneToMany(() => TypeOrmApply, (apply) => apply.job)
   applies: TypeOrmApply[];

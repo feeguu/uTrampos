@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Company } from '../company.entity';
 import { Section } from './section.entity';
-import { Keyword } from './keyword.entity';
 import { Apply } from './apply.entity';
 import { ContractType } from '@/domain/enums/contract-type.enum';
 
@@ -15,7 +14,7 @@ export class Job {
   public company: Company;
   public slug: string;
   public sections: Section[];
-  public keywords: Keyword[];
+  public keywords: string[];
   public applies: Apply[];
 
   constructor(job: Omit<Job, 'id' | 'slug'>) {

@@ -18,7 +18,6 @@ import { TypeOrmLanguageRepository } from './repositories/resume/typeorm-languag
 import { TypeOrmLanguage } from './entities/resume/typeorm-language.entity';
 import { TypeOrmApply } from './entities/job/typeorm-apply.entity';
 import { TypeOrmJob } from './entities/job/typeorm-job.entity';
-import { TypeOrmKeyword } from './entities/job/typeorm-keyword.entity';
 import { TypeOrmSection } from './entities/job/typeorm-section.entity';
 import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository';
 
@@ -52,7 +51,7 @@ import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository'
       TypeOrmLanguage,
       TypeOrmApply,
       TypeOrmJob,
-      TypeOrmKeyword,
+
       TypeOrmSection,
     ]),
   ],
