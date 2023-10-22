@@ -1,6 +1,5 @@
 import { SkillRepository } from '@/domain/abstracts/repositories/resume/skill.repository';
 import { Skill } from '@/domain/entities/resume/skill.entity';
-import { ExperienceTime } from '@/domain/enums/experience-time.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsRelations, Repository } from 'typeorm';
 import { TypeOrmSkill } from '../../entities/resume/typeorm-skill.entity';

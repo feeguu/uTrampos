@@ -7,7 +7,6 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@/main/auth/guards/jwt.guard';
-import { Resume } from '@/domain/entities/resume/resume.entity';
 import { ResumeModule } from './resume.module';
 import { AppGuard } from '@/main/auth/guards/app.guard';
 import { RolesGuard } from '@/main/auth/guards/roles.guard';

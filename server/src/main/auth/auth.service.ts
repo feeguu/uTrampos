@@ -17,7 +17,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
 import { CommonValidator } from '../validator/common.validator';
-import { UserMapper } from '@/presentation/mappers/user.mapper';
 import { CompanyMapper } from '@/presentation/mappers/company.mapper';
 import { CompanyDto } from '@/presentation/dtos/company.dto';
 import { CandidateMapper } from '@/presentation/mappers/candidate.mapper';

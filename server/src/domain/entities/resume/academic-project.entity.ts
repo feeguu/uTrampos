@@ -1,5 +1,4 @@
 import { randomUUID } from 'crypto';
-import { Resume } from './resume.entity';
 
 export class AcademicProject {
   public id: string;

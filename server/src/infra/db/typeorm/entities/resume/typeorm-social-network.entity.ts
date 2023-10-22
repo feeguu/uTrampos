@@ -1,4 +1,3 @@
-import { Resume } from '@/domain/entities/resume/resume.entity';
 import { SocialNetwork as SocialNetworkEnum } from '@/domain/enums/social-network.enum';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TypeOrmResume } from './typeorm-resume.entity';

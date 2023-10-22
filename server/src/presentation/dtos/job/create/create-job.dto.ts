@@ -1,13 +1,6 @@
-import { Company } from '@/domain/entities/company.entity';
 import { ContractType } from '@/domain/enums/contract-type.enum';
 import { CreateSectionDto } from './create-section.dto';
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsNumberString,
-  IsPositive,
-} from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsPositive } from 'class-validator';
 
 export class CreateJobDto {
   @IsNotEmpty()

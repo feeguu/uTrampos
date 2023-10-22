@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto';
 import { User } from './user.entity';
-import { UserType } from '../enums/user-type.enum';
 import { CompanySize } from '../enums/company-size.enum';
 import { Job } from './job/job.entity';
 

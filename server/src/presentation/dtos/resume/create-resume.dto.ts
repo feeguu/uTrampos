@@ -1,6 +1,5 @@
 import { IsArray, IsNotEmpty } from 'class-validator';
 import { CreateSkillDto } from './create-skill.dto';
-import { ProfessionalExperience } from '@/domain/entities/resume/professional-experience.entity';
 import { CreateProfessionalExperienceDto } from './create-professional-experience.dto';
 import { CreateAcademicProjectDto } from './create-academic-project.dto';
 import { CreateLanguageDto } from './create-language.dto';

@@ -4,10 +4,7 @@ import { UserMapper } from './user.mapper';
 
 export class CandidateMapper {
   static toDto(candidate: Candidate): CandidateDto {
-    const {
-      user: { password, ...user },
-      ...candidateDto
-    } = candidate;
+    const { user, ...candidateDto } = candidate;
     return {
       user: UserMapper.toDto(candidate.user),
       ...candidateDto,

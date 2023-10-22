@@ -1,5 +1,4 @@
 import { Company } from '@/domain/entities/company.entity';
-import { UserRepository } from './user.repository';
 import { Injectable } from '@nestjs/common';
 import { Repository } from './generic.repository';
 

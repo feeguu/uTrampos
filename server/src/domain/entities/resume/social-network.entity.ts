@@ -1,5 +1,4 @@
 import { SocialNetwork as SocialNetworkEnum } from '@/domain/enums/social-network.enum';
-import { Resume } from './resume.entity';
 import { randomUUID } from 'crypto';
 
 export class SocialNetwork {

@@ -1,4 +1,3 @@
-import { Resume } from '@/domain/entities/resume/resume.entity';
 import { UserDto } from './user.dto';
 import { ResumeDto } from './resume/base/resume.dto';
 

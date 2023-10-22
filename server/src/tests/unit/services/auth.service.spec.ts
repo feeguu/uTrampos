@@ -2,7 +2,6 @@ import { CandidateRepository } from '@/domain/abstracts/repositories/candidate.r
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
 import { UserRepository } from '@/domain/abstracts/repositories/user.repository';
 import { Company } from '@/domain/entities/company.entity';
-import { User } from '@/domain/entities/user.entity';
 import { CompanySize } from '@/domain/enums/company-size.enum';
 import { UserType } from '@/domain/enums/user-type.enum';
 import { InMemoryDatabaseModule } from '@/infra/db/inmemory/inmemory-database.module';

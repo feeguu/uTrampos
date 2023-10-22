@@ -7,10 +7,8 @@ import { TypeOrmJob } from '../../entities/job/typeorm-job.entity';
 import {
   Any,
   Between,
-  Equal,
   FindOptionsOrder,
   FindOptionsRelations,
-  In,
   Like,
   Repository,
 } from 'typeorm';

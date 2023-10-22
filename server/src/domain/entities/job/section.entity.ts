@@ -1,5 +1,4 @@
 import { randomUUID } from 'crypto';
-import { Job } from './job.entity';
 
 export class Section {
   public id: string;

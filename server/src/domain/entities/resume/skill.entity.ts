@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto';
 import { ExperienceTime } from '../../enums/experience-time.enum';
-import { Resume } from './resume.entity';
 
 export class Skill {
   public id: string;

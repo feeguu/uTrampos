@@ -29,8 +29,8 @@ import { Module } from '@nestjs/common';
     {
       provide: GetJobsUseCase,
       useFactory: (jobService: JobService) => new GetJobsUseCase(jobService),
-      inject: [JobService]
-    }
+      inject: [JobService],
+    },
   ],
 })
 export class JobModule {}

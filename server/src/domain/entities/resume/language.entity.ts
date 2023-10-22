@@ -1,6 +1,5 @@
 import { Level } from '@/domain/enums/level.enum';
 import { randomUUID } from 'crypto';
-import { Resume } from './resume.entity';
 
 export class Language {
   public id: string;
