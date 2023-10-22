@@ -7,6 +7,7 @@ export class CreateSectionDto {
   @IsNotEmpty()
   public description: string;
 
+  @IsNotEmpty()
   @IsPositive()
   public order: number;
   constructor(section: CreateSectionDto) {

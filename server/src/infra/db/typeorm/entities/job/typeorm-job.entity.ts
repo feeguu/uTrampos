@@ -34,10 +34,10 @@ export class TypeOrmJob {
   @Column({ unique: true })
   slug: string;
 
-  @OneToMany(() => TypeOrmSection, (section) => section.job)
+  @OneToMany(() => TypeOrmSection, (section) => section.job, { cascade: true })
   sections: TypeOrmSection[];
 
-  @OneToMany(() => TypeOrmKeyword, (keyword) => keyword.job)
+  @OneToMany(() => TypeOrmKeyword, (keyword) => keyword.job, { cascade: true })
   keywords: TypeOrmKeyword[];
 
   @OneToMany(() => TypeOrmApply, (apply) => apply.job)
