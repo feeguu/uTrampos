@@ -10,7 +10,7 @@ import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.se
 
 @ApiBearerAuth()
 @Controller('resumes')
-@Roles(UserType.Candidate)
+@Roles(UserType.CANDIDATE)
 export class ResumeController {
   constructor(
     private readonly createResumeUseCase: CreateResumeUseCase,

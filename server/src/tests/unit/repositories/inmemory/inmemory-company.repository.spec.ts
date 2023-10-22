@@ -23,13 +23,13 @@ describe('InMemoryCompanyRepository', () => {
         '12345678',
         '123456',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const company = new Company(
         user,
         '11.111.111/0001-11',
         'Description',
-        CompanySize.Big,
+        CompanySize.BIG,
       );
       const createdCompany = await repository.create(company);
       expect(createdCompany).toBeInstanceOf(Company);
@@ -45,13 +45,13 @@ describe('InMemoryCompanyRepository', () => {
         '12345678',
         '123456',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const company = new Company(
         user,
         '11.111.111/0001-12',
         'Lorem ipsum',
-        CompanySize.Big,
+        CompanySize.BIG,
       );
       const createdCompany = await repository.create(company);
       const foundCompany = await repository.find(createdCompany.id);

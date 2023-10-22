@@ -22,7 +22,7 @@ describe('InMemoryUserRepository', () => {
         '123456',
         '123456789',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const createdUser = await repository.create(user);
       expect(createdUser).toBeInstanceOf(User);
@@ -38,7 +38,7 @@ describe('InMemoryUserRepository', () => {
         '123456',
         '123456789',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const createdUser = await repository.create(user);
       const foundUser = await repository.find(createdUser.id);

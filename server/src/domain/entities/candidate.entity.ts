@@ -5,7 +5,7 @@ import { Resume } from './resume/resume.entity';
 
 export class Candidate {
   public id: string;
-  public type: UserType = UserType.Candidate;
+  public type: UserType = UserType.CANDIDATE;
   public resume: Resume;
   constructor(
     public user: User,

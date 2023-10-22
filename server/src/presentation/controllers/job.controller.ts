@@ -11,11 +11,14 @@ import { Public } from '@/main/auth/decorators/public.decorator';
 
 @Controller('jobs')
 export class JobController {
-  constructor(public readonly createJobUseCase: CreateJobUseCase, public readonly getJobsUseCase: GetJobsUseCase) {}
-  
+  constructor(
+    public readonly createJobUseCase: CreateJobUseCase,
+    public readonly getJobsUseCase: GetJobsUseCase,
+  ) {}
+
   @ApiBearerAuth()
   @Post()
-  @Roles(UserType.Company)
+  @Roles(UserType.COMPANY)
   async createJob(
     @Req() { user: { id: userId } }: { user: UserDto },
     @Body() createJobDto: CreateJobDto,
@@ -26,6 +29,6 @@ export class JobController {
   @Public()
   @Get()
   async getJobs(): Promise<JobDto[]> {
-    return await this.getJobsUseCase.execute()
+    return await this.getJobsUseCase.execute();
   }
 }

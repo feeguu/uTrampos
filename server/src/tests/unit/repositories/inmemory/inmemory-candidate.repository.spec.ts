@@ -22,7 +22,7 @@ describe('InMemoryCandidateRepository', () => {
         '12345678',
         '123456',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const candidate = new Candidate(user, '123.123.123-12', '01/01/1970');
       const createdCandidate = await repository.create(candidate);
@@ -39,7 +39,7 @@ describe('InMemoryCandidateRepository', () => {
         '123456',
         '123456789',
         '12345678',
-        UserType.Candidate,
+        UserType.CANDIDATE,
       );
       const candidate = new Candidate(user, '111.111.111-12', '01/01/1970');
       const createdCandidate = await repository.create(candidate);

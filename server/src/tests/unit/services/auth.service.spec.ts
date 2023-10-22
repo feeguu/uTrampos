@@ -67,7 +67,7 @@ describe('AuthService', () => {
         password: '123456',
         phone: '123456789',
         zipCode: '12345678',
-        type: UserType.Candidate,
+        type: UserType.CANDIDATE,
       };
       const authResponse = await authService.registerUser(registerDto);
       expect(authResponse).toBeDefined();
@@ -84,7 +84,7 @@ describe('AuthService', () => {
         name: 'John Doe',
         password: '123456',
         phone: '123456789',
-        type: UserType.Candidate,
+        type: UserType.CANDIDATE,
         zipCode: '12345678',
       };
       await expect(
@@ -103,7 +103,7 @@ describe('AuthService', () => {
       name: 'John Doe',
       password: '123456',
       phone: '123456789',
-      type: UserType.Company,
+      type: UserType.COMPANY,
       zipCode: '12345678',
     };
     it('should register a company', async () => {
@@ -112,14 +112,14 @@ describe('AuthService', () => {
       const company = await authService.registerCompany(userId, {
         cnpj: '12.090.779/0001-62',
         description: 'Company description',
-        companySize: CompanySize.Medium,
+        companySize: CompanySize.MEDIUM,
       });
       expect(company).toBeDefined();
       expect(company).toBeInstanceOf(Company);
       expect(company.id).toBeDefined();
       expect(company.cnpj).toBe('12.090.779/0001-62');
       expect(company.description).toBe('Company description');
-      expect(company.companySize).toBe(CompanySize.Medium);
+      expect(company.companySize).toBe(CompanySize.MEDIUM);
     });
 
     it('should not register a company with an invalid cnpj', async () => {
@@ -129,7 +129,7 @@ describe('AuthService', () => {
         authService.registerCompany(userId, {
           cnpj: '11.111.111/0001-1',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).rejects.toThrowError();
     });
@@ -146,14 +146,14 @@ describe('AuthService', () => {
         authService.registerCompany(userId, {
           cnpj: '12.090.779/0001-62',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).resolves.toBeDefined();
       await expect(
         authService.registerCompany(user2Id, {
           cnpj: '12.090.779/0001-62',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).rejects.toThrowError();
     });
@@ -164,14 +164,14 @@ describe('AuthService', () => {
         authService.registerCompany(userId, {
           cnpj: '12.090.779/0001-62',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).resolves.toBeDefined();
       await expect(
         authService.registerCompany(userId, {
           cnpj: '16.587.913/0001-96',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).rejects.toThrowError(BadRequestException);
     });
@@ -179,14 +179,14 @@ describe('AuthService', () => {
     it('should not register a company with user type candidate', async () => {
       const user = await authService.registerUser({
         ...registerDto,
-        type: UserType.Candidate,
+        type: UserType.CANDIDATE,
       });
       const userId = await jwtService.verify(user.token).sub;
       await expect(
         authService.registerCompany(userId, {
           cnpj: '12.090.779/0001-62',
           description: 'Company description',
-          companySize: CompanySize.Medium,
+          companySize: CompanySize.MEDIUM,
         }),
       ).rejects.toThrowError(BadRequestException);
     });
@@ -198,7 +198,7 @@ describe('AuthService', () => {
       name: 'John Doe',
       password: '123456',
       phone: '123456789',
-      type: UserType.Candidate,
+      type: UserType.CANDIDATE,
       zipCode: '12345678',
     };
 
@@ -268,7 +268,7 @@ describe('AuthService', () => {
     it('should not register a candidate with user type company', async () => {
       const user = await authService.registerUser({
         ...registerDto,
-        type: UserType.Company,
+        type: UserType.COMPANY,
       });
       const userId = await jwtService.verify(user.token).sub;
       await expect(
@@ -286,7 +286,7 @@ describe('AuthService', () => {
       name: 'John Doe',
       password: '123456',
       phone: '123456789',
-      type: UserType.Candidate,
+      type: UserType.CANDIDATE,
       zipCode: '12345678',
     };
 

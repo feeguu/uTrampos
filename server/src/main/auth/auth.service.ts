@@ -21,6 +21,7 @@ import { UserMapper } from '@/presentation/mappers/user.mapper';
 import { CompanyMapper } from '@/presentation/mappers/company.mapper';
 import { CompanyDto } from '@/presentation/dtos/company.dto';
 import { CandidateMapper } from '@/presentation/mappers/candidate.mapper';
+import { UserType } from '@/domain/enums/user-type.enum';
 
 @Injectable()
 export class AuthService {
@@ -66,7 +67,7 @@ export class AuthService {
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    if (user.type !== 'company') {
+    if (user.type !== UserType.COMPANY) {
       throw new BadRequestException('User must be a company');
     }
 
@@ -117,7 +118,7 @@ export class AuthService {
       throw new BadRequestException('User not found');
     }
 
-    if (user.type !== 'candidate') {
+    if (user.type !== UserType.CANDIDATE) {
       throw new BadRequestException('User must be a candidate');
     }
 
