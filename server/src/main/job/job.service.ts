@@ -43,6 +43,7 @@ export class JobService {
   }
 
   async getJobs() {
-    return await this.jobRepository.findAll();
+    const jobs = await this.jobRepository.findAll();
+    return jobs.map((job) => JobMapper.toDto(job));
   }
 }

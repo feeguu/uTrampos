@@ -2,6 +2,7 @@ import { Job } from '@/domain/entities/job/job.entity';
 import { JobDto } from '../dtos/job/entities/job.dto';
 import { SectionDto } from '../dtos/job/entities/section.dto';
 import { Section } from '@/domain/entities/job/section.entity';
+import { CompanyMapper } from './company.mapper';
 
 export class JobMapper {
   static toDto(job: Job): JobDto {
@@ -14,6 +15,7 @@ export class JobMapper {
       salary: job.salary,
       sections: job.sections.map((section) => JobMapper.sectionToDto(section)),
       title: job.title,
+      company: CompanyMapper.toDto(job.company),
     });
   }
 
