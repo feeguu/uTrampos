@@ -59,7 +59,7 @@ export class ResumeMapper {
   static languageToDto(language: Language): LanguageDto {
     return new LanguageDto({
       id: language.id,
-      name: language.language,
+      language: language.language,
       level: language.level,
     });
   }
