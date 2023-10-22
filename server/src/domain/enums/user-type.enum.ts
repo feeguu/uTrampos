@@ -1,4 +1,4 @@
 export enum UserType {
-  Candidate = 'candidate',
-  Company = 'company',
+  CANDIDATE = 'CANDIDATE',
+  COMPANY = 'COMPANY',
 }
