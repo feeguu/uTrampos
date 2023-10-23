@@ -17,8 +17,5 @@ export class CandidateRegisterDto {
 
   @IsNotEmpty()
   @IsDateString()
-  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
-    message: 'birthDate must be in the format YYYY-MM-DD',
-  })
   birthDate: string; // ISO 8601 - YYYY-MM-DD
 }

@@ -11,6 +11,7 @@ import { ResumeModule } from './resume.module';
 import { AppGuard } from '@/main/auth/guards/app.guard';
 import { RolesGuard } from '@/main/auth/guards/roles.guard';
 import { JobModule } from './job.module';
+import { ProfileModule } from './profile.module';
 
 const GUARDS = [JwtGuard, RolesGuard];
 
@@ -50,6 +51,7 @@ const GUARDS = [JwtGuard, RolesGuard];
     AuthModule,
     ResumeModule,
     JobModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [
