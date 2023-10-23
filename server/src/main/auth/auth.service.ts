@@ -70,10 +70,6 @@ export class AuthService {
       throw new BadRequestException('User must be a company');
     }
 
-    if (!this.commonValidator.validateCNPJ(companyRegisterDto.cnpj)) {
-      throw new BadRequestException('Invalid CNPJ');
-    }
-
     const userHasCompany = await this.companyRepository.findByUserId(userId);
     if (userHasCompany) {
       throw new BadRequestException(
@@ -119,10 +115,6 @@ export class AuthService {
 
     if (user.type !== UserType.CANDIDATE) {
       throw new BadRequestException('User must be a candidate');
-    }
-
-    if (!this.commonValidator.validateCPF(candidateRegisterDto.cpf)) {
-      throw new BadRequestException('Invalid CPF');
     }
 
     const userHasCompany = await this.companyRepository.findByUserId(userId);

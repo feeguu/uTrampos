@@ -13,10 +13,4 @@ export class AppController {
   healthCheck(): HealthCheckResponseDto {
     return new HealthCheckResponseDto();
   }
-
-  @ApiBearerAuth()
-  @Get('/profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
 }

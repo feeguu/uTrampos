@@ -1,19 +1,31 @@
 import { ContractType } from '@/domain/enums/contract-type.enum';
 import { CreateSectionDto } from './create-section.dto';
-import { IsArray, IsEnum, IsNotEmpty, IsPositive } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateJobDto {
   @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
   public title: string;
 
   @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
   public description: string;
 
   @IsNotEmpty()
+  @MinLength(6)
   public address: string;
 
   @IsNotEmpty()
-  @IsPositive()
+  @Min(0)
   public salary: number;
 
   @IsEnum(ContractType)
