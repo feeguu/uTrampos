@@ -5,7 +5,7 @@ export const useToken = () => {
 		return token.value
 	}
 
-	function set(value: string) {
+	function set(value?: string) {
 		token.value = value
 	}
 
