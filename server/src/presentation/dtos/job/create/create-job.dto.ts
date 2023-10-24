@@ -7,7 +7,9 @@ import {
   IsString,
   Min,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateJobDto {
   @IsNotEmpty()
@@ -32,6 +34,8 @@ export class CreateJobDto {
   public contractType: ContractType;
 
   @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateSectionDto)
   public sections: CreateSectionDto[];
 
   @IsArray()
