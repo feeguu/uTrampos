@@ -9,12 +9,14 @@ import { GetJobsUseCase } from '@/main/job/use-cases/get-jobs-use-case.service';
 import { JobDto } from '../dtos/job/entities/job.dto';
 import { Public } from '@/main/auth/decorators/public.decorator';
 import { SearchJobParamsDto } from '../dtos/job/search-job-params.dto';
+import { GetJobBySlugUseCase } from '@/main/job/use-cases/get-job-by-slug-use-case.service';
 
 @Controller('jobs')
 export class JobController {
   constructor(
     public readonly createJobUseCase: CreateJobUseCase,
     public readonly getJobsUseCase: GetJobsUseCase,
+    public readonly getJobBySlugUseCase: GetJobBySlugUseCase,
   ) {}
 
   @ApiBearerAuth()
@@ -31,5 +33,11 @@ export class JobController {
   @Get()
   async getJobs(@Query() query: SearchJobParamsDto): Promise<JobDto[]> {
     return await this.getJobsUseCase.execute(query);
+  }
+
+  @Public()
+  @Get(':slug')
+  async getJobBySlug(@Query('slug') slug: string): Promise<JobDto> {
+    return await this.getJobBySlugUseCase.execute(slug);
   }
 }

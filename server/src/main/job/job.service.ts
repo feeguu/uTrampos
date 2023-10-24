@@ -9,7 +9,11 @@ import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
 import { SearchJobParamsDto } from '@/presentation/dtos/job/search-job-params.dto';
 import { JobMapper } from '@/presentation/mappers/job.mapper';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Injectable()
 export class JobService {
@@ -60,5 +64,11 @@ export class JobService {
     };
     const jobs = await this.jobRepository.searchJobs(searchFilters);
     return jobs.map((job) => JobMapper.toDto(job));
+  }
+
+  async getBySlug(slug: string): Promise<JobDto> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw NotFoundException;
+    return JobMapper.toDto(job);
   }
 }
