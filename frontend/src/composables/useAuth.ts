@@ -1,17 +1,26 @@
 import { defineStore } from "pinia"
-import { IUserRegister, IUserRegisterResponse } from "~/types/api"
+
+import type {
+	IRegisterUserRequest,
+	IRegisterUserResponse,
+	IRegisterCompanyRequest,
+	IRegisterCompanyResponse,
+} from "~/types/api"
 
 export const useAuth = defineStore("auth", () => {
-	const user = ref(null)
+	const user = ref<IUser | null>(null)
+	const company = ref<ICompany | null>(null)
+	const admin = ref<IAdmin | null>(null)
+	const candidate = ref<ICandidate | null>(null)
 
-	async function register(userData: IUserRegister) {
-		const { data, error } = await useAPI<IUserRegisterResponse>("/auth/register", {
+	async function register(userData: IRegisterUserRequest) {
+		const { data, error } = await useAPI<IRegisterUserResponse>("/auth/register", {
 			method: "POST",
 			body: JSON.stringify(userData),
 		})
 
-		if (error) {
-			console.error(error.data.message)
+		if (error || !data) {
+			console.error(error?.data.message)
 			return
 		}
 
@@ -20,5 +29,22 @@ export const useAuth = defineStore("auth", () => {
 		navigateTo("/register/" + userData.type.toLowerCase())
 	}
 
-	return { user, register }
+	async function registerCompany(companyData: IRegisterCompanyRequest) {
+		const { data, error } = await useAPI<IRegisterCompanyResponse>("/auth/register/company", {
+			method: "POST",
+			body: JSON.stringify(companyData),
+		})
+
+		if (error || !data) {
+			console.error(error?.data.message)
+			return
+		}
+
+		user.value = data.user
+		company.value = data
+
+		navigateTo("/")
+	}
+
+	return { user, company, candidate, admin, register, registerCompany }
 })
