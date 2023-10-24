@@ -7,6 +7,7 @@ export class JobDto {
   public title: string;
   public description: string;
   public address: string;
+  public slug: string;
   public salary: number;
   public contractType: ContractType;
   public sections: SectionDto[];
@@ -16,8 +17,11 @@ export class JobDto {
     this.id = job.id;
     this.title = job.title;
     this.description = job.description;
+    this.salary = job.salary;
+    this.address = job.address;
     this.sections = job.sections;
     this.keywords = job.keywords;
+    this.slug = job.slug;
     this.company = job.company;
   }
 }

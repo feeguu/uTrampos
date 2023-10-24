@@ -1,5 +1,5 @@
 import { CreateJobUseCase } from '@/main/job/use-cases/create-job-use-case.service';
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import { UserDto } from '../dtos/user.dto';
 import { CreateJobDto } from '../dtos/job/create/create-job.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -8,6 +8,7 @@ import { UserType } from '@/domain/enums/user-type.enum';
 import { GetJobsUseCase } from '@/main/job/use-cases/get-jobs-use-case.service';
 import { JobDto } from '../dtos/job/entities/job.dto';
 import { Public } from '@/main/auth/decorators/public.decorator';
+import { SearchJobParamsDto } from '../dtos/job/search-job-params.dto';
 
 @Controller('jobs')
 export class JobController {
@@ -28,7 +29,7 @@ export class JobController {
 
   @Public()
   @Get()
-  async getJobs(): Promise<JobDto[]> {
-    return await this.getJobsUseCase.execute();
+  async getJobs(@Query() query: SearchJobParamsDto): Promise<JobDto[]> {
+    return await this.getJobsUseCase.execute(query);
   }
 }

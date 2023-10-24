@@ -11,6 +11,7 @@ import {
   FindOptionsRelations,
   Like,
   Repository,
+  SelectQueryBuilder,
 } from 'typeorm';
 import { Job } from '@/domain/entities/job/job.entity';
 import { ContractType } from '@/domain/enums/contract-type.enum';
@@ -90,30 +91,66 @@ export class TypeOrmJobRepository implements JobRepository {
     });
   }
 
-  async searchJobs(search: string, filters?: SearchFilters): Promise<Job[]> {
-    // TODO: Implement FTS
-    // TODO: Implement filters
-    const salaryRangeClause = Between(
-      Math.min(filters.salaryRange.min, 0),
-      Math.max(filters.salaryRange.max, 999999999),
-    );
-
-    return await this.jobRepository.find({
-      relations: TypeOrmJobRepository.RELATIONS,
-      order: TypeOrmJobRepository.ORDER_SECTIONS,
-      where: {
-        title: Like(`%${search}%`),
-        salary: salaryRangeClause,
-        contractType:
-          filters.contractType ||
-          Any([
-            ContractType.CLT,
-            ContractType.PJ,
-            ContractType.INTERNSHIP,
-            ContractType.TEMPORARY,
-            ContractType.OTHER,
-          ]),
-      },
-    });
+  async searchJobs(filters?: SearchFilters): Promise<Job[]> {
+    const sanitizedQuery = filters.q
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    const queryBuilder = this.jobRepository.createQueryBuilder('job');
+    queryBuilder.leftJoinAndSelect('job.company', 'company');
+    queryBuilder.leftJoinAndSelect('company.user', 'user');
+    queryBuilder.leftJoinAndSelect('job.sections', 'sections');
+    queryBuilder.leftJoinAndSelect('job.applies', 'applies');
+    queryBuilder.leftJoinAndSelect('applies.candidate', 'candidate');
+    queryBuilder.addSelect([
+      'job.id',
+      'job.title',
+      'job.slug',
+      'job.description',
+      'job.address',
+      'job.salary',
+      'job.contractType',
+      'job.keywords',
+    ]);
+    if (filters.q) {
+      queryBuilder.addSelect(
+        `ts_rank(document, plainto_tsquery('portuguese', '${sanitizedQuery}'))`,
+        'rank',
+      );
+      queryBuilder.andWhere(
+        `document @@ plainto_tsquery('portuguese', :query)`,
+        {
+          query: sanitizedQuery,
+        },
+      );
+      queryBuilder.orderBy('rank', 'DESC');
+    }
+    if (filters.contractType) {
+      queryBuilder.andWhere('job.contractType = :contractType', {
+        contractType: filters.contractType,
+      });
+    }
+    if (filters.salaryRange.min) {
+      queryBuilder.andWhere('job.salary >= :minSalary', {
+        minSalary: filters.salaryRange.min,
+      });
+    }
+    if (filters.salaryRange.max) {
+      queryBuilder.andWhere('job.salary <= :maxSalary', {
+        maxSalary: filters.salaryRange.max,
+      });
+    }
+    if (filters.location) {
+      queryBuilder.andWhere('job.location ilike :location', {
+        location: `%${filters.location}%`,
+      });
+    }
+    if (filters.limit) {
+      queryBuilder.take(filters.limit);
+    }
+    if (filters.offset) {
+      queryBuilder.skip(filters.offset);
+    }
+    return await queryBuilder.getMany();
   }
 }
