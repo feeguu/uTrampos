@@ -10,9 +10,4 @@ export class CreateSectionDto {
   @IsNotEmpty()
   @IsPositive()
   public order: number;
-  constructor(section: CreateSectionDto) {
-    this.title = section.title;
-    this.description = section.description;
-    this.order = section.order;
-  }
 }
