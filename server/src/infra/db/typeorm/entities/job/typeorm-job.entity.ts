@@ -36,6 +36,9 @@ export class TypeOrmJob {
   @Column('varchar', { array: true })
   keywords: string[];
 
+  @Column('tsvector', { nullable: true, select: false })
+  document: string;
+
   @OneToMany(() => TypeOrmSection, (section) => section.job, { cascade: true })
   sections: TypeOrmSection[];
 

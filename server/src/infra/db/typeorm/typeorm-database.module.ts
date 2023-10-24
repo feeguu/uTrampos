@@ -20,6 +20,7 @@ import { TypeOrmApply } from './entities/job/typeorm-apply.entity';
 import { TypeOrmJob } from './entities/job/typeorm-job.entity';
 import { TypeOrmSection } from './entities/job/typeorm-section.entity';
 import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository';
+import { JobSubscriber } from './subscribers/job.subscriber';
 
 @Global()
 @Module({
@@ -63,6 +64,7 @@ import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository'
     TypeOrmSkillRepository,
     TypeOrmLanguageRepository,
     TypeOrmJobRepository,
+    JobSubscriber,
   ],
   exports: [
     TypeOrmUserRepository,
