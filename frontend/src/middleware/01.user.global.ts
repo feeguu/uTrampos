@@ -7,7 +7,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 		if (error || !data) {
 			console.error(error?.data.message)
-			return navigateTo("/login")
+			useToken().remove()
+			navigateTo("/login")
+			return
 		}
 
 		auth.user = data.user
@@ -26,7 +28,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 				break
 
 			default:
+				useToken().remove()
 				navigateTo("/login")
+				return
 				break
 		}
 	}
