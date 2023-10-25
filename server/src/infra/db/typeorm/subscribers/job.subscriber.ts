@@ -18,6 +18,10 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
   }
 
   async beforeInsert(event: InsertEvent<TypeOrmJob>): Promise<void> {
+    const companyName = event.entity.company.user.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
     const title = event.entity.title
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
@@ -33,6 +37,9 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .join(' ')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
+
+    event.entity.slug =
+      companyName + '-' + title + '-' + Date.now().toString().slice(-5, -1);
 
     event.entity.document = (
       await event.queryRunner.query(
@@ -47,6 +54,10 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
   }
 
   async beforeUpdate(event: UpdateEvent<TypeOrmJob>): Promise<void> {
+    const companyName = event.entity.company.user.name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
     const title = event.entity.title
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
@@ -62,6 +73,9 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .join(' ')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
+
+    event.entity.slug =
+      companyName + '-' + title + '-' + Date.now().toString().slice(-5, -1);
 
     event.entity.document = (
       await event.queryRunner.query(
