@@ -8,6 +8,7 @@ import { Section } from '@/domain/entities/job/section.entity';
 import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
 import { SearchJobParamsDto } from '@/presentation/dtos/job/search-job-params.dto';
+import { UpdateJobDto } from '@/presentation/dtos/job/update/update-job.dto';
 import { JobMapper } from '@/presentation/mappers/job.mapper';
 import {
   Injectable,
@@ -70,5 +71,19 @@ export class JobService {
     const job = await this.jobRepository.findJobBySlug(slug);
     if (!job) throw NotFoundException;
     return JobMapper.toDto(job);
+  }
+
+  async updateJob(
+    userId: string,
+    slug: string,
+    updateJobDto: UpdateJobDto,
+  ): Promise<JobDto> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw NotFoundException;
+    if (job.company.user.id !== userId)
+      throw new UnauthorizedException('You are not allowed to update this job');
+    Object.assign(job, updateJobDto);
+    const updatedJob = await this.jobRepository.update(job.id, job);
+    return JobMapper.toDto(updatedJob);
   }
 }

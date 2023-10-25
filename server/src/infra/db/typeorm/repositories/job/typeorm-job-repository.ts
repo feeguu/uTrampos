@@ -59,7 +59,7 @@ export class TypeOrmJobRepository implements JobRepository {
     });
     if (!jobToUpdate) return null;
     Object.assign(jobToUpdate, job);
-    await this.jobRepository.update(id, job);
+    await this.jobRepository.save(jobToUpdate);
     return jobToUpdate;
   }
 
