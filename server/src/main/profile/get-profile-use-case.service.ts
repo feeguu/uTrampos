@@ -18,11 +18,14 @@ export class GetProfileUseCase {
       user: user,
     };
     if (user.type === UserType.CANDIDATE) {
-      const candidate = await this.candidateRepository.findByUserId(user.id);
-      if (candidate) res.candidate = CandidateMapper.toDto(candidate);
+      const { user: _, ...candidate } =
+        await this.candidateRepository.findByUserId(user.id);
+      if (candidate) res.candidate = candidate;
     } else {
-      const company = await this.companyRepository.findByUserId(user.id);
-      if (company) return CompanyMapper.toDto(company);
+      const { user: _, ...company } = await this.companyRepository.findByUserId(
+        user.id,
+      );
+      if (company) res.company = company;
     }
     return res;
   }

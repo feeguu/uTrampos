@@ -32,7 +32,11 @@ export class TypeOrmCandidate {
   @JoinColumn()
   user: TypeOrmUser;
 
-  @OneToOne(() => TypeOrmResume, { cascade: true })
+  @OneToOne(() => TypeOrmResume, {
+    cascade: true,
+    nullable: true,
+    createForeignKeyConstraints: false,
+  })
   @JoinColumn()
-  resume: TypeOrmResume;
+  resume?: TypeOrmResume;
 }

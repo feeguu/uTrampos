@@ -5,7 +5,9 @@ import { TypeOrmCandidateRepository } from '@/infra/db/typeorm/repositories/type
 import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.module';
 import { ResumeService } from '@/main/resume/resume.service';
 import CreateResumeUseCase from '@/main/resume/use-cases/create-resume-use-case.service';
+import { DeleteResumeUseCase } from '@/main/resume/use-cases/delete-resume-use-case.service';
 import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.service';
+import { UpdateResumeUseCase } from '@/main/resume/use-cases/update-resume-use-case.service';
 import { ResumeController } from '@/presentation/controllers/resume.controller';
 import { Module } from '@nestjs/common';
 
@@ -34,18 +36,10 @@ import { Module } from '@nestjs/common';
         TypeOrmSkillRepository,
       ],
     },
-    {
-      provide: CreateResumeUseCase,
-      useFactory: (resumeService: ResumeService) =>
-        new CreateResumeUseCase(resumeService),
-      inject: [ResumeService],
-    },
-    {
-      provide: GetResumeUseCase,
-      useFactory: (resumeService: ResumeService) =>
-        new GetResumeUseCase(resumeService),
-      inject: [ResumeService],
-    },
+    CreateResumeUseCase,
+    GetResumeUseCase,
+    UpdateResumeUseCase,
+    DeleteResumeUseCase,
   ],
 })
 export class ResumeModule {}
