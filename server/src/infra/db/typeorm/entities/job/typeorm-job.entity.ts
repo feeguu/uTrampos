@@ -39,10 +39,12 @@ export class TypeOrmJob {
   @Column('tsvector', { nullable: true, select: false })
   document: string;
 
-  @OneToMany(() => TypeOrmSection, (section) => section.job, { cascade: true })
+  @OneToMany(() => TypeOrmSection, (section) => section.job, {
+    cascade: true,
+  })
   sections: TypeOrmSection[];
 
-  @OneToMany(() => TypeOrmApply, (apply) => apply.job)
+  @OneToMany(() => TypeOrmApply, (apply) => apply.job, { onDelete: 'CASCADE' })
   applies: TypeOrmApply[];
 
   @ManyToOne(() => TypeOrmCompany, (company) => company.jobs)

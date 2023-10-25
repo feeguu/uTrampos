@@ -14,7 +14,7 @@ import {
   SelectQueryBuilder,
 } from 'typeorm';
 import { Job } from '@/domain/entities/job/job.entity';
-import { ContractType } from '@/domain/enums/contract-type.enum';
+import { TypeOrmSection } from '../../entities/job/typeorm-section.entity';
 
 export class TypeOrmJobRepository implements JobRepository {
   static readonly RELATIONS: FindOptionsRelations<TypeOrmJob> = {
@@ -32,6 +32,8 @@ export class TypeOrmJobRepository implements JobRepository {
   constructor(
     @InjectRepository(TypeOrmJob)
     private readonly jobRepository: Repository<TypeOrmJob>,
+    @InjectRepository(TypeOrmSection)
+    private readonly sectionRepository: Repository<TypeOrmSection>,
   ) {}
   async create(job: Job): Promise<Job> {
     return await this.jobRepository.save(job);
@@ -64,6 +66,7 @@ export class TypeOrmJobRepository implements JobRepository {
   }
 
   async delete(id: string): Promise<void> {
+    await this.sectionRepository.delete({ job: { id } });
     await this.jobRepository.delete({ id });
   }
 

@@ -69,7 +69,7 @@ export class JobService {
 
   async getBySlug(slug: string): Promise<JobDto> {
     const job = await this.jobRepository.findJobBySlug(slug);
-    if (!job) throw NotFoundException;
+    if (!job) throw new NotFoundException();
     return JobMapper.toDto(job);
   }
 
@@ -79,11 +79,19 @@ export class JobService {
     updateJobDto: UpdateJobDto,
   ): Promise<JobDto> {
     const job = await this.jobRepository.findJobBySlug(slug);
-    if (!job) throw NotFoundException;
+    if (!job) throw new NotFoundException();
     if (job.company.user.id !== userId)
       throw new UnauthorizedException('You are not allowed to update this job');
     Object.assign(job, updateJobDto);
     const updatedJob = await this.jobRepository.update(job.id, job);
     return JobMapper.toDto(updatedJob);
+  }
+
+  async deleteJob(userId: string, slug: string): Promise<void> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw new NotFoundException();
+    if (job.company.user.id !== userId)
+      throw new UnauthorizedException('You are not allowed to delete this job');
+    await this.jobRepository.delete(job.id);
   }
 }
