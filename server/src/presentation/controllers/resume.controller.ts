@@ -10,7 +10,6 @@ import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.se
 
 @ApiBearerAuth()
 @Controller('resumes')
-@Roles(UserType.CANDIDATE)
 export class ResumeController {
   constructor(
     private readonly createResumeUseCase: CreateResumeUseCase,
@@ -18,11 +17,13 @@ export class ResumeController {
   ) {}
 
   @Get()
+  @Roles(UserType.CANDIDATE)
   async getResume(@Req() { user }: { user: UserDto }): Promise<ResumeDto> {
     return await this.getResumeUseCase.execute(user.id);
   }
 
   @Post()
+  @Roles(UserType.CANDIDATE)
   async createResume(
     @Req() { user }: { user: UserDto },
     @Body() createResumeDto: CreateResumeDto,
