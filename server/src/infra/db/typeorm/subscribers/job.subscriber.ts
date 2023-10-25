@@ -21,6 +21,7 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
     const companyName = event.entity.company.user.name
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
+      .replace(' ', '-')
       .toLowerCase();
     const title = event.entity.title
       .normalize('NFD')
@@ -39,7 +40,11 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .replace(/[\u0300-\u036f]/g, '');
 
     event.entity.slug =
-      companyName + '-' + title + '-' + Date.now().toString().slice(-5, -1);
+      companyName +
+      '-' +
+      title.toLowerCase().replace(' ', '-') +
+      '-' +
+      Date.now().toString().slice(-5, -1);
 
     event.entity.document = (
       await event.queryRunner.query(
@@ -57,6 +62,7 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
     const companyName = event.entity.company.user.name
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
+      .replace(' ', '-')
       .toLowerCase();
     const title = event.entity.title
       .normalize('NFD')
@@ -75,15 +81,19 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .replace(/[\u0300-\u036f]/g, '');
 
     event.entity.slug =
-      companyName + '-' + title + '-' + Date.now().toString().slice(-5, -1);
+      companyName +
+      '-' +
+      title.toLowerCase().replace(' ', '-') +
+      '-' +
+      Date.now().toString().slice(-5, -1);
 
     event.entity.document = (
       await event.queryRunner.query(
         `SELECT
-    setweight(to_tsvector('portuguese', $1), 'A') || ' ' ||
-    setweight(to_tsvector('portuguese', $2), 'B') || ' ' ||
-    setweight(to_tsvector('portuguese', $3), 'C') || ' ' ||
-    setweight(to_tsvector('portuguese', $4), 'D') as document`,
+      setweight(to_tsvector('portuguese', $1), 'A') || ' ' ||
+      setweight(to_tsvector('portuguese', $2), 'B') || ' ' ||
+      setweight(to_tsvector('portuguese', $3), 'C') || ' ' ||
+      setweight(to_tsvector('portuguese', $4), 'D') as document`,
         [title, keywords, description, sections],
       )
     )[0].document;
