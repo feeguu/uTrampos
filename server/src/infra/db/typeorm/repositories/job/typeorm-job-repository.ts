@@ -93,9 +93,11 @@ export class TypeOrmJobRepository implements JobRepository {
 
   async searchJobs(filters?: SearchFilters): Promise<Job[]> {
     const sanitizedQuery = filters.q
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+      ? filters.q
+          .trim()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+      : null;
     const queryBuilder = this.jobRepository.createQueryBuilder('job');
     queryBuilder.leftJoinAndSelect('job.company', 'company');
     queryBuilder.leftJoinAndSelect('company.user', 'user');
