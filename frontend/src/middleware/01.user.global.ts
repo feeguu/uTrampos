@@ -1,3 +1,5 @@
+import type { IAdmin, IAuthUser, ICandidate, ICompany } from "~/types/roles"
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	const token = useToken().get()
 	const auth = useAuth()
