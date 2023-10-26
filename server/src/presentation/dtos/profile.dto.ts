@@ -4,6 +4,6 @@ import { UserDto } from './user.dto';
 
 export class ProfileDto {
   user: UserDto;
-  candidate?: CandidateDto;
-  company?: CompanyDto;
+  candidate?: Omit<CandidateDto, 'user'>;
+  company?: Omit<CompanyDto, 'user'>;
 }

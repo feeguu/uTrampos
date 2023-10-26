@@ -8,10 +8,15 @@ import { ProfessionalExperience } from '@/domain/entities/resume/professional-ex
 import { Resume } from '@/domain/entities/resume/resume.entity';
 import { Skill } from '@/domain/entities/resume/skill.entity';
 import { SocialNetwork } from '@/domain/entities/resume/social-network.entity';
-import { ResumeDto } from '@/presentation/dtos/resume/base/resume.dto';
-import { CreateResumeDto } from '@/presentation/dtos/resume/create-resume.dto';
+import { ResumeDto } from '@/presentation/dtos/resume/entities/resume.dto';
+import { CreateResumeDto } from '@/presentation/dtos/resume/create/create-resume.dto';
 import { ResumeMapper } from '@/presentation/mappers/resume.mapper';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { UpdateResumeDto } from '@/presentation/dtos/resume/update/update-resume.dto';
 
 @Injectable()
 export class ResumeService {
@@ -26,7 +31,9 @@ export class ResumeService {
     userId: string,
     createResumeDto: CreateResumeDto,
   ): Promise<ResumeDto> {
+    console.log(userId);
     const candidate = await this.candidateRepository.findByUserId(userId);
+    console.log(candidate);
     if (await this.resumeRepository.getByUserId(userId))
       throw new BadRequestException('Resume already exists');
     const resume = new Resume({
@@ -91,12 +98,41 @@ export class ResumeService {
     resume.skills = skills;
     resume.socialNetworks = socialNetworks;
     const createdResume = await this.resumeRepository.create(resume);
+    console.log(createdResume);
     return ResumeMapper.toDto(createdResume);
   }
 
-  async getResume(userId: string): Promise<ResumeDto> {
-    const resume = await this.resumeRepository.getByUserId(userId);
-    if (!resume) throw new BadRequestException('Candidate has no resume');
+  async getResume(userId: string, resumeId: string): Promise<ResumeDto> {
+    const resume = await this.resumeRepository.find(resumeId);
+    if (!resume) throw new NotFoundException();
+    if (resume.candidate.user.id !== userId)
+      throw new BadRequestException('You are not allowed to get this resume');
     return ResumeMapper.toDto(resume);
+  }
+
+  async updateResume(
+    userId: string,
+    resumeId: string,
+    resumeDto: UpdateResumeDto,
+  ): Promise<ResumeDto> {
+    const resume = await this.resumeRepository.find(resumeId);
+    if (!resume) throw new NotFoundException();
+    if (resume.candidate.user.id !== userId)
+      throw new BadRequestException(
+        'You are not allowed to update this resume',
+      );
+    Object.assign(resume, resumeDto);
+    const updatedResume = await this.resumeRepository.update(resume.id, resume);
+    return ResumeMapper.toDto(updatedResume);
+  }
+
+  async deleteResume(userId: string, resumeId: string): Promise<void> {
+    const resume = await this.resumeRepository.find(resumeId);
+    if (!resume) throw new NotFoundException();
+    if (resume.candidate.user.id !== userId)
+      throw new BadRequestException(
+        'You are not allowed to delete this resume',
+      );
+    await this.resumeRepository.delete(resume.id);
   }
 }

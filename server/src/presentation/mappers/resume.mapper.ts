@@ -1,19 +1,19 @@
 import { ProfessionalExperience } from '@/domain/entities/resume/professional-experience.entity';
 import { Resume } from '@/domain/entities/resume/resume.entity';
-import { ProfessionalExperienceDto } from '../dtos/resume/base/professional-experience.dto';
+import { ProfessionalExperienceDto } from '../dtos/resume/entities/professional-experience.dto';
 import { SocialNetwork } from '@/domain/entities/resume/social-network.entity';
 import { Language } from '@/domain/entities/resume/language.entity';
-import { LanguageDto } from '../dtos/resume/base/language.dto';
-import { SocialNetworkDto } from '../dtos/resume/base/social-network.dto';
-import { SkillDto } from '../dtos/resume/base/skill.dto';
+import { LanguageDto } from '../dtos/resume/entities/language.dto';
+import { SocialNetworkDto } from '../dtos/resume/entities/social-network.dto';
+import { SkillDto } from '../dtos/resume/entities/skill.dto';
 import { Skill } from '@/domain/entities/resume/skill.entity';
 import { AcademicProject } from '@/domain/entities/resume/academic-project.entity';
-import { AcademicProjectDto } from '../dtos/resume/base/academic-project.dto';
-import { ResumeDto } from '../dtos/resume/base/resume.dto';
+import { AcademicProjectDto } from '../dtos/resume/entities/academic-project.dto';
+import { ResumeDto } from '../dtos/resume/entities/resume.dto';
+import { CandidateMapper } from './candidate.mapper';
 
 export class ResumeMapper {
   static toDto(resume: Resume): ResumeDto {
-    const { resume: _, ...candidate } = resume.candidate;
     return new ResumeDto({
       id: resume.id,
       description: resume.description,
@@ -32,7 +32,7 @@ export class ResumeMapper {
       socialNetworks: resume.socialNetworks.map((socialNetwork) =>
         this.socialNetworkToDto(socialNetwork),
       ),
-      candidate: candidate,
+      candidate: CandidateMapper.toDto(resume.candidate),
     });
   }
 

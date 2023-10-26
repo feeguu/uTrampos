@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -17,9 +18,7 @@ export class TypeOrmResume {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => TypeOrmCandidate, (candidate) => candidate.resume, {
-    cascade: false,
-  })
+  @OneToOne(() => TypeOrmCandidate, (candidate) => candidate.resume)
   candidate: TypeOrmCandidate;
 
   @Column()
@@ -34,24 +33,29 @@ export class TypeOrmResume {
   @OneToMany(
     () => TypeOrmProfessionalExperience,
     (professionalExperience) => professionalExperience.resume,
+    { cascade: true },
   )
   professionalExperiences: TypeOrmProfessionalExperience[];
 
-  @OneToMany(() => TypeOrmSkill, (skill) => skill.resume)
+  @OneToMany(() => TypeOrmSkill, (skill) => skill.resume, { cascade: true })
   skills: TypeOrmSkill[];
 
-  @OneToMany(() => TypeOrmLanguage, (language) => language.resume)
+  @OneToMany(() => TypeOrmLanguage, (language) => language.resume, {
+    cascade: true,
+  })
   languages: TypeOrmLanguage[];
 
   @OneToMany(
     () => TypeOrmSocialNetwork,
     (socialNetwork) => socialNetwork.resume,
+    { cascade: true },
   )
   socialNetworks: TypeOrmSocialNetwork[];
 
   @OneToMany(
     () => TypeOrmAcademicProject,
     (academicProject) => academicProject.resume,
+    { cascade: true },
   )
   academicProjects: TypeOrmAcademicProject[];
 }

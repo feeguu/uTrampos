@@ -1,11 +1,20 @@
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
-import { JobRepository } from '@/domain/abstracts/repositories/job/job.repository';
+import {
+  JobRepository,
+  SearchFilters,
+} from '@/domain/abstracts/repositories/job/job.repository';
 import { Job } from '@/domain/entities/job/job.entity';
 import { Section } from '@/domain/entities/job/section.entity';
 import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
+import { SearchJobParamsDto } from '@/presentation/dtos/job/search-job-params.dto';
+import { UpdateJobDto } from '@/presentation/dtos/job/update/update-job.dto';
 import { JobMapper } from '@/presentation/mappers/job.mapper';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Injectable()
 export class JobService {
@@ -42,8 +51,47 @@ export class JobService {
     return JobMapper.toDto(createdJob);
   }
 
-  async getJobs() {
-    const jobs = await this.jobRepository.findAll();
+  async getJobs(query: SearchJobParamsDto): Promise<JobDto[]> {
+    const searchFilters: SearchFilters = {
+      contractType: query.contractType,
+      location: query.location,
+      q: query.q,
+      salaryRange: {
+        min: query.minSalary,
+        max: query.maxSalary,
+      },
+      limit: query.limit,
+      offset: query.offset,
+    };
+    const jobs = await this.jobRepository.searchJobs(searchFilters);
     return jobs.map((job) => JobMapper.toDto(job));
+  }
+
+  async getBySlug(slug: string): Promise<JobDto> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw new NotFoundException();
+    return JobMapper.toDto(job);
+  }
+
+  async updateJob(
+    userId: string,
+    slug: string,
+    updateJobDto: UpdateJobDto,
+  ): Promise<JobDto> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw new NotFoundException();
+    if (job.company.user.id !== userId)
+      throw new UnauthorizedException('You are not allowed to update this job');
+    Object.assign(job, updateJobDto);
+    const updatedJob = await this.jobRepository.update(job.id, job);
+    return JobMapper.toDto(updatedJob);
+  }
+
+  async deleteJob(userId: string, slug: string): Promise<void> {
+    const job = await this.jobRepository.findJobBySlug(slug);
+    if (!job) throw new NotFoundException();
+    if (job.company.user.id !== userId)
+      throw new UnauthorizedException('You are not allowed to delete this job');
+    await this.jobRepository.delete(job.id);
   }
 }

@@ -28,16 +28,5 @@ export class Job {
     this.keywords = job.keywords;
     this.applies = job.applies;
     this.id = randomUUID();
-    const numberBasedOnTimestamp = Date.now().toString().slice(-5, -1);
-    this.slug = (
-      this.company.user.name +
-      '-' +
-      this.title +
-      '-' +
-      numberBasedOnTimestamp
-    )
-      .toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '');
   }
 }

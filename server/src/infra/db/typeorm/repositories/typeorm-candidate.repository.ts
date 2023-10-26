@@ -7,7 +7,6 @@ import { Candidate } from '@/domain/entities/candidate.entity';
 export class TypeOrmCandidateRepository implements CandidateRepository {
   static readonly RELATIONS: FindOptionsRelations<TypeOrmCandidate> = {
     user: true,
-    resume: true,
   };
   constructor(
     @InjectRepository(TypeOrmCandidate)
