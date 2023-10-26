@@ -1,3 +1,10 @@
+import type { IAdmin, ICandidate, ICompany, IUser } from "./roles"
+
+export interface ILoginRequest {
+	email: string
+	password: string
+}
+
 export interface IRegisterUserRequest {
 	email: string
 	password: string
@@ -20,6 +27,8 @@ export interface IRegisterCompanyRequest {
 export interface IRegisterCompanyResponse extends ICompany {
 	user: IUser
 }
+
+export interface IRegisterCandidateRequest {}
 
 export interface IRegisterCandidateResponse extends ICandidate {
 	user: IUser
