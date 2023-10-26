@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
 	id: string
 	name: string
 	email: string
@@ -7,7 +7,7 @@ interface IUser {
 	type: string
 }
 
-interface ICompany {
+export interface ICompany {
 	id: string
 	cnpj: string
 	description: string
@@ -15,11 +15,12 @@ interface ICompany {
 	user: IUser
 }
 
-interface IAdmin {
-	user: IUser
-}
-interface ICandidate {
+export interface IAdmin {
 	user: IUser
 }
 
-type IAuthUser = ICompany | IAdmin | ICandidate
+export interface ICandidate {
+	user: IUser
+}
+
+export type IAuthUser = ICompany | IAdmin | ICandidate
