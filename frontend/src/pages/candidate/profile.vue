@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RiUser3Line, RiPhoneLine, RiMailLine, RiMapPinLine, RiPencilLine, RiAddLine } from "vue-remix-icons"
 
+definePageMeta({
+	middleware: "auth",
+	allowedRoles: ["CANDIDATE"],
+})
+
 const name = "Kayky de Sousa"
 const objective = "Desenvolvedor Front-end"
 const phone = "+55 11 91234-1234"

@@ -3,41 +3,24 @@ import { RiFacebookFill, RiGoogleFill } from "vue-remix-icons"
 
 definePageMeta({
 	layout: false,
+	middleware: "auth",
+	allowedRoles: ["GUEST"],
 })
 
-const login = reactive({
+const loginData = reactive({
 	email: "",
 	password: "",
 })
 
-async function loginUser() {
-	try {
-		const res: any = await $fetch("http://localhost:3001/auth/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(login),
-		})
-
-		console.log(res)
-
-		const token = useCookie("utrampos.token")
-		token.value = res.token
-
-		navigateTo("/")
-	} catch (error) {
-		console.error(error)
-	}
-}
+const { login } = useAuth()
 </script>
 
 <template>
 	<div class="bg-neutral-100 px-6 w-full min-h-screen flex flex-col justify-center items-center">
 		<Logo class="mb-12" />
-		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="loginUser">
-			<Input label-text="E-mail" type="email" v-model="login.email" />
-			<Input label-text="Senha" type="password" v-model="login.password" />
+		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="login(loginData)">
+			<Input label-text="E-mail" type="email" v-model="loginData.email" />
+			<Input label-text="Senha" type="password" v-model="loginData.password" />
 			<Button type="submit">Entrar</Button>
 			<Separator>ou continue com</Separator>
 			<div class="flex gap-x-4">

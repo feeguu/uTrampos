@@ -15,4 +15,5 @@ export default defineNuxtConfig({
 	typescript: {
 		typeCheck: false,
 	},
+	modules: ["@pinia/nuxt"],
 })

@@ -1,43 +1,35 @@
 <script setup lang="ts">
-import { ICompany } from "~/types/api"
-
 definePageMeta({
 	layout: false,
+	middleware: "auth",
+	allowedRoles: ["COMPANY"],
 })
 
-async function registerCompany() {
-	const { error, data } = await useFetch<ICompany>("http://localhost:3001/auth/register/company", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(register),
-	})
-
-	if (error.value || !data.value) return
-
-	navigateTo("/company")
-}
-
-const register = reactive({
+const companyRegister = reactive({
 	cnpj: "",
 	description: "",
 	companySize: "",
 })
+
+const { registerCompany } = useAuth()
 </script>
 
 <template>
 	<div class="bg-neutral-100 px-6 w-full min-h-screen flex flex-col justify-center items-center">
 		<Logo class="mb-12" />
-		<form class="flex flex-col gap-y-4 w-full max-w-md" @submit.prevent="registerCompany">
-			<Input label-text="CNPJ" v-model="register.cnpj" />
-			<Select label-text="Tamanho da empresa" v-model="register.companySize">
+		<form
+			class="flex flex-col gap-y-4 w-full max-w-md"
+			@submit.prevent="registerCompany(companyRegister)"
+		>
+			<Input label-text="CNPJ" v-model="companyRegister.cnpj" />
+			<Select label-text="Tamanho da empresa" v-model="companyRegister.companySize">
 				<option disabled value="">Selecione</option>
-				<option value="pequena">Pequena</option>
-				<option value="media">Média</option>
-				<option value="grande">Grande</option>
+				<option value="MICRO">Micro</option>
+				<option value="SMALL">Pequena</option>
+				<option value="MEDIUM">Média</option>
+				<option value="BIG">Grande</option>
 			</Select>
-			<Textarea label-text="Descrição" v-model="register.description" />
+			<Textarea label-text="Descrição" v-model="companyRegister.description" />
 			<Button type="submit">Cadastrar</Button>
 		</form>
 	</div>

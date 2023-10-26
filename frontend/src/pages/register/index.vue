@@ -1,37 +1,24 @@
 <script setup lang="ts">
 import { RiFacebookFill, RiGoogleFill } from "vue-remix-icons"
-import type { IUserRegisterResponse } from "~/types/api"
 
 definePageMeta({
 	layout: false,
+	middleware: "auth",
+	allowedRoles: ["GUEST"],
 })
 
 const formStep = ref(1)
 
-async function registerUser() {
-	const { error, data } = await useFetch<IUserRegisterResponse>("http://localhost:3001/auth/register", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(register),
-	})
-
-	if (error.value || !data.value) return
-
-	useToken().set(data.value.token)
-
-	navigateTo("/register/" + register.type)
-}
-
-const register = reactive({
+const userRegister = reactive({
 	email: "",
 	password: "",
 	name: "",
 	phone: "",
 	zipCode: "",
-	type: "candidate",
+	type: "CANDIDATE",
 })
+
+const { register } = useAuth()
 </script>
 
 <template>
@@ -39,7 +26,7 @@ const register = reactive({
 		<Logo class="mb-12" />
 		<form
 			class="flex flex-col gap-y-4 w-full max-w-md"
-			@submit.prevent="formStep === 1 ? formStep++ : registerUser()"
+			@submit.prevent="formStep === 1 ? formStep++ : register(userRegister)"
 		>
 			<template v-if="formStep === 1">
 				<div class="flex flex-col gap-y-2 text-slate-900">
@@ -49,8 +36,8 @@ const register = reactive({
 							type="radio"
 							name="account-type"
 							class="text-sky-500 focus:ring-sky-500"
-							value="candidate"
-							v-model="register.type"
+							value="CANDIDATE"
+							v-model="userRegister.type"
 						/><span class="ml-2">Candidato</span></label
 					>
 					<label
@@ -58,8 +45,8 @@ const register = reactive({
 							type="radio"
 							name="account-type"
 							class="text-sky-500 focus:ring-sky-500"
-							value="company"
-							v-model="register.type"
+							value="COMPANY"
+							v-model="userRegister.type"
 						/><span class="ml-2">Empresa</span></label
 					>
 				</div>
@@ -75,8 +62,8 @@ const register = reactive({
 				</div>
 				<Separator>ou continue com</Separator>
 
-				<Input label-text="E-mail" type="email" v-model="register.email" required />
-				<Input label-text="Senha" type="password" v-model="register.password" required />
+				<Input label-text="E-mail" type="email" v-model="userRegister.email" required />
+				<Input label-text="Senha" type="password" v-model="userRegister.password" required />
 				<Button type="submit">Continuar</Button>
 
 				<NuxtLink to="/login" class="text-slate-900 text-sm text-center font-semibold">
@@ -85,12 +72,12 @@ const register = reactive({
 			</template>
 			<template v-if="formStep === 2">
 				<Input
-					:label-text="register.type === 'candidate' ? 'Nome Completo' : 'Nome da Empresa'"
-					v-model="register.name"
+					:label-text="userRegister.type === 'CANDIDATE' ? 'Nome Completo' : 'Nome da Empresa'"
+					v-model="userRegister.name"
 					required
 				/>
-				<Input label-text="Telefone" v-model="register.phone" required />
-				<Input label-text="CEP" v-model="register.zipCode" required />
+				<Input label-text="Telefone" type="tel" v-model="userRegister.phone" required />
+				<Input label-text="CEP" v-model="userRegister.zipCode" required />
 				<Button type="submit">Continuar</Button>
 			</template>
 		</form>
