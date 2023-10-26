@@ -3,6 +3,8 @@ import { RiFacebookFill, RiGoogleFill } from "vue-remix-icons"
 
 definePageMeta({
 	layout: false,
+	middleware: "auth",
+	allowedRoles: ["GUEST"],
 })
 
 const formStep = ref(1)
