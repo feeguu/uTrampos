@@ -5,13 +5,40 @@ import type {
 	IRegisterUserResponse,
 	IRegisterCompanyRequest,
 	IRegisterCompanyResponse,
+	IRegisterCandidateRequest,
+	IRegisterCandidateResponse,
+	ILoginRequest,
 } from "~/types/api"
 
+import type { IAdmin, ICandidate, ICompany, IUser } from "~/types/roles"
+
 export const useAuth = defineStore("auth", () => {
+	const toast = useToast()
+
 	const user = ref<IUser | null>(null)
 	const company = ref<ICompany | null>(null)
 	const admin = ref<IAdmin | null>(null)
 	const candidate = ref<ICandidate | null>(null)
+
+	async function login(loginData: ILoginRequest) {
+		console.log(loginData)
+
+		const { data, error } = await useAPI<IRegisterUserResponse>("/auth/login", {
+			method: "POST",
+			body: JSON.stringify(loginData),
+		})
+
+		if (error || !data) {
+			const errorMessage = error?.data.message
+			console.error(errorMessage)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			return
+		}
+
+		useToken().set(data?.token)
+
+		navigateTo("/")
+	}
 
 	async function register(userData: IRegisterUserRequest) {
 		const { data, error } = await useAPI<IRegisterUserResponse>("/auth/register", {
@@ -20,7 +47,9 @@ export const useAuth = defineStore("auth", () => {
 		})
 
 		if (error || !data) {
-			console.error(error?.data.message)
+			const errorMessage = error?.data.message
+			console.error(errorMessage)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
 			return
 		}
 
@@ -36,7 +65,9 @@ export const useAuth = defineStore("auth", () => {
 		})
 
 		if (error || !data) {
-			console.error(error?.data.message)
+			const errorMessage = error?.data.message
+			console.error(errorMessage)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
 			return
 		}
 
@@ -46,5 +77,24 @@ export const useAuth = defineStore("auth", () => {
 		navigateTo("/")
 	}
 
-	return { user, company, candidate, admin, register, registerCompany }
+	async function registerCandidate(candidateData: IRegisterCandidateRequest) {
+		const { data, error } = await useAPI<IRegisterCandidateResponse>("/auth/register/candidate", {
+			method: "POST",
+			body: JSON.stringify(candidateData),
+		})
+
+		if (error || !data) {
+			const errorMessage = error?.data.message
+			console.error(errorMessage)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			return
+		}
+
+		user.value = data.user
+		candidate.value = data
+
+		navigateTo("/")
+	}
+
+	return { user, company, candidate, admin, login, register, registerCompany, registerCandidate }
 })
