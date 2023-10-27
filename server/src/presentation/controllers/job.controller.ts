@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   Query,
@@ -51,7 +52,7 @@ export class JobController {
 
   @Public()
   @Get(':slug')
-  async getJobBySlug(@Query('slug') slug: string): Promise<JobDto> {
+  async getJobBySlug(@Param('slug') slug: string): Promise<JobDto> {
     return await this.getJobBySlugUseCase.execute(slug);
   }
 
@@ -61,7 +62,7 @@ export class JobController {
   async updateJob(
     @Req() { user: { id: userId } }: { user: UserDto },
     @Body() updateJobDto: UpdateJobDto,
-    @Query('slug') slug: string,
+    @Param('slug') slug: string,
   ) {
     return await this.updateJobUseCase.execute(userId, slug, updateJobDto);
   }
@@ -71,7 +72,7 @@ export class JobController {
   @Delete(':slug')
   async deleteJob(
     @Req() { user: { id: userId } }: { user: UserDto },
-    @Query('slug') slug: string,
+    @Param('slug') slug: string,
   ) {
     return await this.deleteJobUseCase.execute(userId, slug);
   }
