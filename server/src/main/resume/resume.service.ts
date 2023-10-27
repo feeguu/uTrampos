@@ -102,8 +102,8 @@ export class ResumeService {
     return ResumeMapper.toDto(createdResume);
   }
 
-  async getResume(userId: string, resumeId: string): Promise<ResumeDto> {
-    const resume = await this.resumeRepository.find(resumeId);
+  async getResume(userId: string): Promise<ResumeDto> {
+    const resume = await this.resumeRepository.getByUserId(userId);
     if (!resume) throw new NotFoundException();
     if (resume.candidate.user.id !== userId)
       throw new BadRequestException('You are not allowed to get this resume');

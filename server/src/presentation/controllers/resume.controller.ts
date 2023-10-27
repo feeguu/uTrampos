@@ -30,13 +30,10 @@ export class ResumeController {
     private readonly deleteResumeUseCase: DeleteResumeUseCase,
   ) {}
 
-  @Get(':id')
+  @Get()
   @Roles(UserType.CANDIDATE)
-  async getResume(
-    @Req() { user }: { user: UserDto },
-    @Param('id') id: string,
-  ): Promise<ResumeDto> {
-    return await this.getResumeUseCase.execute(user.id, id);
+  async getResume(@Req() { user }: { user: UserDto }): Promise<ResumeDto> {
+    return await this.getResumeUseCase.execute(user.id);
   }
 
   @Post()
