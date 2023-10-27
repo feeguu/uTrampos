@@ -21,21 +21,19 @@ export const useAuth = defineStore("auth", () => {
 	const candidate = ref<ICandidate | null>(null)
 
 	async function login(loginData: ILoginRequest) {
-		console.log(loginData)
-
 		const { data, error } = await useAPI<IRegisterUserResponse>("/auth/login", {
 			method: "POST",
 			body: JSON.stringify(loginData),
 		})
 
 		if (error || !data) {
-			const errorMessage = error?.data.message
+			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
 			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
 			return
 		}
 
-		useToken().set(data?.token)
+		useToken().set(data.token)
 
 		navigateTo("/")
 	}
@@ -47,9 +45,9 @@ export const useAuth = defineStore("auth", () => {
 		})
 
 		if (error || !data) {
-			const errorMessage = error?.data.message
+			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
 			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
 			return
 		}
 
@@ -65,9 +63,9 @@ export const useAuth = defineStore("auth", () => {
 		})
 
 		if (error || !data) {
-			const errorMessage = error?.data.message
+			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
 			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
 			return
 		}
 
@@ -84,9 +82,9 @@ export const useAuth = defineStore("auth", () => {
 		})
 
 		if (error || !data) {
-			const errorMessage = error?.data.message
+			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
 			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : error?.data.message)
+			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
 			return
 		}
 
