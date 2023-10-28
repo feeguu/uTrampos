@@ -5,6 +5,7 @@ import { AcademicProject } from './academic-project.entity';
 import { Candidate } from '../candidate.entity';
 import { Language } from './language.entity';
 import { randomUUID } from 'crypto';
+import { Education } from './education.entity';
 
 export class Resume {
   public id: string;
@@ -17,6 +18,7 @@ export class Resume {
   public socialNetworks: SocialNetwork[];
   public academicProjects: AcademicProject[];
   public languages: Language[];
+  public educations: Education[];
 
   constructor(resumeData: {
     candidate: Candidate;
@@ -28,6 +30,7 @@ export class Resume {
     socialNetworks: SocialNetwork[];
     academicProjects: AcademicProject[];
     languages: Language[];
+    educations: Education[];
   }) {
     this.id = randomUUID();
     this.candidate = resumeData.candidate;
@@ -39,5 +42,6 @@ export class Resume {
     this.socialNetworks = resumeData.socialNetworks;
     this.academicProjects = resumeData.academicProjects;
     this.languages = resumeData.languages;
+    this.educations = resumeData.educations;
   }
 }

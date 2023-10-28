@@ -5,6 +5,7 @@ import { TypeOrmCompanyRepository } from "@/infra/db/typeorm/repositories/typeor
 import { TypeOrmDatabaseModule } from "@/infra/db/typeorm/typeorm-database.module";
 import { CompanyService } from "@/main/company/company.service";
 import { GetCompanyJobsUseCase } from "@/main/company/use-cases/get-company-jobs-use-case.service";
+import { GetCompanyUseCase } from "@/main/company/use-cases/get-company-use-case.service";
 import { CompanyController } from "@/presentation/controllers/company.controller";
 import { Module } from "@nestjs/common";
 
@@ -18,6 +19,7 @@ import { Module } from "@nestjs/common";
             inject: [TypeOrmCompanyRepository, TypeOrmJobRepository]
         },
         GetCompanyJobsUseCase,
+        GetCompanyUseCase
     ],
 })
 export class CompanyModule{}

@@ -11,6 +11,8 @@ import { AcademicProject } from '@/domain/entities/resume/academic-project.entit
 import { AcademicProjectDto } from '../dtos/resume/entities/academic-project.dto';
 import { ResumeDto } from '../dtos/resume/entities/resume.dto';
 import { CandidateMapper } from './candidate.mapper';
+import { EducationDto } from '../dtos/resume/entities/education.dto';
+import { Education } from '@/domain/entities/resume/education.entity';
 
 export class ResumeMapper {
   static toDto(resume: Resume): ResumeDto {
@@ -31,6 +33,9 @@ export class ResumeMapper {
       ),
       socialNetworks: resume.socialNetworks.map((socialNetwork) =>
         this.socialNetworkToDto(socialNetwork),
+      ),
+      educations: resume.educations.map((education) =>
+        this.educationToDto(education),
       ),
       candidate: CandidateMapper.toDto(resume.candidate),
     });
@@ -81,6 +86,18 @@ export class ResumeMapper {
       description: professionalExperience.description,
       startDate: professionalExperience.startDate,
       endDate: professionalExperience.endDate,
+    });
+  }
+
+  static educationToDto(education: Education): EducationDto {
+    return new EducationDto({
+      id: education.id,
+      institution: education.institution,
+      educationType: education.educationType,
+      course: education.course,
+      startDate: education.startDate,
+      endDate: education.endDate,
+      status: education.educationStatus,
     });
   }
 }
