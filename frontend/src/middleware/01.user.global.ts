@@ -16,24 +16,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 		auth.user = data.user
 
-		switch (auth.user.type) {
-			case "COMPANY":
-				auth.company = data as ICompany
-				break
-
-			case "CANDIDATE":
-				auth.candidate = data as ICandidate
-				break
-
-			case "ADMIN":
-				auth.admin = data as IAdmin
-				break
-
-			default:
-				useToken().remove()
-				navigateTo("/login")
-				return
-				break
-		}
+		auth.candidate = data.candidate
+		auth.company = data.company
+		auth.admin = data.admin
 	}
 })
