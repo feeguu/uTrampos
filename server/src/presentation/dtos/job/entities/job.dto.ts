@@ -23,6 +23,6 @@ export class JobDto {
     this.keywords = job.keywords;
     this.slug = job.slug;
     this.company = job.company;
-    this.contractType = this.contractType;
+    this.contractType = job.contractType;
   }
 }
