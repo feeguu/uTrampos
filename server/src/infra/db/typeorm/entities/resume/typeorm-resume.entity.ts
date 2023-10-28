@@ -12,6 +12,7 @@ import { TypeOrmSocialNetwork } from './typeorm-social-network.entity';
 import { TypeOrmAcademicProject } from './typeorm-academic-project.entity';
 import { TypeOrmCandidate } from '../typeorm-candidate.entity';
 import { TypeOrmLanguage } from './typeorm-language.entity';
+import { TypeOrmEducation } from './typeorm-education.entity';
 
 @Entity('resume')
 export class TypeOrmResume {
@@ -58,4 +59,11 @@ export class TypeOrmResume {
     { cascade: true },
   )
   academicProjects: TypeOrmAcademicProject[];
+
+  @OneToMany(
+    () => TypeOrmEducation,
+    (education) => education.resume,
+    { cascade: true },
+  )
+  educations: TypeOrmEducation[];
 }

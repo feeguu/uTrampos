@@ -17,6 +17,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { UpdateResumeDto } from '@/presentation/dtos/resume/update/update-resume.dto';
+import { Education } from '@/domain/entities/resume/education.entity';
 
 @Injectable()
 export class ResumeService {
@@ -46,6 +47,7 @@ export class ResumeService {
       professionalExperiences: [],
       skills: [],
       socialNetworks: [],
+      educations: [],
     });
 
     const academicProjects = createResumeDto.academicProjects.map((project) => {
@@ -92,11 +94,23 @@ export class ResumeService {
       },
     );
 
+    const educations = createResumeDto.educations.map((education) => {
+      return new Education({
+        institution: education.institution,
+        educationType: education.educationType,
+        course: education.course,
+        startDate: education.startDate,
+        endDate: education.endDate,
+        educationStatus: education.status,
+      });
+    });
+
     resume.academicProjects = academicProjects;
     resume.languages = languages;
     resume.professionalExperiences = professionalExperiences;
     resume.skills = skills;
     resume.socialNetworks = socialNetworks;
+    resume.educations = educations;
     const createdResume = await this.resumeRepository.create(resume);
     console.log(createdResume);
     return ResumeMapper.toDto(createdResume);

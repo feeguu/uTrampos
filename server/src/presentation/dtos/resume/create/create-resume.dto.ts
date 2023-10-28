@@ -5,6 +5,7 @@ import { CreateAcademicProjectDto } from './create-academic-project.dto';
 import { CreateLanguageDto } from './create-language.dto';
 import { CreateSocialNetworkDto } from './create-social-network.dto';
 import { Type } from 'class-transformer';
+import { CreateEducationDto } from './create-education.dto';
 
 export class CreateResumeDto {
   @IsNotEmpty()
@@ -40,4 +41,9 @@ export class CreateResumeDto {
   @ValidateNested({ each: true })
   @Type(() => CreateSocialNetworkDto)
   socialNetworks: CreateSocialNetworkDto[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateEducationDto)
+  educations: CreateEducationDto[];
 }

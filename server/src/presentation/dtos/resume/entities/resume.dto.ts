@@ -4,6 +4,7 @@ import { SkillDto } from './skill.dto';
 import { ProfessionalExperienceDto } from './professional-experience.dto';
 import { SocialNetworkDto } from './social-network.dto';
 import { LanguageDto } from './language.dto';
+import { EducationDto } from './education.dto';
 
 export class ResumeDto {
   public id: string;
@@ -15,6 +16,7 @@ export class ResumeDto {
   public academicProjects: AcademicProjectDto[];
   public languages: LanguageDto[];
   public socialNetworks: SocialNetworkDto[];
+  public educations: EducationDto[];
   public candidate: Omit<CandidateDto, 'resume'>;
   constructor(resume: ResumeDto) {
     this.id = resume.id;
@@ -27,5 +29,6 @@ export class ResumeDto {
     this.languages = resume.languages;
     this.socialNetworks = resume.socialNetworks;
     this.candidate = resume.candidate;
+    this.educations = resume.educations;
   }
 }

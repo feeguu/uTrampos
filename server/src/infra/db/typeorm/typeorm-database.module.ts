@@ -21,6 +21,7 @@ import { TypeOrmJob } from './entities/job/typeorm-job.entity';
 import { TypeOrmSection } from './entities/job/typeorm-section.entity';
 import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository';
 import { JobSubscriber } from './subscribers/job.subscriber';
+import { TypeOrmEducation } from './entities/resume/typeorm-education.entity';
 
 @Global()
 @Module({
@@ -52,8 +53,8 @@ import { JobSubscriber } from './subscribers/job.subscriber';
       TypeOrmLanguage,
       TypeOrmApply,
       TypeOrmJob,
-
       TypeOrmSection,
+      TypeOrmEducation,
     ]),
   ],
   providers: [

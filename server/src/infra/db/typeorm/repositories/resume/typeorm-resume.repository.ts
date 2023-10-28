@@ -10,6 +10,7 @@ import { TypeOrmAcademicProject } from '../../entities/resume/typeorm-academic-p
 import { SocialNetwork } from '@/domain/entities/resume/social-network.entity';
 import { TypeOrmSocialNetwork } from '../../entities/resume/typeorm-social-network.entity';
 import { TypeOrmSkill } from '../../entities/resume/typeorm-skill.entity';
+import { TypeOrmEducation } from '../../entities/resume/typeorm-education.entity';
 
 @Injectable()
 export class TypeOrmResumeRepository implements ResumeRepository {
@@ -22,6 +23,7 @@ export class TypeOrmResumeRepository implements ResumeRepository {
     academicProjects: true,
     socialNetworks: true,
     skills: true,
+    educations: true,
   };
   constructor(
     @InjectRepository(TypeOrmResume)
@@ -36,6 +38,8 @@ export class TypeOrmResumeRepository implements ResumeRepository {
     private readonly socialNetworkRepo: Repository<TypeOrmSocialNetwork>,
     @InjectRepository(TypeOrmSkill)
     private readonly skillRepo: Repository<TypeOrmSkill>,
+    @InjectRepository(TypeOrmEducation)
+    private readonly educationRepo: Repository<TypeOrmEducation>,
   ) {}
   async create(entity: Resume): Promise<Resume> {
     const newResume = this.resumeRepo.create(entity);
@@ -59,6 +63,7 @@ export class TypeOrmResumeRepository implements ResumeRepository {
     await this.academicProjectRepo.delete({ resume: { id } });
     await this.socialNetworkRepo.delete({ resume: { id } });
     await this.skillRepo.delete({ resume: { id } });
+    await this.educationRepo.delete({ resume: { id } });
     await this.resumeRepo.delete(id);
   }
   async update(id: string, entity: Partial<Resume>): Promise<Resume | null> {
