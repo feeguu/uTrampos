@@ -43,7 +43,7 @@ export interface IErrorResponse {
 	statusCode: number
 }
 
-export interface IJobsRequest {
+export interface ICreateJobsRequest {
 	title: string
 	description: string
 	address: string
@@ -55,4 +55,62 @@ export interface IJobsRequest {
 		order: number
 	}[]
 	keywords: string[]
+}
+
+export interface IJob {
+	id: string
+	title: string
+	description: string
+	contractType: string
+	salary: number
+	address: string
+	sections: {
+		id: string
+		title: string
+		description: string
+		order: number
+	}[]
+	keywords: string[]
+	slug: string
+	company: ICompany & {
+		user: IUser
+	}
+}
+
+export interface ICreateResumeResponse {
+	id: string
+	description: string
+	objective: string
+	additionalInformation: string
+	skills: {
+		id: string
+		name: string
+		experienceTime: string
+	}[]
+	professionalExperiences: {
+		company: string
+		description: string
+		startDate: Date
+		endDate: Date
+	}[]
+	academicProjects: {
+		id: string
+		title: string
+		description: string
+		startDate: Date
+		endDate: Date
+	}[]
+	languages: {
+		id: string
+		language: string
+		level: string
+	}[]
+	socialNetworks: {
+		id: string
+		socialNetwork: string
+		url: string
+	}[]
+	candidate: ICandidate & {
+		user: IUser
+	}
 }
