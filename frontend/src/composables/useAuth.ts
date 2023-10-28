@@ -15,10 +15,10 @@ import type { IAdmin, ICandidate, ICompany, IUser } from "~/types/roles"
 export const useAuth = defineStore("auth", () => {
 	const toast = useToast()
 
-	const user = ref<IUser | null>(null)
-	const company = ref<ICompany | null>(null)
-	const admin = ref<IAdmin | null>(null)
-	const candidate = ref<ICandidate | null>(null)
+	const user = ref<IUser | null>()
+	const company = ref<ICompany | null>()
+	const admin = ref<IAdmin | null>()
+	const candidate = ref<ICandidate | null>()
 
 	async function login(loginData: ILoginRequest) {
 		const { data, error } = await useAPI<IRegisterUserResponse>("/auth/login", {
