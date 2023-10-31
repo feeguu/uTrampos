@@ -6,6 +6,7 @@ import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.modul
 import { ResumeService } from '@/main/resume/resume.service';
 import CreateResumeUseCase from '@/main/resume/use-cases/create-resume-use-case.service';
 import { DeleteResumeUseCase } from '@/main/resume/use-cases/delete-resume-use-case.service';
+import { GetAllResumesUseCase } from '@/main/resume/use-cases/get-all-resumes-use-case.service';
 import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.service';
 import { UpdateResumeUseCase } from '@/main/resume/use-cases/update-resume-use-case.service';
 import { ResumeController } from '@/presentation/controllers/resume.controller';
@@ -40,6 +41,7 @@ import { Module } from '@nestjs/common';
     GetResumeUseCase,
     UpdateResumeUseCase,
     DeleteResumeUseCase,
+    GetAllResumesUseCase,
   ],
 })
 export class ResumeModule {}
