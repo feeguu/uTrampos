@@ -5,6 +5,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
 import { UserDto } from '@/presentation/dtos/user.dto';
 import { TypeOrmCompanyRepository } from '@/infra/db/typeorm/repositories/typeorm-company.repository';
 import { TypeOrmCandidateRepository } from '@/infra/db/typeorm/repositories/typeorm-candidate.repository';
+import { NOT_ADMIN_KEY } from '../decorators/not-admin.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -18,18 +19,23 @@ export class RolesGuard implements CanActivate {
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
+    const isNotAdmin = this.reflector.getAllAndOverride<boolean>(
+      NOT_ADMIN_KEY,
+      [context.getHandler(), context.getClass()],
+    );
     if (!requiredRoles) {
       return true;
     }
     const { user }: { user: UserDto } = context.switchToHttp().getRequest();
     const userType = user.type;
+    if (userType === UserType.ADMIN && !isNotAdmin) return true;
     if (userType === UserType.COMPANY) {
       const company = await this.companyRepository.findByUserId(user.id);
-      return requiredRoles.some((role) => user.type === role && company);
+      return requiredRoles.some((role) => user.type === role) && !!company;
     }
     if (userType === UserType.CANDIDATE) {
       const candidate = await this.candidateRepository.findByUserId(user.id);
-      return requiredRoles.some((role) => user.type === role && candidate);
+      return requiredRoles.some((role) => user.type === role) && !!candidate;
     }
   }
 }

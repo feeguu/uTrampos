@@ -19,6 +19,8 @@ import { GetResumeUseCase } from '@/main/resume/use-cases/get-resume-use-case.se
 import { UpdateResumeUseCase } from '@/main/resume/use-cases/update-resume-use-case.service';
 import { DeleteResumeUseCase } from '@/main/resume/use-cases/delete-resume-use-case.service';
 import { UpdateResumeDto } from '../dtos/resume/update/update-resume.dto';
+import { NotAdmin } from '@/main/auth/decorators/not-admin.decorator';
+import { GetAllResumesUseCase } from '@/main/resume/use-cases/get-all-resumes-use-case.service';
 
 @ApiBearerAuth()
 @Controller('resumes')
@@ -26,17 +28,24 @@ export class ResumeController {
   constructor(
     private readonly createResumeUseCase: CreateResumeUseCase,
     private readonly getResumeUseCase: GetResumeUseCase,
+    private readonly getAllResumesUseCase: GetAllResumesUseCase,
     private readonly updateResumeUseCase: UpdateResumeUseCase,
     private readonly deleteResumeUseCase: DeleteResumeUseCase,
   ) {}
 
   @Get()
   @Roles(UserType.CANDIDATE)
-  async getResume(@Req() { user }: { user: UserDto }): Promise<ResumeDto> {
+  async getResume(
+    @Req() { user }: { user: UserDto },
+  ): Promise<ResumeDto | ResumeDto[]> {
+    if (user.type === UserType.ADMIN) {
+      return await this.getAllResumesUseCase.execute();
+    }
     return await this.getResumeUseCase.execute(user.id);
   }
 
   @Post()
+  @NotAdmin()
   @Roles(UserType.CANDIDATE)
   async createResume(
     @Req() { user }: { user: UserDto },
@@ -46,6 +55,7 @@ export class ResumeController {
   }
 
   @Patch(':id')
+  @NotAdmin()
   @Roles(UserType.CANDIDATE)
   async updateResume(
     @Req() { user }: { user: UserDto },
@@ -61,6 +71,9 @@ export class ResumeController {
     @Req() { user }: { user: UserDto },
     @Param('id') id: string,
   ) {
-    return await this.deleteResumeUseCase.execute(user.id, id);
+    if (user.type === UserType.ADMIN) {
+      // TODO: deleteResumeUseCase: Delete resume even if it's not from the user
+    }
+    return await this.deleteResumeUseCase.execute(user.id, id, user.type);
   }
 }

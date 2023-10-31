@@ -18,6 +18,7 @@ import {
 } from '@nestjs/common';
 import { UpdateResumeDto } from '@/presentation/dtos/resume/update/update-resume.dto';
 import { Education } from '@/domain/entities/resume/education.entity';
+import { UserType } from '@/domain/enums/user-type.enum';
 
 @Injectable()
 export class ResumeService {
@@ -140,13 +141,26 @@ export class ResumeService {
     return ResumeMapper.toDto(updatedResume);
   }
 
-  async deleteResume(userId: string, resumeId: string): Promise<void> {
+  async deleteResume(
+    userId: string,
+    resumeId: string,
+    userType: UserType,
+  ): Promise<void> {
     const resume = await this.resumeRepository.find(resumeId);
     if (!resume) throw new NotFoundException();
+    if (userType === UserType.ADMIN) {
+      await this.resumeRepository.delete(resumeId);
+      return;
+    }
     if (resume.candidate.user.id !== userId)
       throw new BadRequestException(
         'You are not allowed to delete this resume',
       );
     await this.resumeRepository.delete(resume.id);
+  }
+
+  async getAllResumes(): Promise<ResumeDto[]> {
+    const resumes = await this.resumeRepository.findAll();
+    return resumes.map((resume) => ResumeMapper.toDto(resume));
   }
 }

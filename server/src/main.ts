@@ -8,7 +8,12 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    origin: '*',
+  });
+
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
 
