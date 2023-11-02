@@ -36,7 +36,6 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @Roles(UserType.COMPANY)
   @NotAdmin()
   @Post('/register/company')
   async registerCompany(
@@ -47,7 +46,6 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
-  @Roles(UserType.CANDIDATE)
   @NotAdmin()
   @Post('/register/candidate')
   async registerCandidate(

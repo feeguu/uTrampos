@@ -31,11 +31,11 @@ export class RolesGuard implements CanActivate {
     if (userType === UserType.ADMIN && !isNotAdmin) return true;
     if (userType === UserType.COMPANY) {
       const company = await this.companyRepository.findByUserId(user.id);
-      return requiredRoles.some((role) => user.type === role) && !!company;
+      return requiredRoles.includes(UserType.COMPANY) && !!company;
     }
     if (userType === UserType.CANDIDATE) {
       const candidate = await this.candidateRepository.findByUserId(user.id);
-      return requiredRoles.some((role) => user.type === role) && !!candidate;
+      return requiredRoles.includes(UserType.CANDIDATE) && !!candidate;
     }
   }
 }
