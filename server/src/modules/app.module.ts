@@ -13,6 +13,7 @@ import { RolesGuard } from '@/main/auth/guards/roles.guard';
 import { JobModule } from './job.module';
 import { ProfileModule } from './profile.module';
 import { CompanyModule } from './company.module';
+import { CandidateModule } from './candidate.module';
 
 const GUARDS = [JwtGuard, RolesGuard];
 
@@ -54,6 +55,7 @@ const GUARDS = [JwtGuard, RolesGuard];
     JobModule,
     ProfileModule,
     CompanyModule,
+    CandidateModule,
   ],
   controllers: [AppController],
   providers: [
