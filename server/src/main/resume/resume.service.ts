@@ -1,6 +1,9 @@
 import { CandidateRepository } from '@/domain/abstracts/repositories/candidate.repository';
 import { LanguageRepository } from '@/domain/abstracts/repositories/resume/language.repository';
-import { ResumeRepository } from '@/domain/abstracts/repositories/resume/resume.repository';
+import {
+  ResumeRepository,
+  SearchFilters,
+} from '@/domain/abstracts/repositories/resume/resume.repository';
 import { SkillRepository } from '@/domain/abstracts/repositories/resume/skill.repository';
 import { AcademicProject } from '@/domain/entities/resume/academic-project.entity';
 import { Language } from '@/domain/entities/resume/language.entity';
@@ -19,6 +22,7 @@ import {
 import { UpdateResumeDto } from '@/presentation/dtos/resume/update/update-resume.dto';
 import { Education } from '@/domain/entities/resume/education.entity';
 import { UserType } from '@/domain/enums/user-type.enum';
+import { SearchResumeParamsDto } from '@/presentation/dtos/resume/search-resume-params.dto';
 
 @Injectable()
 export class ResumeService {
@@ -161,6 +165,28 @@ export class ResumeService {
 
   async getAllResumes(): Promise<ResumeDto[]> {
     const resumes = await this.resumeRepository.findAll();
+    return resumes.map((resume) => ResumeMapper.toDto(resume));
+  }
+
+  async searchResumes(searchResumeParamsDto: SearchResumeParamsDto) {
+    const languages = searchResumeParamsDto.languages
+      ? Array.isArray(searchResumeParamsDto.languages)
+        ? searchResumeParamsDto.languages
+        : [searchResumeParamsDto.languages]
+      : undefined;
+    const skills = searchResumeParamsDto.skills
+      ? Array.isArray(searchResumeParamsDto.skills)
+        ? searchResumeParamsDto.skills
+        : [searchResumeParamsDto.skills]
+      : undefined;
+    const searchFilter: SearchFilters = {
+      languages,
+      minEducationLevel: searchResumeParamsDto.minEducationLevel,
+      name: searchResumeParamsDto.name,
+      query: searchResumeParamsDto.q,
+      skills,
+    };
+    const resumes = await this.resumeRepository.searchResumes(searchFilter);
     return resumes.map((resume) => ResumeMapper.toDto(resume));
   }
 }

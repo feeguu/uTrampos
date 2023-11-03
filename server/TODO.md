@@ -2,7 +2,7 @@
 
 ## Resume/Candidate
 - [x] Get resume from a specific candidate
-- [ ] Get all resumes with filters and search query
+- [x] Get all resumes with filters and search query
 
 ## Job Applies
 - [ ] Candidate can apply to a job

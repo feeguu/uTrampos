@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { CreateResumeDto } from '../dtos/resume/create/create-resume.dto';
@@ -21,6 +22,8 @@ import { DeleteResumeUseCase } from '@/main/resume/use-cases/delete-resume-use-c
 import { UpdateResumeDto } from '../dtos/resume/update/update-resume.dto';
 import { NotAdmin } from '@/main/auth/decorators/not-admin.decorator';
 import { GetAllResumesUseCase } from '@/main/resume/use-cases/get-all-resumes-use-case.service';
+import { SearchResumeParamsDto } from '../dtos/resume/search-resume-params.dto';
+import { SearchResumesUseCase } from '@/main/resume/use-cases/search-resumes-use-case.service';
 
 @ApiBearerAuth()
 @Controller('resumes')
@@ -31,6 +34,7 @@ export class ResumeController {
     private readonly getAllResumesUseCase: GetAllResumesUseCase,
     private readonly updateResumeUseCase: UpdateResumeUseCase,
     private readonly deleteResumeUseCase: DeleteResumeUseCase,
+    private readonly searchResumesUseCase: SearchResumesUseCase,
   ) {}
 
   @Get()
@@ -42,6 +46,13 @@ export class ResumeController {
       return await this.getAllResumesUseCase.execute();
     }
     return await this.getResumeUseCase.execute(user.id);
+  }
+
+  @ApiBearerAuth()
+  @Get('/search')
+  @Roles(UserType.CANDIDATE, UserType.COMPANY)
+  async searchResumes(@Query() searchResumeParamsDto: SearchResumeParamsDto) {
+    return await this.searchResumesUseCase.execute(searchResumeParamsDto);
   }
 
   @Post()
