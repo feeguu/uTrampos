@@ -86,6 +86,7 @@ export class ResumeMapper {
       description: professionalExperience.description,
       startDate: professionalExperience.startDate,
       endDate: professionalExperience.endDate,
+      position: professionalExperience.position,
     });
   }
 
