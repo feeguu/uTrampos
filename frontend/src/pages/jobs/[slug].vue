@@ -58,7 +58,7 @@ const favorite = true
 						formatToBRL(job.salary)
 					}}</JobInfoIcon>
 					<JobInfoIcon :icon="RiFileList3Line" class="!text-base" v-if="job.contractType">{{
-						"TO DO"
+						job.contractType
 					}}</JobInfoIcon>
 					<JobInfoIcon :icon="RiBriefcaseLine" class="!text-base" v-if="alreadyHired"
 						>Já contratou pela&nbsp;<span class="font-lexend font-medium"
@@ -69,6 +69,10 @@ const favorite = true
 				<div class="flex flex-wrap gap-2" v-if="job.keywords?.length">
 					<JobKeyword v-for="keyword in job.keywords" class="!text-base">{{ keyword }}</JobKeyword>
 				</div>
+			</section>
+			<section class="flex flex-col gap-y-3">
+				<h1 class="text-lg text-slate-900 font-medium font-lexend">Descrição</h1>
+				<p class="whitespace-pre-wrap">{{ job.description }}</p>
 			</section>
 			<section class="flex flex-col gap-y-3" v-for="section in job.sections">
 				<h1 class="text-lg text-slate-900 font-medium font-lexend">{{ section.title }}</h1>

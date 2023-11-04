@@ -8,7 +8,7 @@ defineProps<JobInfoIconProps>()
 
 <template>
 	<div class="flex items-center text-sm font-semibold text-slate-900">
-		<component :is="icon" class="fill-slate-900 h-5 w-5 mr-1" />
+		<component :is="icon" class="fill-slate-900 h-5 w-5 mr-1 flex-shrink-0" />
 		<slot />
 	</div>
 </template>

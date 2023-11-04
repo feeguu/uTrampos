@@ -110,6 +110,14 @@ export interface ICreateResumeResponse {
 		socialNetwork: string
 		url: string
 	}[]
+	educations: {
+		institution: string,
+		educationType: string,
+		status: string,
+		startDate: string,
+		endDate: string,
+		course: string
+	}[]
 	candidate: ICandidate & {
 		user: IUser
 	}

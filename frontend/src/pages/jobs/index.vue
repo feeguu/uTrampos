@@ -35,7 +35,7 @@ if (error) {
 					<RiFilter3Fill class="fill-current h-6 w-6" />
 				</button>
 			</div>
-			<div v-if="jobs" class="grid md:grid-cols-2 gap-4">
+			<div v-if="jobs?.length" class="grid md:grid-cols-2 gap-4">
 				<!-- <JobCard
 					id="1"
 					title="Desenvolvedor Front-end Jr."
@@ -85,7 +85,7 @@ if (error) {
 					:company="job.company.user.name"
 					:local="job.address"
 					:salary="job.salary"
-					contract="TO DO"
+					:contract="job.contractType"
 					:keywords="job.keywords"
 					favorite
 					already-hired
