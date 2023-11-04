@@ -35,6 +35,6 @@ export class RegisterDto {
   zipCode: string;
 
   @IsNotEmpty()
-  @IsEnum(UserType)
+  @IsEnum(['CANDIDATE', 'COMPANY'])
   type: UserType;
 }

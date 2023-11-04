@@ -38,10 +38,10 @@ export class JobController {
   @Post()
   @Roles(UserType.COMPANY)
   async createJob(
-    @Req() { user: { id: userId } }: { user: UserDto },
+    @Req() { user: { id: userId, type } }: { user: UserDto },
     @Body() createJobDto: CreateJobDto,
   ) {
-    return this.createJobUseCase.execute(userId, createJobDto);
+    return this.createJobUseCase.execute(userId, createJobDto, type);
   }
 
   @Public()
@@ -60,20 +60,25 @@ export class JobController {
   @Roles(UserType.COMPANY)
   @Patch(':slug')
   async updateJob(
-    @Req() { user: { id: userId } }: { user: UserDto },
+    @Req() { user: { id: userId, type } }: { user: UserDto },
     @Body() updateJobDto: UpdateJobDto,
     @Param('slug') slug: string,
   ) {
-    return await this.updateJobUseCase.execute(userId, slug, updateJobDto);
+    return await this.updateJobUseCase.execute(
+      userId,
+      slug,
+      updateJobDto,
+      type,
+    );
   }
 
   @ApiBearerAuth()
   @Roles(UserType.COMPANY)
   @Delete(':slug')
   async deleteJob(
-    @Req() { user: { id: userId } }: { user: UserDto },
+    @Req() { user: { id: userId, type } }: { user: UserDto },
     @Param('slug') slug: string,
   ) {
-    return await this.deleteJobUseCase.execute(userId, slug);
+    return await this.deleteJobUseCase.execute(userId, slug, type);
   }
 }

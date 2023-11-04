@@ -31,6 +31,9 @@ export class TypeOrmResume {
   @Column()
   additionalInformation: string;
 
+  @Column('tsvector', { nullable: true, select: false })
+  document: string;
+
   @OneToMany(
     () => TypeOrmProfessionalExperience,
     (professionalExperience) => professionalExperience.resume,
@@ -60,10 +63,8 @@ export class TypeOrmResume {
   )
   academicProjects: TypeOrmAcademicProject[];
 
-  @OneToMany(
-    () => TypeOrmEducation,
-    (education) => education.resume,
-    { cascade: true },
-  )
+  @OneToMany(() => TypeOrmEducation, (education) => education.resume, {
+    cascade: true,
+  })
   educations: TypeOrmEducation[];
 }

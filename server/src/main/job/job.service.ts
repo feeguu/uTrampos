@@ -5,6 +5,7 @@ import {
 } from '@/domain/abstracts/repositories/job/job.repository';
 import { Job } from '@/domain/entities/job/job.entity';
 import { Section } from '@/domain/entities/job/section.entity';
+import { UserType } from '@/domain/enums/user-type.enum';
 import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
 import { SearchJobParamsDto } from '@/presentation/dtos/job/search-job-params.dto';
@@ -22,10 +23,18 @@ export class JobService {
     private readonly jobRepository: JobRepository,
     private readonly companyRepository: CompanyRepository,
   ) {}
-  async createJob(userId: string, createJobDto: CreateJobDto): Promise<JobDto> {
+  async createJob(
+    userId: string,
+    createJobDto: CreateJobDto,
+    userType: UserType,
+  ): Promise<JobDto> {
     const company = await this.companyRepository.findByUserId(userId);
-    if (!company)
-      throw new UnauthorizedException('You are not allowed to create a job');
+    if (!company) throw new NotFoundException('Company not found');
+    if (userType !== UserType.ADMIN && company.user.id !== userId) {
+      throw new UnauthorizedException(
+        'You are not allowed to create a job for this company',
+      );
+    }
     const job = new Job({
       company,
       applies: [],
@@ -77,9 +86,15 @@ export class JobService {
     userId: string,
     slug: string,
     updateJobDto: UpdateJobDto,
+    userType: UserType,
   ): Promise<JobDto> {
     const job = await this.jobRepository.findJobBySlug(slug);
     if (!job) throw new NotFoundException();
+    if (userType === UserType.ADMIN) {
+      Object.assign(job, updateJobDto);
+      const updatedJob = await this.jobRepository.update(job.id, job);
+      return JobMapper.toDto(updatedJob);
+    }
     if (job.company.user.id !== userId)
       throw new UnauthorizedException('You are not allowed to update this job');
     Object.assign(job, updateJobDto);
@@ -87,9 +102,17 @@ export class JobService {
     return JobMapper.toDto(updatedJob);
   }
 
-  async deleteJob(userId: string, slug: string): Promise<void> {
+  async deleteJob(
+    userId: string,
+    slug: string,
+    userType: UserType,
+  ): Promise<void> {
     const job = await this.jobRepository.findJobBySlug(slug);
     if (!job) throw new NotFoundException();
+    if (userType === UserType.ADMIN) {
+      await this.jobRepository.delete(job.id);
+      return;
+    }
     if (job.company.user.id !== userId)
       throw new UnauthorizedException('You are not allowed to delete this job');
     await this.jobRepository.delete(job.id);

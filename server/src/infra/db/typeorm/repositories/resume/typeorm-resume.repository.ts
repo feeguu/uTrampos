@@ -11,6 +11,8 @@ import { SocialNetwork } from '@/domain/entities/resume/social-network.entity';
 import { TypeOrmSocialNetwork } from '../../entities/resume/typeorm-social-network.entity';
 import { TypeOrmSkill } from '../../entities/resume/typeorm-skill.entity';
 import { TypeOrmEducation } from '../../entities/resume/typeorm-education.entity';
+import { SearchFilters } from '@/domain/abstracts/repositories/resume/resume.repository';
+import { EducationType } from '@/domain/enums/education-type';
 
 @Injectable()
 export class TypeOrmResumeRepository implements ResumeRepository {
@@ -81,5 +83,82 @@ export class TypeOrmResumeRepository implements ResumeRepository {
       where: { candidate: { user: { id: userId } } },
       relations: TypeOrmResumeRepository.ALL_RELATIONS,
     });
+  }
+
+  async searchResumes(searchFilters?: SearchFilters): Promise<Resume[]> {
+    const { name, query, skills, languages, minEducationLevel } = searchFilters;
+    const queryBuilder = this.resumeRepo.createQueryBuilder('resume');
+    queryBuilder.leftJoinAndSelect('resume.candidate', 'candidate');
+    queryBuilder.leftJoinAndSelect('candidate.user', 'user');
+    queryBuilder.leftJoinAndSelect('resume.educations', 'educations');
+    queryBuilder.leftJoinAndSelect('resume.languages', 'languages');
+    queryBuilder.leftJoinAndSelect(
+      'resume.professionalExperiences',
+      'professionalExperiences',
+    );
+    queryBuilder.leftJoinAndSelect('resume.skills', 'skills');
+    queryBuilder.leftJoinAndSelect('resume.socialNetworks', 'socialNetworks');
+    queryBuilder.leftJoinAndSelect(
+      'resume.academicProjects',
+      'academicProjects',
+    );
+    if (name) {
+      queryBuilder.andWhere('user.name ILIKE :name', {
+        name: `%${name}%`,
+      });
+    }
+    if (query) {
+      const sanitizedQuery = query
+        .trim()
+        .replace(/\s+/g, ' ')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      queryBuilder.addSelect(
+        `ts_rank(resume.document, plainto_tsquery('portuguese', '${sanitizedQuery}'))`,
+        'rank',
+      );
+      queryBuilder.andWhere(
+        `resume.document @@ plainto_tsquery('portuguese', :query)`,
+        {
+          query: sanitizedQuery,
+        },
+      );
+      queryBuilder.orderBy('rank', 'DESC');
+    }
+
+    if (skills) {
+      queryBuilder.andWhere('skills.name IN (:...skills)', { skills });
+    }
+
+    if (languages) {
+      queryBuilder.andWhere('languages.language IN (:...languages)', {
+        languages,
+      });
+    }
+
+    if (minEducationLevel) {
+      const EDUCATION_LEVELS = [
+        EducationType.SECONDARY,
+        EducationType.TECHNICAL_COURSE,
+        EducationType.GRADUATION,
+        EducationType.POSTGRADUATION,
+        EducationType.MASTER,
+        EducationType.DOCTORATE,
+      ];
+
+      const minEducationLevelIndex =
+        EDUCATION_LEVELS.indexOf(minEducationLevel);
+
+      const educationLevels = EDUCATION_LEVELS.slice(minEducationLevelIndex);
+
+      queryBuilder.andWhere(
+        'educations.educationType IN (:...educationLevel)',
+        {
+          educationLevel: educationLevels,
+        },
+      );
+    }
+
+    return await queryBuilder.getMany();
   }
 }

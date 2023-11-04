@@ -10,6 +10,9 @@ import { RegisterCompanyUseCase } from '@/main/auth/use-cases/register-company-u
 import { RegisterCandidateUseCase } from '@/main/auth/use-cases/register-candidate-use-case.service';
 import { CandidateRegisterDto } from '../dtos/auth/candidate-register.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from '@/main/auth/decorators/roles.decorator';
+import { UserType } from '@/domain/enums/user-type.enum';
+import { NotAdmin } from '@/main/auth/decorators/not-admin.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +36,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
+  @NotAdmin()
   @Post('/register/company')
   async registerCompany(
     @Request() req,
@@ -42,6 +46,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth()
+  @NotAdmin()
   @Post('/register/candidate')
   async registerCandidate(
     @Request() req,
