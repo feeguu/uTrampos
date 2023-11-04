@@ -10,6 +10,7 @@ import {
 
 interface JobCardProps {
 	id: string
+	slug: string
 	title: string
 	company: string
 	local?: string
@@ -24,7 +25,7 @@ defineProps<JobCardProps>()
 </script>
 
 <template>
-	<NuxtLink :href="`/jobs/${id}`" class="group">
+	<NuxtLink :href="`/jobs/${slug}`" class="group">
 		<div
 			class="relative p-6 bg-white shadow rounded w-full h-full gap-y-4 flex flex-col transition-transform group-hover:-translate-y-1"
 		>

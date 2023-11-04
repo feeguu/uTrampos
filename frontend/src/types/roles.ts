@@ -12,15 +12,21 @@ export interface ICompany {
 	cnpj: string
 	description: string
 	companySize: string
-	user: IUser
 }
 
 export interface IAdmin {
-	user: IUser
+	id: string
 }
 
 export interface ICandidate {
-	user: IUser
+	id: string
+	cpf: string
+	birthDate: string
 }
 
-export type IAuthUser = ICompany | IAdmin | ICandidate
+export interface IAuthUser {
+	user: IUser
+	candidate?: ICandidate
+	company?: ICompany
+	admin?: IAdmin
+}

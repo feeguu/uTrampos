@@ -11,21 +11,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
 		if ((to.meta.allowedRoles as string[] | undefined)?.includes(auth.user.type)) return
 	}
 
-	switch (auth.user?.type) {
-		case "COMPANY":
-			return navigateTo("/company")
-			break
-
-		case "CANDIDATE":
-			return navigateTo("/jobs")
-			break
-
-		case "ADMIN":
-			return navigateTo("/admin")
-			break
-
-		default:
-			return navigateTo("/login")
-			break
-	}
+	if (!auth.user) return navigateTo("/login")
+	if (auth.candidate) return navigateTo("/jobs")
+	if (auth.company) return navigateTo("/company")
+	if (auth.admin) return navigateTo("/admin")
+	if (auth.user.type === "CANDIDATE") return navigateTo("/register/candidate")
+	if (auth.user.type === "COMPANY") return navigateTo("/register/company")
 })

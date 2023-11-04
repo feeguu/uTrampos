@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { RiFilter3Fill } from "vue-remix-icons"
+import type { IJob } from "~/types/api"
+
+const toast = useToast()
+
+const { data: jobs, error } = await useAPI<IJob[]>("/jobs")
+
+if (error) {
+	const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
+	console.error(errorMessage)
+	toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
+}
 </script>
 <template>
 	<div class="bg-neutral-100 flex-1 md:pt-6 md:px-6">
@@ -24,8 +35,8 @@ import { RiFilter3Fill } from "vue-remix-icons"
 					<RiFilter3Fill class="fill-current h-6 w-6" />
 				</button>
 			</div>
-			<div class="grid md:grid-cols-2 gap-4">
-				<JobCard
+			<div v-if="jobs" class="grid md:grid-cols-2 gap-4">
+				<!-- <JobCard
 					id="1"
 					title="Desenvolvedor Front-end Jr."
 					company="Microsoft"
@@ -65,7 +76,26 @@ import { RiFilter3Fill } from "vue-remix-icons"
 					contract="Estágio"
 					already-hired
 					:keywords="['2º Semestre', 'DSM', 'Período Tarde']"
+				/> -->
+				<JobCard
+					v-for="job in jobs"
+					:id="job.id"
+					:slug="job.slug"
+					:title="job.title"
+					:company="job.company.user.name"
+					:local="job.address"
+					:salary="job.salary"
+					contract="TO DO"
+					:keywords="job.keywords"
+					favorite
+					already-hired
 				/>
+			</div>
+			<div class="text-center text-neutral-500 mt-16 px-4" v-else>
+				<h2 class="text-lg font-semibold mb-2">
+					Não foi possível encontrar vagas para os filtros selecionados.
+				</h2>
+				<p>Por favor, tente novamente com outros critérios de busca.</p>
 			</div>
 		</main>
 	</div>
