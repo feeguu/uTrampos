@@ -76,8 +76,14 @@ const { register } = useAuth()
 					v-model="userRegister.name"
 					required
 				/>
-				<Input label-text="Telefone" type="tel" v-model="userRegister.phone" required />
-				<Input label-text="CEP" v-model="userRegister.zipCode" required />
+				<Input
+					label-text="Telefone"
+					type="tel"
+					v-model="userRegister.phone"
+					data-maska="(##) #####-####"
+					required
+				/>
+				<Input label-text="CEP" v-model="userRegister.zipCode" data-maska="#####-###" required />
 				<Button type="submit">Continuar</Button>
 			</template>
 		</form>
