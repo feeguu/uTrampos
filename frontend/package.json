@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
+    "maska": "^2.1.10",
     "pinia": "^2.1.7",
     "vue-remix-icons": "^3.5.0"
   }
