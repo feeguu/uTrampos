@@ -89,7 +89,7 @@ async function handleSubmit() {
 					placeholder="Ex.: Vale-transporte, adicional noturno, 14º salário"
 					required
 				/>
-				<Button class="!w-fit" theme="secondary" type="submit">
+				<Button class="!button-secondary !w-fit" type="submit">
 					<RiAddLine class="fill-current h-6 w-6" />
 					Adicionar Seção
 				</Button>

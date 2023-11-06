@@ -7,8 +7,8 @@ const professionalExperience = reactive({
 	company: "",
 	position: "",
 	description: "",
-    startDate: "",
-    endDate: ""
+	startDate: "",
+	endDate: "",
 })
 
 const education = reactive({
@@ -17,23 +17,23 @@ const education = reactive({
 	status: "IN_PROGRESS",
 	startDate: "",
 	endDate: "",
-	course: ""
+	course: "",
 })
 
 const resume = reactive({
-    objective: "",
-    description: "",
-    additionalInformation: "",
+	objective: "",
+	description: "",
+	additionalInformation: "",
 	skills: [],
-    professionalExperiences: [],
+	professionalExperiences: [],
 	academicProjects: [],
 	languages: [],
 	socialNetworks: [],
-	educations: []
+	educations: [],
 })
 
 function handleProfessionalExperienceSubmit() {
-    resume.professionalExperiences.push({ ...professionalExperience })
+	resume.professionalExperiences.push({ ...professionalExperience })
 	professionalExperience.company = ""
 	professionalExperience.position = ""
 	professionalExperience.description = ""
@@ -66,20 +66,23 @@ async function handleSubmit() {
 
 	navigateTo("/candidate/profile")
 }
-
 </script>
 <template>
-    <div class="flex-1 flex flex-col gap-y-6 w-full max-w-2xl mx-auto p-6">
+	<div class="flex-1 flex flex-col gap-y-6 w-full max-w-2xl mx-auto p-6">
 		<form id="resume-form" class="flex flex-col gap-y-6 w-full" @submit.prevent="handleSubmit">
 			<h1 class="text-2xl text-slate-900 font-lexend font-medium mb-2">
 				Cadastrar <span class="text-sky-500">Currículo</span>
 			</h1>
-			<Input label-text="Objetivo" placeholder="Ex.: Desenvolvedor Front-end" v-model="resume.objective" />
+			<Input
+				label-text="Objetivo"
+				placeholder="Ex.: Desenvolvedor Front-end"
+				v-model="resume.objective"
+			/>
 			<Textarea label-text="Resumo" v-model="resume.description" />
 			<Textarea label-text="Informações Adicionais" v-model="resume.additionalInformation" />
-        </form>
+		</form>
 
-        <section class="flex flex-col gap-y-6 w-full">
+		<section class="flex flex-col gap-y-6 w-full">
 			<h2 class="text-2xl text-slate-900 font-lexend font-medium">Experiência Profissional</h2>
 			<div class="bg-white p-4 shadow rounded" v-for="experience in resume.professionalExperiences">
 				<h2 class="text-slate-900 font-semibold mb-2">
@@ -104,31 +107,27 @@ async function handleSubmit() {
 					placeholder="Ex.: Auxiliar Administrativo"
 					required
 				/>
-                <Textarea
-					label-text="Descrição"
-					v-model="professionalExperience.description"
-					required
-				/>
-                <div class="flex flex-col min-[480px]:flex-row gap-y-6 gap-x-2">
-                    <Input
-                        label-text="Data de início"
-                        v-model="professionalExperience.startDate"
-                        placeholder="Ex.: 01/01/2020"
+				<Textarea label-text="Descrição" v-model="professionalExperience.description" required />
+				<div class="flex flex-col min-[480px]:flex-row gap-y-6 gap-x-2">
+					<Input
+						label-text="Data de início"
+						v-model="professionalExperience.startDate"
+						placeholder="Ex.: 01/01/2020"
 						type="date"
 						container-class="flex-1"
-                        required
-				    />
+						required
+					/>
 
-                    <Input
-                        label-text="Data de fim"
-                        v-model="professionalExperience.endDate"
-                        placeholder="Ex.: 01/01/2023"
+					<Input
+						label-text="Data de fim"
+						v-model="professionalExperience.endDate"
+						placeholder="Ex.: 01/01/2023"
 						type="date"
 						container-class="flex-1"
-                        required
-				    />
-                </div>
-				<Button class="!w-fit" theme="secondary" type="submit">
+						required
+					/>
+				</div>
+				<Button class="!button-secondary !w-fit" type="submit">
 					<RiAddLine class="fill-current h-6 w-6" />
 					Adicionar Experiência
 				</Button>
@@ -159,26 +158,26 @@ async function handleSubmit() {
 					placeholder="Ex.: FATEC da Zona Leste"
 					required
 				/>
-                <div class="flex flex-col min-[480px]:flex-row gap-y-6 gap-x-2">
-                    <Input
-                        label-text="Data de início"
-                        v-model="education.startDate"
-                        placeholder="Ex.: 01/01/2020"
+				<div class="flex flex-col min-[480px]:flex-row gap-y-6 gap-x-2">
+					<Input
+						label-text="Data de início"
+						v-model="education.startDate"
+						placeholder="Ex.: 01/01/2020"
 						type="date"
 						container-class="flex-1"
-                        required
-				    />
+						required
+					/>
 
-                    <Input
-                        label-text="Data de fim"
-                        v-model="education.endDate"
-                        placeholder="Ex.: 01/01/2023"
+					<Input
+						label-text="Data de fim"
+						v-model="education.endDate"
+						placeholder="Ex.: 01/01/2023"
 						type="date"
 						container-class="flex-1"
-                        required
-				    />
-                </div>
-				<Button class="!w-fit" theme="secondary" type="submit">
+						required
+					/>
+				</div>
+				<Button class="!button-secondary !w-fit" type="submit">
 					<RiAddLine class="fill-current h-6 w-6" />
 					Adicionar Escolaridade
 				</Button>
@@ -187,5 +186,4 @@ async function handleSubmit() {
 
 		<Button type="submit" form="resume-form">Salvar Currículo</Button>
 	</div>
-    
 </template>
