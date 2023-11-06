@@ -21,7 +21,7 @@ const { registerCompany } = useAuth()
 			class="flex flex-col gap-y-4 w-full max-w-md"
 			@submit.prevent="registerCompany(companyRegister)"
 		>
-			<Input label-text="CNPJ" v-model="companyRegister.cnpj" />
+			<Input label-text="CNPJ" data-maska="##.###.###/####-##" v-model="companyRegister.cnpj" />
 			<Select label-text="Tamanho da empresa" v-model="companyRegister.companySize">
 				<option disabled value="">Selecione</option>
 				<option value="MICRO">Micro</option>

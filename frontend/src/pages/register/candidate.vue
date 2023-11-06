@@ -20,7 +20,7 @@ const { registerCandidate } = useAuth()
 			class="flex flex-col gap-y-4 w-full max-w-md"
 			@submit.prevent="registerCandidate(candidateRegister)"
 		>
-			<Input label-text="CPF" v-model="candidateRegister.cpf" />
+			<Input label-text="CPF" data-maska="###.###.###-##" v-model="candidateRegister.cpf" />
 			<Input label-text="Data de nascimento" type="date" v-model="candidateRegister.birthDate" />
 			<Button type="submit">Cadastrar</Button>
 		</form>
