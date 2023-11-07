@@ -146,7 +146,7 @@ export class TypeOrmJobRepository implements JobRepository {
       });
     }
     if (filters.location) {
-      queryBuilder.andWhere('job.location ilike :location', {
+      queryBuilder.andWhere('job.address ilike :location', {
         location: `%${filters.location}%`,
       });
     }
