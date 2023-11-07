@@ -127,12 +127,14 @@ export class TypeOrmResumeRepository implements ResumeRepository {
     }
 
     if (skills) {
-      queryBuilder.andWhere('skills.name IN (:...skills)', { skills });
+      queryBuilder.andWhere('LOWER(skills.name) IN (:...skills)', {
+        skills: skills.map((skill) => skill.toLowerCase()),
+      });
     }
 
     if (languages) {
-      queryBuilder.andWhere('languages.language IN (:...languages)', {
-        languages,
+      queryBuilder.andWhere('LOWER(languages.language) IN (:...languages)', {
+        languages: languages.map((language) => language.toLowerCase()),
       });
     }
 
