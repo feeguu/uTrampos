@@ -36,9 +36,9 @@ function handleDeleteKeyword(id: number) {
 	<div class="flex flex-col">
 		<form @submit.prevent="handleSubmit" class="flex items-end gap-x-2 w-full">
 			<Input v-model="keyword" label-text="Palavras-chave" container-class="flex-1" />
-			<IconButton theme="defaultSecondary">
+			<Button class="!button-secondary !w-12 !h-12 !p-0">
 				<RiSendPlane2Line class="fill-current h-5 w-5" />
-			</IconButton>
+			</Button>
 		</form>
 		<div class="mt-2 gap-2 flex flex-wrap">
 			<JobKeyword v-for="(value, index) in modelValue" deletable @delete="handleDeleteKeyword(index)">{{
