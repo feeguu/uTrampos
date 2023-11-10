@@ -1,6 +1,7 @@
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 import { Candidate } from '../candidate.entity';
 import { Job } from './job.entity';
+import { randomUUID } from 'crypto';
 
 export class Apply {
   public id: string;
@@ -14,5 +15,6 @@ export class Apply {
     this.job = apply.job;
     this.candidate = apply.candidate;
     this.datetime = new Date().toISOString();
+    this.id = randomUUID();
   }
 }
