@@ -14,6 +14,7 @@ import { JobModule } from './job.module';
 import { ProfileModule } from './profile.module';
 import { CompanyModule } from './company.module';
 import { CandidateModule } from './candidate.module';
+import { ApplyModule } from './apply.module';
 
 const GUARDS = [JwtGuard, RolesGuard];
 
@@ -56,6 +57,7 @@ const GUARDS = [JwtGuard, RolesGuard];
     ProfileModule,
     CompanyModule,
     CandidateModule,
+    ApplyModule,
   ],
   controllers: [AppController],
   providers: [

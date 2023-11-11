@@ -1,13 +1,21 @@
 import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repository';
 import { Apply } from '@/domain/entities/job/apply.entity';
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { FindOptions, FindOptionsRelations, Repository } from 'typeorm';
 import { TypeOrmApply } from '../../entities/job/typeorm-apply.entity';
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TypeOrmApplyRepository implements ApplyRepository {
+  private static RELATIONS: FindOptionsRelations<TypeOrmApply> = {
+    candidate: {
+      user: true,
+    },
+    job: {
+      company: true,
+    },
+  };
   constructor(
     @InjectRepository(TypeOrmApply)
     private readonly applyRepository: Repository<TypeOrmApply>,
@@ -19,15 +27,27 @@ export class TypeOrmApplyRepository implements ApplyRepository {
     await this.applyRepository.delete(id);
   }
   async find(id: string): Promise<Apply> {
-    return this.applyRepository.findOne({ where: { id } }) || null;
+    return (
+      this.applyRepository.findOne({
+        where: { id },
+        relations: TypeOrmApplyRepository.RELATIONS,
+      }) || null
+    );
   }
   async findByJob(jobId: string): Promise<Apply[]> {
-    return this.applyRepository.find({ where: { job: { id: jobId } } });
+    return this.applyRepository.find({
+      where: { job: { id: jobId } },
+      relations: TypeOrmApplyRepository.RELATIONS,
+    });
   }
   async findByJobAndCandidate(jobId: string, userId: string): Promise<Apply> {
     return (
       this.applyRepository.findOne({
-        where: { job: { id: jobId }, candidate: { user: { id: userId } } },
+        where: {
+          job: { id: jobId },
+          candidate: { user: { id: userId } },
+        },
+        relations: TypeOrmApplyRepository.RELATIONS,
       }) || null
     );
   }
@@ -37,18 +57,23 @@ export class TypeOrmApplyRepository implements ApplyRepository {
   ): Promise<Apply[]> {
     return this.applyRepository.find({
       where: { candidate: { id: candidateId }, status },
+      relations: TypeOrmApplyRepository.RELATIONS,
     });
   }
   async findByCandidate(candidateId: string): Promise<Apply[]> {
     return this.applyRepository.find({
       where: { candidate: { id: candidateId } },
+      relations: TypeOrmApplyRepository.RELATIONS,
     });
   }
   async findAll(): Promise<Apply[]> {
     return this.applyRepository.find();
   }
   async update(id: string, entity: Apply): Promise<Apply> {
-    const apply = await this.applyRepository.findOne({ where: { id } });
+    const apply = await this.applyRepository.findOne({
+      where: { id },
+      relations: TypeOrmApplyRepository.RELATIONS,
+    });
     if (!apply) return null;
     Object.assign(entity, apply);
     return this.applyRepository.save(entity);
