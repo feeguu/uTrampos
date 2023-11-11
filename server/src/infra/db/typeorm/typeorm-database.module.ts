@@ -23,6 +23,7 @@ import { TypeOrmJobRepository } from './repositories/job/typeorm-job-repository'
 import { JobSubscriber } from './subscribers/job.subscriber';
 import { TypeOrmEducation } from './entities/resume/typeorm-education.entity';
 import { ResumeSubscriber } from './subscribers/resume.subscriber';
+import { TypeOrmApplyRepository } from './repositories/job/typeorm-apply-repository';
 
 @Global()
 @Module({
@@ -66,6 +67,7 @@ import { ResumeSubscriber } from './subscribers/resume.subscriber';
     TypeOrmSkillRepository,
     TypeOrmLanguageRepository,
     TypeOrmJobRepository,
+    TypeOrmApplyRepository,
     JobSubscriber,
     ResumeSubscriber,
   ],
@@ -77,6 +79,7 @@ import { ResumeSubscriber } from './subscribers/resume.subscriber';
     TypeOrmSkillRepository,
     TypeOrmLanguageRepository,
     TypeOrmJobRepository,
+    TypeOrmApplyRepository,
   ],
 })
 export class TypeOrmDatabaseModule {}

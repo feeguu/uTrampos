@@ -22,7 +22,19 @@ export class TypeOrmJobRepository implements JobRepository {
     company: {
       user: true,
     },
-    applies: true,
+    applies: {
+      candidate: {
+        user: true,
+        resume: {
+          educations: true,
+          professionalExperiences: true,
+          skills: true,
+          languages: true,
+          socialNetworks: true,
+          academicProjects: true,
+        },
+      },
+    },
   };
   static readonly ORDER_SECTIONS: FindOptionsOrder<TypeOrmJob> = {
     sections: {

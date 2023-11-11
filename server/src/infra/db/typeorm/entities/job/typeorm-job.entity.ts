@@ -44,7 +44,10 @@ export class TypeOrmJob {
   })
   sections: TypeOrmSection[];
 
-  @OneToMany(() => TypeOrmApply, (apply) => apply.job, { onDelete: 'CASCADE' })
+  @OneToMany(() => TypeOrmApply, (apply) => apply.job, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   applies: TypeOrmApply[];
 
   @ManyToOne(() => TypeOrmCompany, (company) => company.jobs)

@@ -79,14 +79,16 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .join(' ')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
-
-    event.entity.slug =
-      companyName +
-      '-' +
-      title.toLowerCase().replace(' ', '-') +
-      '-' +
-      Date.now().toString().slice(-5, -1);
-
+    if (
+      event.updatedColumns.some((column) => column.propertyName === 'title')
+    ) {
+      event.entity.slug =
+        companyName +
+        '-' +
+        title.toLowerCase().replace(' ', '-') +
+        '-' +
+        Date.now().toString().slice(-5, -1);
+    }
     event.entity.document = (
       await event.queryRunner.query(
         `SELECT

@@ -23,6 +23,9 @@ import { GetJobBySlugUseCase } from '@/main/job/use-cases/get-job-by-slug-use-ca
 import { UpdateJobDto } from '../dtos/job/update/update-job.dto';
 import { UpdateJobUseCase } from '@/main/job/use-cases/update-job-use-case.service';
 import { DeleteJobUseCase } from '@/main/job/use-cases/delete-job-use-case.service';
+import { NotAdmin } from '@/main/auth/decorators/not-admin.decorator';
+import { CandidateApplyToJobUseCase } from '@/main/job/use-cases/candidate-apply-to-job-use-case.service';
+import { CandidateWithdrawToJobUseCase } from '@/main/job/use-cases/candidate-withdraw-to-job-use-case.service';
 
 @Controller('jobs')
 export class JobController {
@@ -32,6 +35,8 @@ export class JobController {
     public readonly getJobBySlugUseCase: GetJobBySlugUseCase,
     public readonly updateJobUseCase: UpdateJobUseCase,
     public readonly deleteJobUseCase: DeleteJobUseCase,
+    public readonly candidateApplyToJobUseCase: CandidateApplyToJobUseCase,
+    public readonly candidateWithdrawToJobUseCase: CandidateWithdrawToJobUseCase,
   ) {}
 
   @ApiBearerAuth()
@@ -54,6 +59,28 @@ export class JobController {
   @Get(':slug')
   async getJobBySlug(@Param('slug') slug: string): Promise<JobDto> {
     return await this.getJobBySlugUseCase.execute(slug);
+  }
+
+  @ApiBearerAuth()
+  @NotAdmin()
+  @Roles(UserType.CANDIDATE)
+  @Post(':slug/apply')
+  async applyToJob(
+    @Req() { user: { id: userId } }: { user: UserDto },
+    @Param('slug') slug: string,
+  ) {
+    return await this.candidateApplyToJobUseCase.execute(slug, userId);
+  }
+
+  @ApiBearerAuth()
+  @NotAdmin()
+  @Roles(UserType.CANDIDATE)
+  @Post(':slug/withdraw')
+  async withdrawToJob(
+    @Req() { user: { id: userId } }: { user: UserDto },
+    @Param('slug') slug: string,
+  ) {
+    return await this.candidateWithdrawToJobUseCase.execute(slug, userId);
   }
 
   @ApiBearerAuth()
