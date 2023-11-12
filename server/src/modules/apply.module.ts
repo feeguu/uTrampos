@@ -3,8 +3,10 @@ import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repos
 import { TypeOrmApplyRepository } from '@/infra/db/typeorm/repositories/job/typeorm-apply-repository';
 import { TypeOrmCandidateRepository } from '@/infra/db/typeorm/repositories/typeorm-candidate.repository';
 import { TypeOrmDatabaseModule } from '@/infra/db/typeorm/typeorm-database.module';
-import { applyService } from '@/main/apply/apply.service';
+import { ApplyService } from '@/main/apply/apply.service';
 import { GetAppliesByCandidateUseCase } from '@/main/apply/use-cases/get-applies-by-candidate-use-case.service';
+import { ProceedApplyUseCase } from '@/main/apply/use-cases/proceed-apply-use-case.service';
+import { RejectApplyUseCase } from '@/main/apply/use-cases/reject-apply-use-case.service';
 import { ApplyController } from '@/presentation/controllers/apply.controller';
 import { Module } from '@nestjs/common';
 
@@ -13,14 +15,16 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmDatabaseModule],
   providers: [
     {
-      provide: applyService,
+      provide: ApplyService,
       useFactory: (
         applyRepository: ApplyRepository,
         candidateRepository: CandidateRepository,
-      ) => new applyService(applyRepository, candidateRepository),
+      ) => new ApplyService(applyRepository, candidateRepository),
       inject: [TypeOrmApplyRepository, TypeOrmCandidateRepository],
     },
     GetAppliesByCandidateUseCase,
+    ProceedApplyUseCase,
+    RejectApplyUseCase,
   ],
 })
 export class ApplyModule {}

@@ -136,7 +136,13 @@ export class JobService {
       throw new UnauthorizedException(
         'You are not allowed to apply to this job',
       );
-    if (job.applies.some((apply) => apply.candidate.user.id === userId))
+    if (
+      job.applies.some(
+        (apply) =>
+          apply.candidate.user.id === userId &&
+          apply.status !== ApplyStatus.WITHDRAWN,
+      )
+    )
       throw new UnauthorizedException('You already applied to this job');
 
     const resume = await this.resumeRepository.getByUserId(userId);

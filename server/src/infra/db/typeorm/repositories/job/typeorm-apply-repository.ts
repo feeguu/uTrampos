@@ -1,7 +1,7 @@
 import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repository';
 import { Apply } from '@/domain/entities/job/apply.entity';
 import { Injectable } from '@nestjs/common';
-import { FindOptions, FindOptionsRelations, Repository } from 'typeorm';
+import { FindOptionsRelations, Repository } from 'typeorm';
 import { TypeOrmApply } from '../../entities/job/typeorm-apply.entity';
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +13,9 @@ export class TypeOrmApplyRepository implements ApplyRepository {
       user: true,
     },
     job: {
-      company: true,
+      company: {
+        user: true,
+      },
     },
   };
   constructor(
@@ -75,7 +77,7 @@ export class TypeOrmApplyRepository implements ApplyRepository {
       relations: TypeOrmApplyRepository.RELATIONS,
     });
     if (!apply) return null;
-    Object.assign(entity, apply);
+    Object.assign(apply, entity);
     return this.applyRepository.save(entity);
   }
 }

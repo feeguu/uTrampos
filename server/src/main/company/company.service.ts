@@ -1,6 +1,7 @@
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
 import { JobRepository } from '@/domain/abstracts/repositories/job/job.repository';
 import { CompanyDto } from '@/presentation/dtos/company.dto';
+import { JobWithApplyDto } from '@/presentation/dtos/job/entities/job-with-apply.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
 import { CompanyMapper } from '@/presentation/mappers/company.mapper';
 import { JobMapper } from '@/presentation/mappers/job.mapper';
@@ -18,10 +19,10 @@ export class CompanyService {
     return jobs.map((job) => JobMapper.toDto(job));
   }
 
-  async getCompanyJobsByUserId(userId: string): Promise<JobDto[]> {
+  async getCompanyJobsByUserId(userId: string): Promise<JobWithApplyDto[]> {
     const company = await this.companyRepository.findByUserId(userId);
     const jobs = await this.jobRepository.findByCompany(company.id);
-    return jobs.map((job) => JobMapper.toDto(job));
+    return jobs.map((job) => JobMapper.toDtoWithApplies(job));
   }
 
   async getCompany(companyId: string): Promise<CompanyDto> {

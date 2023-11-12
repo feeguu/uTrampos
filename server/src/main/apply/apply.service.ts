@@ -3,10 +3,14 @@ import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repos
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 import { ApplyDto } from '@/presentation/dtos/job/entities/apply.dto';
 import { ApplyMapper } from '@/presentation/mappers/apply.mapper';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 @Injectable()
-export class applyService {
+export class ApplyService {
   constructor(
     private readonly applyRepository: ApplyRepository,
     private readonly candidateRepository: CandidateRepository,
@@ -16,6 +20,18 @@ export class applyService {
     const applies = await this.applyRepository.findByCandidate(candidate.id);
     return applies.map((apply) => ApplyMapper.toDto(apply));
   }
+  private static readonly STATUS_ORDER = [
+    ApplyStatus.PENDING,
+    ApplyStatus.INTERVIEW_SCHEDULED,
+    ApplyStatus.INTERVIEW_COMPLETED,
+    ApplyStatus.OFFERED,
+    ApplyStatus.ACCEPTED,
+  ];
+  private static readonly FINISHED_STATUS = [
+    ApplyStatus.REJECTED,
+    ApplyStatus.WITHDRAWN,
+    ApplyStatus.ACCEPTED,
+  ];
 
   async getAppliesByCandidateAndStatus(
     userId: string,
@@ -27,5 +43,46 @@ export class applyService {
       status,
     );
     return applies.map((apply) => ApplyMapper.toDto(apply));
+  }
+
+  async proceedApply(applyId: string, userId: string): Promise<ApplyDto> {
+    const apply = await this.applyRepository.find(applyId);
+    console.log(apply.job.company.user);
+    if (!apply) {
+      throw new NotFoundException('Apply not found');
+    }
+    if (apply.job.company.user.id !== userId) {
+      throw new NotFoundException('Apply not found');
+    }
+
+    if (ApplyService.FINISHED_STATUS.includes(apply.status)) {
+      throw new BadRequestException('Apply already finished');
+    }
+    const index = ApplyService.STATUS_ORDER.indexOf(apply.status);
+    console.log(
+      ApplyService.STATUS_ORDER[index],
+      ApplyService.STATUS_ORDER[index + 1],
+    );
+    apply.status = ApplyService.STATUS_ORDER[index + 1];
+    console.log(apply.status);
+    await this.applyRepository.update(apply.id, apply);
+    console.log(ApplyMapper.toDto(apply));
+    return ApplyMapper.toDto(apply);
+  }
+
+  async rejectApply(applyId: string, userId: string): Promise<ApplyDto> {
+    const apply = await this.applyRepository.find(applyId);
+    if (!apply) {
+      throw new NotFoundException('Apply not found');
+    }
+    if (apply.job.company.user.id !== userId) {
+      throw new NotFoundException('Apply not found');
+    }
+    if (ApplyService.FINISHED_STATUS.includes(apply.status)) {
+      throw new BadRequestException('Apply already finished');
+    }
+    apply.status = ApplyStatus.REJECTED;
+    await this.applyRepository.update(apply.id, apply);
+    return ApplyMapper.toDto(apply);
   }
 }

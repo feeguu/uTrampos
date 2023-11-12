@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { applyService } from '../apply.service';
+import { ApplyService } from '../apply.service';
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 
 @Injectable()
 export class GetAppliesByCandidateUseCase {
-  constructor(private readonly applyService: applyService) {}
+  constructor(private readonly applyService: ApplyService) {}
   async execute(userId: string, status?: ApplyStatus) {
     if (status) {
       return this.applyService.getAppliesByCandidateAndStatus(userId, status);
