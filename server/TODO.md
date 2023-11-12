@@ -5,9 +5,9 @@
 - [x] Get all resumes with filters and search query
 
 ## Job Applies
-- [ ] Candidate can apply to a job
-- [ ] Candidate can see all jobs he applied to
-- [ ] Candidate can see all jobs he applied to with filters by status
+- [x] Candidate can apply to a job
+- [x] Candidate can see all jobs he applied to
+- [x] Candidate can see all jobs he applied to with filters by status
 
 ## Company
 - [ ] Company can manage job applications
