@@ -167,6 +167,7 @@ export class JobService {
       userId,
     );
     if (!apply) throw new NotFoundException();
-    await this.applyRepository.delete(apply.id);
+    apply.status = ApplyStatus.WITHDRAWN;
+    await this.applyRepository.update(apply.id, apply);
   }
 }
