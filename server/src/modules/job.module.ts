@@ -16,6 +16,7 @@ import { CreateJobUseCase } from '@/main/job/use-cases/create-job-use-case.servi
 import { DeleteJobUseCase } from '@/main/job/use-cases/delete-job-use-case.service';
 import { GetJobBySlugUseCase } from '@/main/job/use-cases/get-job-by-slug-use-case.service';
 import { GetJobsUseCase } from '@/main/job/use-cases/get-jobs-use-case.service';
+import { SearchAppliesInJobUseCase } from '@/main/job/use-cases/search-applies-in-job-use-case.service';
 import { UpdateJobUseCase } from '@/main/job/use-cases/update-job-use-case.service';
 import { JobController } from '@/presentation/controllers/job.controller';
 import { Module } from '@nestjs/common';
@@ -55,6 +56,7 @@ import { Module } from '@nestjs/common';
     DeleteJobUseCase,
     CandidateApplyToJobUseCase,
     CandidateWithdrawToJobUseCase,
+    SearchAppliesInJobUseCase,
   ],
 })
 export class JobModule {}

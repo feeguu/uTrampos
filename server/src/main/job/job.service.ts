@@ -1,6 +1,9 @@
 import { CandidateRepository } from '@/domain/abstracts/repositories/candidate.repository';
 import { CompanyRepository } from '@/domain/abstracts/repositories/company.repository';
-import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repository';
+import {
+  ApplyRepository,
+  SearchAppliesFilters,
+} from '@/domain/abstracts/repositories/job/apply.repository';
 import {
   JobRepository,
   SearchFilters,
@@ -14,6 +17,7 @@ import { UserType } from '@/domain/enums/user-type.enum';
 import { CreateJobDto } from '@/presentation/dtos/job/create/create-job.dto';
 import { ApplyDto } from '@/presentation/dtos/job/entities/apply.dto';
 import { JobDto } from '@/presentation/dtos/job/entities/job.dto';
+import { SearchApplyParamsDto } from '@/presentation/dtos/job/search-apply-params.dto';
 import { SearchJobParamsDto } from '@/presentation/dtos/job/search-job-params.dto';
 import { UpdateJobDto } from '@/presentation/dtos/job/update/update-job.dto';
 import { ApplyMapper } from '@/presentation/mappers/apply.mapper';
@@ -175,5 +179,27 @@ export class JobService {
     if (!apply) throw new NotFoundException();
     apply.status = ApplyStatus.WITHDRAWN;
     await this.applyRepository.update(apply.id, apply);
+  }
+
+  async searchApplies(
+    userId: string,
+    jobSlug: string,
+    searchApplyParamsDto: SearchApplyParamsDto,
+  ) {
+    const job = await this.jobRepository.findJobBySlug(jobSlug);
+    if (!job) throw new NotFoundException();
+    if (job.company.user.id !== userId)
+      throw new UnauthorizedException(
+        'You are not allowed to see this applies',
+      );
+    const searchFilters: SearchAppliesFilters = {
+      jobId: job.id,
+      status: searchApplyParamsDto.status,
+      query: searchApplyParamsDto.query,
+      limit: searchApplyParamsDto.limit,
+      offset: searchApplyParamsDto.offset,
+    };
+    const applies = await this.applyRepository.searchApplies(searchFilters);
+    return applies.map((apply) => ApplyMapper.toDto(apply));
   }
 }

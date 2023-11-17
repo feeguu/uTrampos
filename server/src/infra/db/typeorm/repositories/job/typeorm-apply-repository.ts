@@ -1,4 +1,7 @@
-import { ApplyRepository } from '@/domain/abstracts/repositories/job/apply.repository';
+import {
+  ApplyRepository,
+  SearchAppliesFilters,
+} from '@/domain/abstracts/repositories/job/apply.repository';
 import { Apply } from '@/domain/entities/job/apply.entity';
 import { Injectable } from '@nestjs/common';
 import { FindOptionsRelations, Repository } from 'typeorm';
@@ -79,5 +82,40 @@ export class TypeOrmApplyRepository implements ApplyRepository {
     if (!apply) return null;
     Object.assign(apply, entity);
     return this.applyRepository.save(entity);
+  }
+
+  async searchApplies(filters: SearchAppliesFilters): Promise<Apply[]> {
+    const { jobId, status, query, limit, offset } = filters;
+    const queryBuilder = this.applyRepository.createQueryBuilder('apply');
+    queryBuilder.leftJoinAndSelect('apply.candidate', 'candidate');
+    queryBuilder.leftJoinAndSelect('candidate.resume', 'resume');
+    queryBuilder.leftJoinAndSelect('candidate.user', 'user');
+    queryBuilder.leftJoinAndSelect('apply.job', 'job');
+    queryBuilder.leftJoinAndSelect('job.company', 'company');
+    queryBuilder.leftJoinAndSelect('company.user', 'companyUser');
+    if (jobId) queryBuilder.andWhere('job.id = :jobId', { jobId });
+    if (status) queryBuilder.andWhere('apply.status = :status', { status });
+    if (query) {
+      const sanitizedQuery = query
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+      queryBuilder.addSelect(
+        `ts_rank(resume.document, plainto_tsquery('portuguese', ${sanitizedQuery}))`,
+        'rank',
+      );
+      queryBuilder.andWhere(
+        `resume.document @@ plainto_tsquery('portuguese', :query)`,
+        {
+          query: sanitizedQuery,
+        },
+      );
+      queryBuilder.orderBy('rank', 'DESC');
+    }
+    if (limit) queryBuilder.take(limit);
+    if (offset) queryBuilder.skip(offset);
+    return queryBuilder.getMany();
   }
 }

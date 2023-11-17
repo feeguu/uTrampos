@@ -26,6 +26,8 @@ import { DeleteJobUseCase } from '@/main/job/use-cases/delete-job-use-case.servi
 import { NotAdmin } from '@/main/auth/decorators/not-admin.decorator';
 import { CandidateApplyToJobUseCase } from '@/main/job/use-cases/candidate-apply-to-job-use-case.service';
 import { CandidateWithdrawToJobUseCase } from '@/main/job/use-cases/candidate-withdraw-to-job-use-case.service';
+import { SearchAppliesInJobUseCase } from '@/main/job/use-cases/search-applies-in-job-use-case.service';
+import { SearchApplyParamsDto } from '../dtos/job/search-apply-params.dto';
 
 @Controller('jobs')
 export class JobController {
@@ -37,6 +39,7 @@ export class JobController {
     public readonly deleteJobUseCase: DeleteJobUseCase,
     public readonly candidateApplyToJobUseCase: CandidateApplyToJobUseCase,
     public readonly candidateWithdrawToJobUseCase: CandidateWithdrawToJobUseCase,
+    private readonly searchAppliesInJobUseCase: SearchAppliesInJobUseCase,
   ) {}
 
   @ApiBearerAuth()
@@ -59,6 +62,16 @@ export class JobController {
   @Get(':slug')
   async getJobBySlug(@Param('slug') slug: string): Promise<JobDto> {
     return await this.getJobBySlugUseCase.execute(slug);
+  }
+
+  @Roles(UserType.COMPANY)
+  @Get(':slug/applies')
+  async getJobApplies(
+    @Req() { user: { id: userId } }: { user: UserDto },
+    @Param('slug') slug: string,
+    @Query() query: SearchApplyParamsDto,
+  ) {
+    return await this.searchAppliesInJobUseCase.execute(userId, slug, query);
   }
 
   @ApiBearerAuth()

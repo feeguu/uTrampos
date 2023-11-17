@@ -10,10 +10,10 @@
 - [x] Candidate can see all jobs he applied to with filters by status
 
 ## Company
-- [ ] Company can manage job applications
-- [ ] Company can see all job applications
-- [ ] Company can see all job applications with filters by status
-- [ ] Company can see all job applications with search query (by candidate resume)
+- [x] Company can manage job applications
+- [x] Company can see all job applications
+- [x] Company can see all job applications with filters by status
+- [x] Company can see all job applications with search query (by candidate resume)
 
 
 ## Admin
