@@ -66,7 +66,7 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       .toLowerCase();
     const title = event.entity.title
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+      .replace(/[\u0300-\u036f]/g, '') as string;
     const keywords = event.entity.keywords
       .join(' ')
       .normalize('NFD')
@@ -85,7 +85,7 @@ export class JobSubscriber implements EntitySubscriberInterface<TypeOrmJob> {
       event.entity.slug =
         companyName +
         '-' +
-        title.toLowerCase().replace(' ', '-') +
+        title.toLowerCase().replaceAll(' ', '-') +
         '-' +
         Date.now().toString().slice(-5, -1);
     }
