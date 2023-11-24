@@ -37,9 +37,7 @@ export class ResumeService {
     userId: string,
     createResumeDto: CreateResumeDto,
   ): Promise<ResumeDto> {
-    console.log(userId);
     const candidate = await this.candidateRepository.findByUserId(userId);
-    console.log(candidate);
     if (await this.resumeRepository.getByUserId(userId))
       throw new BadRequestException('Resume already exists');
     const resume = new Resume({
@@ -117,7 +115,6 @@ export class ResumeService {
     resume.socialNetworks = socialNetworks;
     resume.educations = educations;
     const createdResume = await this.resumeRepository.create(resume);
-    console.log(createdResume);
     return ResumeMapper.toDto(createdResume);
   }
 

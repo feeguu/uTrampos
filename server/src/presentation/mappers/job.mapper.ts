@@ -8,7 +8,6 @@ import { ApplyMapper } from './apply.mapper';
 
 export class JobMapper {
   static toDto(job: Job): JobDto {
-    console.log(job);
     return new JobDto({
       slug: job.slug,
       address: job.address,

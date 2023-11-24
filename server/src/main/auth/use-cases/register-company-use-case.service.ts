@@ -4,10 +4,6 @@ import { AuthService } from '../auth.service';
 export class RegisterCompanyUseCase {
   constructor(private readonly authService: AuthService) {}
   async execute(userId: string, companyRegisterDto: CompanyRegisterDto) {
-    console.log(
-      'RegisterCompanyUseCase -> execute -> companyRegisterDto',
-      companyRegisterDto,
-    );
     return this.authService.registerCompany(userId, companyRegisterDto);
   }
 }

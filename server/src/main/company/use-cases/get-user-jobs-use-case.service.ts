@@ -6,7 +6,6 @@ export class GetUserJobsUseCase {
   constructor(private readonly companyService: CompanyService) {}
 
   async execute(userId: string) {
-    console.log(userId);
     return await this.companyService.getCompanyJobsByUserId(userId);
   }
 }

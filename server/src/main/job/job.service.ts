@@ -165,7 +165,6 @@ export class JobService {
 
     job.applies.push(newApply);
     const updatedJob = await this.jobRepository.update(job.id, job);
-    console.log(updatedJob.applies);
     return ApplyMapper.toDto(newApply);
   }
 
@@ -188,6 +187,7 @@ export class JobService {
   ) {
     const job = await this.jobRepository.findJobBySlug(jobSlug);
     if (!job) throw new NotFoundException();
+    console.log(job.company.user.id, userId);
     if (job.company.user.id !== userId)
       throw new UnauthorizedException(
         'You are not allowed to see this applies',

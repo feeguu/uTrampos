@@ -9,7 +9,6 @@ export class GetProfileUseCase {
     private readonly candidateRepository: CandidateRepository,
   ) {}
   async execute(user: UserDto): Promise<ProfileDto> {
-    console.log(user);
     const res: ProfileDto = {
       user: user,
     };

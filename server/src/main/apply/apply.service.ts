@@ -47,7 +47,6 @@ export class ApplyService {
 
   async proceedApply(applyId: string, userId: string): Promise<ApplyDto> {
     const apply = await this.applyRepository.find(applyId);
-    console.log(apply.job.company.user);
     if (!apply) {
       throw new NotFoundException('Apply not found');
     }
@@ -59,14 +58,8 @@ export class ApplyService {
       throw new BadRequestException('Apply already finished');
     }
     const index = ApplyService.STATUS_ORDER.indexOf(apply.status);
-    console.log(
-      ApplyService.STATUS_ORDER[index],
-      ApplyService.STATUS_ORDER[index + 1],
-    );
     apply.status = ApplyService.STATUS_ORDER[index + 1];
-    console.log(apply.status);
     await this.applyRepository.update(apply.id, apply);
-    console.log(ApplyMapper.toDto(apply));
     return ApplyMapper.toDto(apply);
   }
 

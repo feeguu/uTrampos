@@ -64,8 +64,9 @@ export class JobController {
     return await this.getJobBySlugUseCase.execute(slug);
   }
 
-  @Roles(UserType.COMPANY)
+  @ApiBearerAuth()
   @Get(':slug/applies')
+  @Roles(UserType.COMPANY)
   async getJobApplies(
     @Req() { user: { id: userId } }: { user: UserDto },
     @Param('slug') slug: string,
