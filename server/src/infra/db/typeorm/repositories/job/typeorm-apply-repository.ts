@@ -72,7 +72,9 @@ export class TypeOrmApplyRepository implements ApplyRepository {
     });
   }
   async findAll(): Promise<Apply[]> {
-    return this.applyRepository.find();
+    return this.applyRepository.find({
+      relations: TypeOrmApplyRepository.RELATIONS,
+    });
   }
   async update(id: string, entity: Apply): Promise<Apply> {
     const apply = await this.applyRepository.findOne({
