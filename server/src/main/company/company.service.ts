@@ -19,10 +19,10 @@ export class CompanyService {
     return jobs.map((job) => JobMapper.toDto(job));
   }
 
-  async getCompanyJobsByUserId(userId: string): Promise<JobWithApplyDto[]> {
+  async getCompanyJobsByUserId(userId: string): Promise<JobDto[]> {
     const company = await this.companyRepository.findByUserId(userId);
     const jobs = await this.jobRepository.findByCompany(company.id);
-    return jobs.map((job) => JobMapper.toDtoWithApplies(job));
+    return jobs.map((job) => JobMapper.toDto(job));
   }
 
   async getCompany(companyId: string): Promise<CompanyDto> {

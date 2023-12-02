@@ -94,6 +94,7 @@ export class TypeOrmApplyRepository implements ApplyRepository {
     queryBuilder.leftJoinAndSelect('candidate.resume', 'resume');
     queryBuilder.leftJoinAndSelect('candidate.user', 'user');
     queryBuilder.leftJoinAndSelect('apply.job', 'job');
+    queryBuilder.leftJoinAndSelect('job.sections', 'sections')
     queryBuilder.leftJoinAndSelect('job.company', 'company');
     queryBuilder.leftJoinAndSelect('company.user', 'companyUser');
     if (jobId) queryBuilder.andWhere('job.id = :jobId', { jobId });
