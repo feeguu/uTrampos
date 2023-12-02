@@ -19,6 +19,7 @@ export class TypeOrmApplyRepository implements ApplyRepository {
       company: {
         user: true,
       },
+      sections: true,
     },
   };
   constructor(
