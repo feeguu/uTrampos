@@ -61,9 +61,9 @@ export class DashboardService {
       }).length;
       const candidatesWithLeastOneApplyPercentage =
         (candidatesWithLeastOneApply / candidates.length) * 100;
-      const appliesPerJobAverage = applies.length / jobs.length;
-      const appliesPerCandidateAverage = applies.length / candidates.length;
-      const candidatesPerJobAverage = candidates.length / jobs.length;
+      const appliesPerJobAverage = applies.length / jobs.length || 0;
+      const appliesPerCandidateAverage = applies.length / candidates.length || 0;
+      const candidatesPerJobAverage = candidates.length / jobs.length || 0;
 
       const data: DashboardDto = {
         candidates: candidates.length,
@@ -71,13 +71,13 @@ export class DashboardService {
         companies: companies.length,
         jobs: jobs.length,
         applies: applies.length,
-        percentageOfAnswerApplies,
-        candidatesHired,
-        candidatesWithLeastOneApply,
-        candidatesWithLeastOneApplyPercentage,
-        appliesPerJobAverage,
-        appliesPerCandidateAverage,
-        candidatesPerJobAverage,
+        percentageOfAnswerApplies: Number.isFinite(percentageOfAnswerApplies) ? percentageOfAnswerApplies : 0,
+        candidatesHired: Number.isFinite(candidatesHired) ? candidatesHired : 0,
+        candidatesWithLeastOneApply: Number.isFinite(candidatesWithLeastOneApply) ? candidatesWithLeastOneApply : 0,
+        candidatesWithLeastOneApplyPercentage: Number.isFinite(candidatesWithLeastOneApplyPercentage) ? candidatesWithLeastOneApplyPercentage : 0,
+        appliesPerJobAverage: Number.isFinite(appliesPerJobAverage) ? appliesPerJobAverage : 0,
+        appliesPerCandidateAverage: Number.isFinite(appliesPerCandidateAverage) ? appliesPerCandidateAverage : 0,
+        candidatesPerJobAverage: Number.isFinite(candidatesPerJobAverage) ? candidatesPerJobAverage : 0,
       };
 
       const ONE_HOUR_MILLISECONDS = 1000 * 60 * 60;

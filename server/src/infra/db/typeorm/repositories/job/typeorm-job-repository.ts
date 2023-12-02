@@ -15,7 +15,7 @@ import {
 } from 'typeorm';
 import { Job } from '@/domain/entities/job/job.entity';
 import { TypeOrmSection } from '../../entities/job/typeorm-section.entity';
-
+import {TypeOrmApply} from "../../entities/job/typeorm-apply.entity"
 export class TypeOrmJobRepository implements JobRepository {
   static readonly RELATIONS: FindOptionsRelations<TypeOrmJob> = {
     sections: true,
@@ -46,6 +46,8 @@ export class TypeOrmJobRepository implements JobRepository {
     private readonly jobRepository: Repository<TypeOrmJob>,
     @InjectRepository(TypeOrmSection)
     private readonly sectionRepository: Repository<TypeOrmSection>,
+    @InjectRepository(TypeOrmApply)
+    private readonly applyRepository: Repository<TypeOrmApply>,
   ) {}
   async create(job: Job): Promise<Job> {
     return await this.jobRepository.save(job);
@@ -78,6 +80,7 @@ export class TypeOrmJobRepository implements JobRepository {
   }
 
   async delete(id: string): Promise<void> {
+    await this.applyRepository.delete({job: {id}})
     await this.sectionRepository.delete({ job: { id } });
     await this.jobRepository.delete({ id });
   }
