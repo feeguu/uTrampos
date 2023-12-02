@@ -11,9 +11,11 @@ export class SearchApplyParamsDto {
 
   @IsOptional()
   @IsPositive()
+  @Transform(({value}) => Number(value) || null)
   limit?: number;
 
   @IsOptional()
   @Min(0)
+  @Transform(({value}) => Number(value) || 0)
   offset?: number;
 }

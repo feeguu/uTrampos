@@ -17,11 +17,13 @@ export class SearchJobParamsDto {
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Transform(({value}) => Number(value) || 0)
   minSalary?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Transform(({value}) => Number(value) || 0)
   maxSalary?: number;
 
   @IsOptional()
@@ -37,10 +39,12 @@ export class SearchJobParamsDto {
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Transform(({value}) => Number(value) || 0)
   limit?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
+  @Transform(({value}) => Number(value) || 0)
   offset?: number;
 }
