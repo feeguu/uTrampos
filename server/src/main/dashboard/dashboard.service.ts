@@ -25,7 +25,6 @@ export class DashboardService {
       'dashboard',
     )) as DashboardDto;
     if (cachedData) {
-      console.log('Returning cached data...');
       return cachedData;
     } else {
       const candidatesPromise = this.candidateRepository.findAll();
@@ -81,7 +80,6 @@ export class DashboardService {
       };
 
       const ONE_HOUR_MILLISECONDS = 1000 * 60 * 60;
-      console.log('Setting cache...');
       this.cacheManager.set('dashboard', data, ONE_HOUR_MILLISECONDS);
       return data;
     }

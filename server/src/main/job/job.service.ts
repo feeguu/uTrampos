@@ -155,6 +155,14 @@ export class JobService {
       throw new UnauthorizedException(
         'You need to create a resume before applying to a job',
       );
+    
+
+    const withdrawedApply = job.applies.find(apply => apply.candidate.user.id === userId && apply.status == ApplyStatus.WITHDRAWN);
+    if(withdrawedApply) {
+      withdrawedApply.status = ApplyStatus.PENDING;
+      const updated = await this.applyRepository.update(withdrawedApply.id, withdrawedApply);
+      return ApplyMapper.toDto(updated);
+    }
 
     const newApply = new Apply({
       candidate,
@@ -187,7 +195,6 @@ export class JobService {
   ) {
     const job = await this.jobRepository.findJobBySlug(jobSlug);
     if (!job) throw new NotFoundException();
-    console.log(job.company.user.id, userId);
     if (job.company.user.id !== userId)
       throw new UnauthorizedException(
         'You are not allowed to see this applies',
