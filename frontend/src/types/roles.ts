@@ -14,10 +14,6 @@ export interface ICompany {
 	companySize: string
 }
 
-export interface IAdmin {
-	id: string
-}
-
 export interface ICandidate {
 	id: string
 	cpf: string
@@ -28,5 +24,5 @@ export interface IAuthUser {
 	user: IUser
 	candidate?: ICandidate
 	company?: ICompany
-	admin?: IAdmin
+	admin?: boolean
 }

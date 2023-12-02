@@ -1,0 +1,12 @@
+-   [x] Cadastro de vagas
+-   [ ] Atualização de vagas
+-   [x] Mostragem de vagas
+-   [x] Deletar vagas
+-   [ ] Cadastro de currículo
+-   [ ] Atulização de currículo
+-   [ ] Mostrar currículo
+-   [ ] Candidatar
+-   [ ] Mostragem de candidaturas para a empresa
+-   [ ] Buscar candidatos
+-   [x] Listagem de vagas com filtros
+-   [ ] Perfil de empresa com suas vagas abertas

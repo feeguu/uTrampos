@@ -1,6 +1,6 @@
 interface IToast {
 	id: number
-	type: "error"
+	type: "error" | "success"
 	message: string
 }
 
@@ -15,9 +15,17 @@ export const useToast = defineStore("toast", () => {
 		})
 	}
 
+	function success(message: string) {
+		toastMessages.value.push({
+			id: Math.random() * (10000 - 1000) + 1000,
+			type: "success",
+			message,
+		})
+	}
+
 	function close(id: number) {
 		toastMessages.value = toastMessages.value.filter((toastMessage) => toastMessage.id !== id)
 	}
 
-	return { toastMessages, close, error }
+	return { toastMessages, close, error, success }
 })

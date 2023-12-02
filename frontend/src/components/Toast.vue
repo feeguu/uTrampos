@@ -1,24 +1,35 @@
 <script setup lang="ts">
-import { RiErrorWarningFill, RiCloseLine } from "vue-remix-icons"
+import { RiErrorWarningFill, RiCloseLine, RiCheckboxCircleFill } from "vue-remix-icons"
+
+interface ToastProps {
+	theme: "error" | "success"
+}
 
 interface ToastEmits {
 	(e: "close"): void
 }
 
 const emit = defineEmits<ToastEmits>()
+defineProps<ToastProps>()
 
 onMounted(() => {
-	console.log("MOUNTED")
 	setTimeout(() => {
 		emit("close")
-		console.log("CLOSED")
 	}, 5000)
 })
 </script>
 
 <template>
-	<div class="w-full bg-red-500 rounded px-4 py-6 flex items-center relative">
-		<RiErrorWarningFill class="fill-white h-6 w-6 flex-shrink-0" />
+	<div
+		:class="[
+			'w-full rounded px-4 py-6 flex items-center relative',
+			theme === 'error' ? 'bg-red-500' : 'bg-green-500',
+		]"
+	>
+		<component
+			:is="theme === 'error' ? RiErrorWarningFill : RiCheckboxCircleFill"
+			class="fill-white h-6 w-6 flex-shrink-0"
+		/>
 		<p class="text-white pl-3"><slot /></p>
 		<button
 			@click="$emit('close')"

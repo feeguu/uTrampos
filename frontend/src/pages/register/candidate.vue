@@ -15,7 +15,7 @@ const { registerCandidate } = useAuth()
 
 <template>
 	<div class="bg-neutral-100 px-6 w-full min-h-screen flex flex-col justify-center items-center">
-		<Logo class="mb-12" />
+		<Logo class="mb-10" />
 		<form
 			class="flex flex-col gap-y-4 w-full max-w-md"
 			@submit.prevent="registerCandidate(candidateRegister)"

@@ -16,4 +16,9 @@ export default defineNuxtConfig({
 		typeCheck: false,
 	},
 	modules: ["@pinia/nuxt"],
+	app: {
+		head: {
+			title: "uTrampos",
+		},
+	},
 })

@@ -3,10 +3,8 @@ import { RiFilter3Fill } from "vue-remix-icons"
 import type { IJob } from "~/types/api"
 
 const toast = useToast()
-
 const showFilters = ref(false)
 const jobs = ref<IJob[] | null>(null)
-
 const filters = reactive<any>({})
 
 const { data, error } = await useAPI<IJob[]>("/jobs")
@@ -18,12 +16,6 @@ async function handleSubmitFilters() {
 	})
 	jobs.value = data
 }
-
-if (error) {
-	const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
-	console.error(errorMessage)
-	toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
-}
 </script>
 <template>
 	<div class="bg-neutral-100 flex-1 md:pt-6 md:px-6">
@@ -32,15 +24,25 @@ if (error) {
 			class="bg-white p-6 gap-y-4 gap-x-3 flex flex-col shadow rounded max-w-6xl mx-auto md:flex-row md:items-end"
 		>
 			<h1 class="sr-only">Buscar vagas</h1>
-			<Input label-text="Palavras-chave" container-class="md:flex-[2]" v-model="filters.q" />
-			<Input label-text="Local" container-class="md:flex-[2]" v-model="filters.location" />
+			<Input
+				label-text="Palavras-chave"
+				placeholder="Ex.: Desenvolvedor, designer"
+				container-class="md:flex-[2]"
+				v-model="filters.q"
+			/>
+			<Input
+				label-text="Local"
+				placeholder="Ex.: São Paulo - SP"
+				container-class="md:flex-[2]"
+				v-model="filters.location"
+			/>
 			<Button type="submit" class="md:flex-1">Pesquisar</Button>
 		</form>
 		<main class="flex flex-col px-4 pb-6 mt-5 max-w-6xl mx-auto md:px-0">
 			<div class="flex items-center justify-between mb-4 gap-x-4 md:px-4">
 				<div>
 					<h1 class="text-2xl text-slate-900 font-lexend font-medium">Vagas</h1>
-					<p class="text-neutral-500">Vagas disponíveis: 20</p>
+					<p class="text-neutral-500 mt-1">Vagas disponíveis: {{ jobs?.length ?? 0 }}</p>
 				</div>
 				<button
 					@click="showFilters = true"
@@ -74,7 +76,7 @@ if (error) {
 		</main>
 	</div>
 
-	<SideBar :show="showFilters" @close="showFilters = false">
+	<SideBar title="Filtrar Vagas" :show="showFilters" @close="showFilters = false">
 		<form
 			id="job-filters-form"
 			class="flex-1 flex flex-col gap-y-6"
@@ -95,7 +97,7 @@ if (error) {
 				/>
 			</div>
 			<Select label-text="Tipo de contrato" v-model="filters.contractType">
-				<option disabled value="">Selecione</option>
+				<option value="">Todos</option>
 				<option value="CLT">CLT</option>
 				<option value="PJ">PJ</option>
 				<option value="INTERNSHIP">Estágio</option>
