@@ -1,12 +1,12 @@
 <script setup lang="ts">
 interface InputProps {
 	labelText?: string
-	modelValue?: string
+	modelValue?: string | number
 	containerClass?: string
 }
 
 interface InputEmits {
-	(event: "update:modelValue", value: string): void
+	(event: "update:modelValue", value: string | number): void
 }
 
 defineOptions({
@@ -18,11 +18,11 @@ defineEmits<InputEmits>()
 
 <template>
 	<label :class="['flex flex-col text-slate-900', containerClass]">
-		<span class="font-semibold mb-2 leading-none" v-if="labelText">{{ labelText }}</span>
+		<span class="font-semibold mb-3 leading-none" v-if="labelText">{{ labelText }}</span>
 		<input
 			v-maska
 			type="text"
-			class="border-gray-300 rounded h-12 focus:!border-sky-500 focus:!ring-sky-500"
+			class="border-gray-300 h-10 rounded !ring-inset focus:!border-sky-500 focus:!ring-sky-500"
 			v-bind="$attrs"
 			:value="modelValue"
 			@maska="$emit('update:modelValue', $event.detail.unmasked)"

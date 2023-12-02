@@ -1,4 +1,4 @@
-import type { IAdmin, IAuthUser, ICandidate, ICompany } from "~/types/roles"
+import type { IAuthUser } from "~/types/roles"
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
 	const token = useToken().get()
@@ -18,6 +18,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 		auth.candidate = data.candidate
 		auth.company = data.company
-		auth.admin = data.admin
+		if (data.user.type === "ADMIN") {
+			auth.admin = true
+		}
 	}
 })

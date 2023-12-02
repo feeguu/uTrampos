@@ -10,14 +10,14 @@ import type {
 	ILoginRequest,
 } from "~/types/api"
 
-import type { IAdmin, ICandidate, ICompany, IUser } from "~/types/roles"
+import type { ICandidate, ICompany, IUser } from "~/types/roles"
 
 export const useAuth = defineStore("auth", () => {
 	const toast = useToast()
 
 	const user = ref<IUser | null>()
 	const company = ref<ICompany | null>()
-	const admin = ref<IAdmin | null>()
+	const admin = ref<boolean | null>()
 	const candidate = ref<ICandidate | null>()
 
 	async function login(loginData: ILoginRequest) {
@@ -26,12 +26,7 @@ export const useAuth = defineStore("auth", () => {
 			body: JSON.stringify(loginData),
 		})
 
-		if (error || !data) {
-			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
-			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
-			return
-		}
+		if (error || !data) return
 
 		useToken().set(data.token)
 
@@ -44,12 +39,7 @@ export const useAuth = defineStore("auth", () => {
 			body: JSON.stringify(userData),
 		})
 
-		if (error || !data) {
-			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
-			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
-			return
-		}
+		if (error || !data) return
 
 		useToken().set(data?.token)
 
@@ -62,12 +52,7 @@ export const useAuth = defineStore("auth", () => {
 			body: JSON.stringify(companyData),
 		})
 
-		if (error || !data) {
-			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
-			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
-			return
-		}
+		if (error || !data) return
 
 		user.value = data.user
 		company.value = data
@@ -81,12 +66,7 @@ export const useAuth = defineStore("auth", () => {
 			body: JSON.stringify(candidateData),
 		})
 
-		if (error || !data) {
-			const errorMessage = error?.data?.message ?? "Algo deu errado. Tente novamente mais tarde."
-			console.error(errorMessage)
-			toast.error(Array.isArray(errorMessage) ? errorMessage.join("\n") : errorMessage)
-			return
-		}
+		if (error || !data) return
 
 		user.value = data.user
 		candidate.value = data
@@ -94,5 +74,14 @@ export const useAuth = defineStore("auth", () => {
 		navigateTo("/")
 	}
 
-	return { user, company, candidate, admin, login, register, registerCompany, registerCandidate }
+	async function logout() {
+		useToken().remove()
+		user.value = null
+		candidate.value = null
+		company.value = null
+		admin.value = null
+		navigateTo("/jobs")
+	}
+
+	return { user, company, candidate, admin, login, register, registerCompany, registerCandidate, logout }
 })

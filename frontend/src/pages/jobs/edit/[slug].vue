@@ -4,14 +4,15 @@ import { ICreateJobsRequest } from "~/types/api"
 
 definePageMeta({
 	middleware: "auth",
-	allowedRoles: ["COMPANY"],
+	allowedRoles: ["ADMIN", "COMPANY"],
 })
 
 const formStep = ref(1)
 const sectionAccordeon = ref<number | null>(null)
 const toast = useToast()
+const route = useRoute()
 
-const job = reactive<ICreateJobsRequest>({
+const job = ref<ICreateJobsRequest>({
 	title: "",
 	description: "",
 	address: "",
@@ -21,17 +22,20 @@ const job = reactive<ICreateJobsRequest>({
 	sections: [],
 })
 
+const { data, error } = await useAPI<any>(`/jobs/${route.params.slug}`)
+job.value = data
+
 async function handleSubmit() {
 	console.log(job)
 
-	const { data, error } = await useAPI("/jobs", {
-		method: "POST",
-		body: JSON.stringify(job),
+	const { data, error } = await useAPI(`/jobs/${route.params.slug}`, {
+		method: "PATCH",
+		body: JSON.stringify(job.value),
 	})
 
 	if (error || !data) return
 
-	toast.success("Vaga cadastrada com sucesso!")
+	toast.success("Vaga atualizada com sucesso!")
 	navigateTo("/")
 }
 </script>

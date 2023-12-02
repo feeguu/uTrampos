@@ -6,7 +6,7 @@
 
 @layer components {
 	.button {
-		@apply w-full transition-colors flex justify-center gap-x-1 items-center h-12 px-4 rounded font-semibold;
+		@apply w-full transition-colors flex justify-center gap-x-2 items-center px-3 py-2 text-start rounded font-semibold;
 	}
 
 	.button.button-primary {
@@ -18,10 +18,14 @@
 	}
 
 	.button.button-primary-outline {
-		@apply bg-transparent text-slate-900 border-2 border-slate-900 hover:text-white hover:bg-slate-800 hover:border-slate-800;
+		@apply bg-transparent text-slate-900 ring-1 ring-inset ring-slate-900 hover:bg-neutral-500/10;
 	}
 
 	.icon-button {
 		@apply p-1 -m-1 rounded-full transition-colors hover:bg-neutral-200;
+	}
+
+	.dropdown-option {
+		@apply w-full opacity-50 flex px-3 py-2 gap-x-2 transition hover:bg-neutral-100 hover:opacity-80;
 	}
 }

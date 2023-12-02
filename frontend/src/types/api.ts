@@ -1,3 +1,11 @@
+import type { CONTRACT_TYPES } from "./enums/job"
+import type {
+	EXPERIENCE_TIMES,
+	EDUCATION_TYPES,
+	EDUCATION_STATUS,
+	LANGUAGE_LEVELS,
+	SOCIAL_NETWORKS,
+} from "./enums/resume"
 import type { IAdmin, ICandidate, ICompany, IUser } from "./roles"
 
 export interface ILoginRequest {
@@ -61,7 +69,7 @@ export interface IJob {
 	id: string
 	title: string
 	description: string
-	contractType: string
+	contractType: keyof typeof CONTRACT_TYPES
 	salary: number
 	address: string
 	sections: {
@@ -85,40 +93,134 @@ export interface ICreateResumeResponse {
 	skills: {
 		id: string
 		name: string
-		experienceTime: string
+		experienceTime: keyof typeof EXPERIENCE_TIMES
 	}[]
 	professionalExperiences: {
+		id: string
 		company: string
 		description: string
-		startDate: Date
-		endDate: Date
+		position: string
+		startDate: string
+		endDate: string
 	}[]
 	academicProjects: {
 		id: string
 		title: string
 		description: string
-		startDate: Date
-		endDate: Date
+		startDate: string
+		endDate: string
 	}[]
 	languages: {
 		id: string
 		language: string
-		level: string
+		level: keyof typeof LANGUAGE_LEVELS
 	}[]
 	socialNetworks: {
 		id: string
-		socialNetwork: string
+		socialNetwork: keyof typeof SOCIAL_NETWORKS
+		url: string
+	}[]
+	candidate: {
+		user: {
+			id: string
+			name: string
+			email: string
+			phone: string
+			zipCode: string
+			type: string
+		}
+		id: string
+		cpf: string
+		birthDate: string
+		type: string
+	}
+	educations: {
+		id: string
+		institution: string
+		educationType: keyof typeof EDUCATION_TYPES
+		course: string
+		startDate: string
+		endDate: string
+		status: keyof typeof EDUCATION_STATUS
+	}[]
+}
+
+export interface ICreateResumeRequest {
+	description: string
+	objective: string
+	additionalInformation: string
+	skills: {
+		name: string
+		experienceTime: keyof typeof EXPERIENCE_TIMES
+	}[]
+	professionalExperiences: {
+		company: string
+		position: string
+		description: string
+		startDate: string
+		endDate: string
+	}[]
+	academicProjects: {
+		title: string
+		description: string
+		startDate: string
+		endDate: string
+	}[]
+	languages: {
+		name: string
+		level: keyof typeof LANGUAGE_LEVELS
+	}[]
+	socialNetworks: {
+		socialNetwork: keyof typeof SOCIAL_NETWORKS
 		url: string
 	}[]
 	educations: {
-		institution: string,
-		educationType: string,
-		status: string,
-		startDate: string,
-		endDate: string,
+		institution: string
+		educationType: keyof typeof EDUCATION_TYPES
+		status: keyof typeof EDUCATION_STATUS
+		startDate: string
+		endDate: string
 		course: string
 	}[]
-	candidate: ICandidate & {
-		user: IUser
+}
+
+export interface Apply {
+	id: string
+	status: string
+	candidate: {
+		user: {
+			id: string
+			name: string
+			email: string
+			phone: string
+			zipCode: string
+			type: string
+		}
+		id: string
+		cpf: string
+		birthDate: string
+		type: string
+		resume: {
+			id: string
+			description: string
+			objective: string
+			additionalInformation: string
+		}
 	}
+	datetime: string
+}
+
+export interface IDashboard {
+	candidates: number
+	resumes: number
+	companies: number
+	jobs: number
+	applies: number
+	percentageOfAnswerApplies: number
+	candidatesHired: number
+	candidatesWithLeastOneApply: number
+	candidatesWithLeastOneApplyPercentage: number
+	appliesPerJobAverage: number
+	appliesPerCandidateAverage: number
+	candidatesPerJobAverage: number
 }
