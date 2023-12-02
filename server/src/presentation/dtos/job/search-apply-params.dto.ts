@@ -1,5 +1,6 @@
 import { ApplyStatus } from '@/domain/enums/apply-status.enum';
 import { IsEnum, IsOptional, IsPositive, Min } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class SearchApplyParamsDto {
   @IsOptional()
